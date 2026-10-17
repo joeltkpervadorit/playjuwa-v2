@@ -449,7 +449,7 @@ export default class Casino extends React.Component {
     var SEC = [
       { id: 'top', title: 'Top 10 Games', sub: 'Most popular games right now', icon: 'all', games: mk(D.top, 'top', { hot: true }), kind: 'is-rank is-top' },
       { id: 'live', title: 'Live Casino', sub: 'Real tables · Real dealers', icon: 'live', games: mk(D.live, 'live', { live: true }), kind: 'is-live',
-        strip: true, stripCls: 'is-npn', stripImg: B('8f14686d83e94ff65cd7af7fe492e7f9'), stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary', stripText: 'Play instantly — discover the', stripHi: 'free bonuses.', stripCta: 'Start Playing', stripHref: NL.nSignup },
+        strip: true, stripCls: 'is-npn', stripImg: '/assets/npn-slot.webp', stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary.', stripText: 'Play instantly — discover the free bonuses', stripHi: 'across our website.', stripCta: 'Start Playing', stripHref: NL.nSignup },
       { id: 'fishing', title: 'Top 10 Fishing Games', sub: 'Ranked by players this week', icon: 'fish', games: mk(D.fish, 'fish'), kind: 'is-rank' },
       { id: 'popular', title: 'Popular Games', sub: 'Most played and trending games', icon: 'crash', games: mk(D.pop, 'pop') },
       { id: 'slots', title: 'Slots', sub: 'Spin. Win. Repeat.', icon: 'slots', games: mk(rot(10, 0), 'slots'),

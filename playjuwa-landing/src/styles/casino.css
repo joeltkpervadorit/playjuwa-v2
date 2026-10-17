@@ -562,6 +562,8 @@ button{font-family:inherit}
 .cs-strip:hover{color:#fff;box-shadow:inset 0 0 0 1.5px var(--yellow),inset 0 0 26px rgba(168,85,247,.45),0 0 30px rgba(139,92,246,.5),0 0 16px rgba(255,184,0,.35)}
 .cs-strip-art{position:absolute;top:0;bottom:0;right:0;width:68%;z-index:-1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%);mask-image:linear-gradient(90deg,transparent,#000 35%)}
 .cs-strip-art img{width:100%;height:100%;object-fit:cover;object-position:70% 40%;transition:scale .5s cubic-bezier(.16,1,.3,1)}
+.cs-strip.is-npn .cs-strip-art{width:64%;right:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28%,#000 100%);mask-image:linear-gradient(90deg,transparent 0,#000 28%,#000 100%)}
+.cs-strip.is-npn .cs-strip-art img{object-fit:contain;object-position:right center;padding:8px 0;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)) drop-shadow(0 0 18px rgba(255,184,0,.28))}
 .cs-strip:hover .cs-strip-art img{scale:1.04}
 .cs-strip-copy{position:relative;display:flex;flex-direction:column;gap:3px;max-width:66%}
 .cs-strip small{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow)}
@@ -574,9 +576,16 @@ button{font-family:inherit}
 .cs-strip i{position:relative;margin-top:auto;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 18px;border-radius:999px;font-style:normal;font-size:13px;font-weight:800;color:var(--on-gold);background:linear-gradient(180deg,#ffe066,var(--yellow) 45%,var(--gold) 80%,var(--orange));box-shadow:var(--gloss),0 0 0 2px rgba(255,214,102,.35),0 6px 18px rgba(255,184,0,.4)}
 .cs-strip i svg{width:15px;height:15px;transition:translate .2s ease}
 .cs-strip:hover i svg{translate:3px 0}
+@media (max-width:640px){
+  .cs-strip.is-npn{display:grid;grid-template-columns:minmax(0,1fr) 44%;grid-template-rows:1fr auto;gap:5px 0;min-height:190px;padding:14px}
+  .cs-strip.is-npn .cs-strip-art{width:50%;right:0}
+  .cs-strip.is-npn .cs-strip-copy{grid-column:1;grid-row:1;max-width:none}
+  .cs-strip.is-npn > i{grid-column:1;grid-row:2;justify-self:start;margin:0}
+}
 @media (min-width:641px){
   .cs-strip{flex-direction:row;align-items:center;gap:16px;min-height:120px;padding:14px 22px 14px 26px}
   .cs-strip-art{width:52%;right:180px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+  .cs-strip.is-npn .cs-strip-art{width:42%;right:145px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 84%,transparent 100%)}
   .cs-strip-copy{max-width:46%;flex:1}
   .cs-strip b{font-size:28px}
   .cs-strip em{font-size:13px}
@@ -585,6 +594,7 @@ button{font-family:inherit}
 @media (min-width:1024px){
   .cs-strip{min-height:132px;padding:16px 30px 16px 34px}
   .cs-strip-art{width:46%;right:230px}
+  .cs-strip.is-npn .cs-strip-art{right:205px}
   .cs-strip-copy{max-width:44%}
   .cs-strip b{white-space:nowrap}
   .cs-strip small{font-size:12px}
