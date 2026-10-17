@@ -449,7 +449,7 @@ export default class Casino extends React.Component {
     var SEC = [
       { id: 'top', title: 'Top 10 Games', sub: 'Most popular games right now', icon: 'all', games: mk(D.top, 'top', { hot: true }), kind: 'is-rank is-top' },
       { id: 'live', title: 'Live Casino', sub: 'Real tables · Real dealers', icon: 'live', games: mk(D.live, 'live', { live: true }), kind: 'is-live',
-        strip: true, stripCls: 'is-npn', stripImg: '/assets/npn-slot.webp', stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary.', stripText: 'Play instantly — discover the free bonuses', stripHi: 'across our website.', stripCta: 'Start Playing', stripHref: NL.nSignup },
+        strip: true, stripId: 'signup', stripCls: 'is-npn', stripImg: '/assets/npn-slot.webp', stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary.', stripText: 'Play instantly — discover the free bonuses', stripHi: 'across our website.', stripCta: 'Start Playing', stripHref: NL.nSignup },
       { id: 'fishing', title: 'Top 10 Fishing Games', sub: 'Ranked by players this week', icon: 'fish', games: mk(D.fish, 'fish'), kind: 'is-rank' },
       { id: 'popular', title: 'Popular Games', sub: 'Most played and trending games', icon: 'crash', games: mk(D.pop, 'pop') },
       { id: 'slots', title: 'Slots', sub: 'Spin. Win. Repeat.', icon: 'slots', games: mk(rot(10, 0), 'slots'),
@@ -462,7 +462,7 @@ export default class Casino extends React.Component {
       { id: 'keno', title: 'Keno', sub: 'Pick your numbers', icon: 'keno', games: mk(rot(10, 4), 'keno') },
       { id: 'scratch', title: 'Scratch Cards', sub: 'Scratch and reveal', icon: 'scratch', games: mk(rot(10, 6), 'scr') },
       { id: 'other', title: 'Other', sub: 'More games to explore', icon: 'other', games: mk(rot(10, 7), 'oth') }
-    ].map(function (s) { return Object.assign({ strip: false, stripCls: '', stripImg: '', stripEye: '', stripTitle: '', stripT1: '', stripT2: '', stripHi: '', stripText: '', stripCta: '', stripHref: '#', kind: '' }, s, { hid: 'cs-h-' + s.id, icon: B(D.icon[s.icon]), scrollL: scroll(-1), scrollR: scroll(1) }); });
+    ].map(function (s) { return Object.assign({ strip: false, stripId: '', stripCls: '', stripImg: '', stripEye: '', stripTitle: '', stripT1: '', stripT2: '', stripHi: '', stripText: '', stripCta: '', stripHref: '#', kind: '' }, s, { hid: 'cs-h-' + s.id, icon: B(D.icon[s.icon]), scrollL: scroll(-1), scrollR: scroll(1) }); });
     var SLIDES = [
       { cls: 'is-a', img: B('7c9e82f0bbbf0acc214a4e95ecabf79e'), eyebrow: 'Welcome offer', t1: 'Super Bonus', t2: '+100% on First Purchase', text: 'Play bigger and enjoy more at PlayJuwa.', cta: 'Buy SC Now', href: NL.nBuy },
       { cls: 'is-b', img: B('73cb9e20c8d075e4f2e52d78b5633abc'), eyebrow: 'All your games', t1: 'One Account.', t2: '20+ Platforms', text: 'All your favorite games in one place.', cta: 'Play Now', href: '#games' },
