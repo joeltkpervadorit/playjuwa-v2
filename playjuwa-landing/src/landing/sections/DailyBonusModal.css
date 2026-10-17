@@ -1,0 +1,17 @@
+.pj-db{position:fixed;inset:0;z-index:2147482000;display:grid;place-items:center;padding:16px}
+.pj-db-bd{position:absolute;inset:0;border:0;padding:0;background:rgba(6,4,18,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer}
+.pj-db-card{position:relative;width:min(760px,94vw);max-height:calc(100dvh - 32px);aspect-ratio:1375/938;transform-origin:50% 55%;animation:pj-db-pop .55s cubic-bezier(.34,1.56,.64,1) both}
+@supports (height:100dvh){.pj-db-card{width:min(760px,94vw,calc((100dvh - 32px) * 1.466))}}
+.pj-db-card::before{content:"";position:absolute;inset:8% 6%;border-radius:28px;z-index:-1;background:radial-gradient(closest-side,rgba(168,85,247,.55),rgba(255,184,0,.22) 60%,transparent);filter:blur(28px);animation:pj-db-glow 3.2s ease-in-out infinite alternate}
+.pj-db-img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 0 18px rgba(168,85,247,.35)) drop-shadow(0 12px 30px rgba(0,0,0,.55))}
+.pj-db-x,.pj-db-cta{position:absolute;border:0;padding:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pj-db-x{left:91.6%;top:7.2%;width:7.6%;aspect-ratio:1;border-radius:50%;min-width:40px;min-height:40px;transform:translate(-6%,-6%);display:grid;place-items:center;color:#fff}
+.pj-db-x svg{width:20px;height:20px}
+.pj-db-cta{left:53.2%;top:80.9%;width:39.8%;height:11.7%;border-radius:999px;transition:transform .15s ease,box-shadow .2s ease}
+.pj-db-cta:hover{box-shadow:0 0 0 2px rgba(255,210,31,.55),0 0 22px rgba(255,184,0,.55)}
+.pj-db-cta:active{transform:scale(.97)}
+.pj-db-x:focus-visible,.pj-db-cta:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+@keyframes pj-db-pop{0%{transform:scale(.35)}70%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes pj-db-glow{from{opacity:.7}to{opacity:1}}
+@media (max-width:640px){.pj-db-card{width:min(560px,100%)}.pj-db-card::before{filter:blur(20px)}}
+@media (prefers-reduced-motion:reduce){.pj-db-card,.pj-db-card::before{animation:none}.pj-db-cta{transition:none}}

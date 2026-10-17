@@ -1,0 +1,45 @@
+/* =========================================================
+   SLOT GAMES — coverflow carousel
+   ========================================================= */
+.lp-slots{--w:150px;--sp:92px;--k:.15}
+.lp-slots-title{margin:0 0 6px;text-align:center;font-size:20px;line-height:26px;font-weight:800;letter-spacing:-.01em}
+.lp-cf{position:relative;height:calc(var(--w) + 28px);margin-inline:calc(-1 * var(--gut));overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline:none}
+.lp-cf:active{cursor:grabbing}
+.lp-cf:focus-visible{box-shadow:inset 0 0 0 2px var(--focus);border-radius:16px}
+.lp-cf-glow{position:absolute;left:50%;top:50%;width:calc(var(--w) * 2.2);height:calc(var(--w) * .9);translate:-50% -10%;border-radius:50%;background:radial-gradient(closest-side,rgba(139,92,246,.55),transparent);filter:blur(10px);pointer-events:none}
+.lp-cf-track{position:absolute;inset:0;--dx:0px}
+.lp-cf-card{position:absolute;left:50%;top:50%;width:var(--w);aspect-ratio:1;margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 12px 26px rgba(0,0,0,.5);transform:translateX(calc(var(--d) * var(--sp) + var(--dx))) scale(calc(1 - var(--ad) * var(--k)));opacity:1;filter:brightness(calc(1 - var(--ad) * .2)) saturate(calc(1 - var(--ad) * .08));transition:transform .55s cubic-bezier(.22,.9,.28,1),opacity .45s ease,filter .45s ease,box-shadow .45s ease;-webkit-user-drag:none}
+.lp-cf-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.lp-cf-card[data-on="true"]{box-shadow:0 0 0 2px rgba(196,181,253,.9),0 0 32px rgba(139,92,246,.6),0 18px 36px rgba(0,0,0,.55)}
+.lp-cf-card[data-ad="3"],.lp-cf-card[data-ad="4"]{opacity:0;pointer-events:none}
+.lp-cf-track.is-drag .lp-cf-card{transition:none}
+.lp-cf-play{position:absolute;left:50%;top:50%;display:grid;place-items:center;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;color:var(--on-gold);background:linear-gradient(180deg,var(--yellow),var(--gold) 55%,var(--orange));box-shadow:var(--gloss),var(--glow-gold);opacity:0;scale:.8;transition:opacity .3s ease,scale .3s ease}
+.lp-cf-play svg{width:20px;height:20px;margin-left:2px}
+.lp-cf-card[data-on="true"]:hover .lp-cf-play,.lp-cf-card[data-on="true"]:focus-visible .lp-cf-play{opacity:1;scale:1}
+.lp-cf-nav{position:absolute;top:50%;z-index:30;display:grid;place-items:center;width:34px;height:34px;margin-top:-17px;padding:0;border:0;border-radius:50%;background:rgba(8,11,22,.72);color:#fff;cursor:pointer;box-shadow:inset 0 0 0 1px var(--edge-hi);backdrop-filter:blur(6px);transition:background-color .2s ease}
+.lp-cf-nav:hover{background:var(--purple)}
+.lp-cf-nav svg{width:16px;height:16px}
+.lp-cf-nav.is-prev{left:calc(var(--gut) - 4px)}
+.lp-cf-nav.is-next{right:calc(var(--gut) - 4px)}
+.lp-cf-meta{display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:2px;text-align:center}
+.lp-cf-meta b{font-size:15px;line-height:20px;font-weight:800}
+.lp-cf-meta span{font-size:11.5px;line-height:16px;color:var(--ink-muted)}
+@media (min-width:641px){.lp-slots{--w:190px;--sp:128px;--k:.14}.lp-slots-title{font-size:24px;line-height:30px}.lp-cf{margin-inline:0;border-radius:18px}.lp-cf-nav.is-prev{left:6px}.lp-cf-nav.is-next{right:6px}}
+@media (min-width:1024px){
+  .lp-slots{--w:230px;--sp:158px;--k:.13}
+  .lp-slots-title{font-size:30px;line-height:36px;margin-bottom:10px}
+  .lp-cf{height:calc(var(--w) + 40px)}
+  .lp-cf-card[data-ad="3"]{opacity:.85;pointer-events:auto}
+  .lp-cf-nav{width:42px;height:42px;margin-top:-21px}
+  .lp-cf-nav svg{width:18px;height:18px}
+  .lp-cf-meta b{font-size:17px}
+  .lp-cf-meta span{font-size:13px}
+}
+@media (prefers-reduced-motion: reduce){.lp-cf-card{transition:opacity .2s ease !important}}
+
+/* Slot carousel: the card under the cursor is highlighted */
+@media (hover:hover){
+  .lp-cf-track:not(.is-drag) .lp-cf-card:hover{z-index:40 !important;filter:none;opacity:1 !important;transform:translateX(calc(var(--d) * var(--sp))) scale(calc(1 - var(--ad) * var(--k) + .1));box-shadow:0 0 0 2px rgba(216,180,254,.95),0 0 30px rgba(168,85,247,.65),0 16px 32px rgba(0,0,0,.55)}
+  .lp-cf-track:not(.is-drag):has(.lp-cf-card:hover) .lp-cf-card:not(:hover){filter:brightness(.55) saturate(.8)}
+  .lp-cf-card:hover .lp-cf-play{opacity:1;scale:1}
+}

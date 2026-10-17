@@ -1,0 +1,48 @@
+/* =========================================================
+   WHY JOIN US
+   ========================================================= */
+.lp-why{position:relative}
+.lp-why-bg{display:none}
+.lp-reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.lp-why-card{position:relative;overflow:hidden;min-height:104px;padding:10px 12px 12px;border-radius:var(--r-md);background:linear-gradient(160deg,var(--panel-2),var(--panel));box-shadow:inset 0 0 0 1px var(--edge)}
+.lp-why-card.is-violet{background:linear-gradient(160deg,rgba(109,53,217,.38),var(--panel))}
+.lp-why-num{display:block;font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.06em}
+.lp-why-card h3{position:relative;z-index:1;margin:2px 44px 3px 0;font-size:13.5px;line-height:17px;font-weight:800}
+.lp-why-card p{position:relative;z-index:1;margin:0;font-size:11.5px;line-height:15px;color:var(--ink-muted)}
+.lp-why-bar{display:none}
+.lp-why-art{position:absolute;top:8px;right:8px;width:40px;height:40px}
+.lp-why-art img{width:100%;height:100%;object-fit:contain}
+@media (min-width:1024px){
+  .lp-reasons{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .lp-why-card{min-height:132px;padding:16px 18px}
+  .lp-why-card h3{margin-right:60px;font-size:16px;line-height:21px}
+  .lp-why-card p{font-size:13px;line-height:18px}
+  .lp-why-art{width:58px;height:58px;top:12px;right:12px}
+}
+
+/* ===== Why Join Us: cut-out icons breaking the top edge, pop + float (matches the No Purchase Necessary slot) ===== */
+.lp-reasons{row-gap:calc(var(--gap) + 18px);padding-top:16px}
+.lp-why-card{overflow:visible}
+.lp-why-art{top:-20px;right:6px;width:66px;height:auto;max-width:none;aspect-ratio:1;translate:none;z-index:2;display:flex;align-items:flex-end;justify-content:center;filter:none;transform-origin:50% 70%}
+.lp-why-art::before{content:"";position:absolute;left:8%;right:8%;top:22%;bottom:4%;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--tint),.55),rgba(168,85,247,.25) 60%,transparent);filter:blur(8px);opacity:.75}
+.lp-why-art img{width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.5)) drop-shadow(0 0 10px rgba(var(--tint),.35))}
+@media (min-width:641px){.lp-why-art{width:84px;top:-26px;right:10px}}
+@media (min-width:1024px){
+  .lp-reasons{row-gap:var(--gap);padding-top:26px}
+  .lp-why-art{width:112px;top:-38px;right:12px}
+  .lp-why-card h3{max-width:58%}
+}
+@media (prefers-reduced-motion: no-preference){
+  .lp-pop-group[data-wait] .lp-why-art{scale:0}
+  .lp-pop-group[data-in] .lp-why-art{animation:pjn-pop .75s cubic-bezier(.34,1.56,.64,1) backwards}
+  .lp-pop-group[data-in] .lp-why-card:nth-child(2) .lp-why-art{animation-delay:.14s}
+  .lp-pop-group[data-in] .lp-why-card:nth-child(3) .lp-why-art{animation-delay:.28s}
+  .lp-pop-group[data-in] .lp-why-card:nth-child(4) .lp-why-art{animation-delay:.42s}
+  .lp-why-art img{animation:pjn-float 4.8s ease-in-out .9s infinite}
+  .lp-why-card:nth-child(2) .lp-why-art img{animation-delay:-1.2s}
+  .lp-why-card:nth-child(3) .lp-why-art img{animation-delay:-2.4s}
+  .lp-why-card:nth-child(4) .lp-why-art img{animation-delay:-3.6s}
+  .lp-why-art::before{animation:pjn-pulse 3.6s ease-in-out infinite}
+  .lp-why-card:nth-child(even) .lp-why-art::before{animation-delay:-1.8s}
+}
+

@@ -1,0 +1,188 @@
+
+/* =========================================================
+   PlayJuwa landing — mobile-first compact system (v3)
+   Base = phone (390–412). ≥641 tablet, ≥1024 desktop, ≥1280 wide.
+   ========================================================= */
+:root{
+  --font-sans:"Manrope","Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:16px; --gap:8px; --r-sm:10px; --r-md:12px; --r-lg:16px;
+  --panel:#11132a; --panel-2:#171a36; --edge:rgba(139,99,240,.28); --edge-hi:rgba(167,139,250,.6);
+}
+@media (min-width:641px){:root{--gut:24px;--gap:12px;--r-lg:18px}}
+@media (min-width:1024px){:root{--gut:32px;--gap:16px;--r-md:14px;--r-lg:20px}}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--background);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45}
+a{color:var(--violet-300);text-decoration:none}
+a:hover{color:var(--ink)}
+img{max-width:100%}
+.lp{position:relative;overflow-x:clip;background:var(--background);min-height:100vh}
+.lp-bg{position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(600px 420px at 90% 0%,rgba(109,53,217,.22),transparent 70%),radial-gradient(520px 520px at 0% 35%,rgba(50,16,95,.4),transparent 70%),radial-gradient(600px 480px at 100% 70%,rgba(50,16,95,.35),transparent 70%)}
+.lp-wrap{position:relative;z-index:1;max-width:calc(1280px + 2 * var(--gut));margin:0 auto;padding:0 var(--gut)}
+main.lp-wrap{padding-bottom:88px}
+@media (min-width:641px){main.lp-wrap{padding-bottom:48px}}
+.lp-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:where(.lp button,.lp a):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* ---------- Design-system button: compact overrides ---------- */
+.lp .pj-btn{font-family:var(--font-sans);font-weight:700;font-size:14px;line-height:20px;padding:10px 16px;border-radius:12px;gap:6px}
+.lp .pj-btn svg{width:16px;height:16px}
+.lp .pj-btn-sm{font-size:13px;line-height:18px;padding:7px 12px;border-radius:10px}
+.lp .pj-btn-lg{font-size:15px;line-height:20px;padding:11px 20px}
+.lp .pj-btn-pill{border-radius:999px}
+.lp .pj-btn-primary{box-shadow:var(--gloss),0 6px 18px rgba(255,184,0,.28)}
+.lp .pj-btn:hover{transform:translateY(-1px)}
+
+/* ---------- Section header: "Title ............ View all >" ---------- */
+.lp-sec{margin-top:28px}
+@media (min-width:1024px){.lp-sec{margin-top:44px}}
+.lp-sh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.lp-sh > div{min-width:0}
+.lp-eyebrow{display:none;font-size:11px;line-height:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
+.lp-st{display:flex;align-items:center;gap:8px;margin:0;font-size:18px;line-height:24px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+.lp-st img{width:20px;height:20px;object-fit:contain;flex:none}
+.lp-st-sm{font-size:15px;line-height:20px;font-weight:700}
+.lp-viewall{flex:none;display:inline-flex;align-items:center;gap:2px;font-size:13px;line-height:18px;font-weight:700;color:var(--violet-300);white-space:nowrap}
+.lp-viewall svg{width:14px;height:14px}
+.lp-viewall:hover{color:var(--yellow)}
+@media (min-width:1024px){
+  .lp-sh{margin-bottom:16px}
+  .lp-eyebrow{display:block}
+  .lp-st{font-size:24px;line-height:32px}
+  .lp-st img{width:26px;height:26px}
+  .lp-st-sm{font-size:18px;line-height:24px}
+  .lp-viewall{font-size:14px}
+}
+
+/* ---------- Horizontal rail (swipe on phones) ---------- */
+.lp-rail{--col:calc((100% - 3 * var(--gap)) / 3.3);display:grid;grid-auto-flow:column;grid-auto-columns:var(--col);gap:var(--gap);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);margin-inline:calc(-1 * var(--gut));padding:2px var(--gut) 6px;scrollbar-width:none}
+.lp-rail::-webkit-scrollbar{display:none}
+.lp-rail > *{scroll-snap-align:start;min-width:0}
+
+/* =========================================================
+   MOTION (subtle) + reduced motion
+   ========================================================= */
+@keyframes lp-fade{from{opacity:0}to{opacity:1}}
+@keyframes lp-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes lp-pop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:none}}
+@keyframes lp-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes lp-hs-zoom{from{scale:1.03}to{scale:1}}
+.lp-hero-copy{animation:lp-rise .5s cubic-bezier(.16,1,.3,1) both}
+.lp-hslide[data-on="true"] .lp-hslide-img{animation:lp-hs-zoom 5.4s ease-out both}
+.lp-track{animation:lp-marquee 44s linear infinite}
+.lp-ticker:hover .lp-track,.lp-ticker:focus-within .lp-track{animation-play-state:paused}
+@supports (animation-timeline: view()){
+  .lp-reveal{animation:lp-rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+@media (prefers-reduced-motion: reduce){
+  .lp *,.lp *::before,.lp *::after{animation:none !important;transition-duration:.01ms !important}
+  .lp-ticker{overflow-x:auto}
+}
+.lp-st-ic{width:20px;height:20px;flex:none;color:var(--gold)}
+@media (min-width:1024px){.lp-st-ic{width:26px;height:26px}}
+.lp-st{display:block}
+.lp-st img,.lp-st .lp-st-ic{display:inline-block;vertical-align:-4px;margin-right:6px}
+
+/* ---------- Navbar v2: search · login · sign up · gift + category tiles ---------- */
+.lp-logo img{height:42px}
+.nv-icon-btn{position:relative;display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:rgba(32,34,58,.85);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
+.nv-icon-btn:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--edge-hi)}
+.nv-icon-btn svg{width:18px;height:18px}
+.nv-gift svg{width:22px;height:22px}
+.nv-dot{position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 2px var(--background)}
+.lp-header .pj-btn-sm{height:36px}
+.lp-header .pj-btn-primary{padding:0 14px}
+.lp-header .nv-menu-btn{display:none}
+.lp-header-bar{height:60px}
+.lp-catnav{display:flex;gap:6px;margin:10px calc(-1 * var(--gut)) 0;padding:2px var(--gut);overflow-x:auto;scrollbar-width:none}
+.lp-catnav::-webkit-scrollbar{display:none}
+.lp-cat{flex:1 1 0;min-width:52px;letter-spacing:-.01em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;height:62px;padding:6px 2px;border:0;border-radius:14px;background:linear-gradient(180deg,var(--panel-2),var(--panel));box-shadow:inset 0 0 0 1px var(--edge);color:var(--ink-muted);font-family:var(--font-sans);font-size:10px;line-height:13px;font-weight:700;white-space:nowrap;cursor:pointer;transition:box-shadow .2s ease,color .2s ease}
+.lp-cat:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--edge-hi)}
+.lp-cat-ic{display:grid;place-items:center;width:28px;height:28px}
+.lp-cat-ic img{width:28px;height:28px;object-fit:contain}
+.lp-cat-more{color:var(--ink)}
+.lp-cat-more svg{width:22px;height:22px}
+.lp-cat[aria-current="true"]{color:#fff;background:linear-gradient(180deg,#7c4dff,var(--purple) 60%,#4c1d95);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 1px rgba(196,181,253,.7),0 6px 18px rgba(109,53,217,.45)}
+.lp-catnav + .lp-hero{margin-top:10px}
+@media (min-width:641px){
+  .lp-header .nv-menu-btn{display:inline-grid;height:36px}
+  .lp-catnav{margin-inline:0;padding-inline:0}
+  .lp-cat{height:68px;font-size:12px}
+  .lp-catnav + .lp-hero{margin-top:12px}
+}
+@media (min-width:1024px){
+  .lp-header-bar{height:72px}
+  .lp-logo img{height:52px}
+  .nv-icon-btn,.lp-header .pj-btn-sm,.lp-header .nv-menu-btn{height:42px}
+  .nv-icon-btn{width:42px}
+  .lp-header .pj-btn-sm{padding:0 20px;font-size:14px}
+  .lp-catnav{gap:10px;margin-top:14px}
+  .lp-cat{flex-direction:row;gap:10px;height:56px;font-size:14px;padding:0 16px}
+  .lp-cat-ic,.lp-cat-ic img{width:30px;height:30px}
+  .lp-catnav + .lp-hero{margin-top:14px}
+}
+
+/* Category tiles v2 (reference style) */
+.lp-catnav{gap:6px}
+.lp-cat{flex:1 1 auto;min-width:0;height:60px;gap:3px;padding:6px 6px 7px;border-radius:14px;font-size:11px;line-height:13px;font-weight:600;letter-spacing:0;color:#d4d4e6;background:linear-gradient(180deg,#1a1b3c,#121330);box-shadow:inset 0 0 0 1px rgba(139,99,240,.32)}
+.lp-cat-ic,.lp-cat-ic img{width:30px;height:30px}
+.lp-cat-more svg{width:24px;height:24px}
+.lp-cat[aria-current="true"]{color:#fff;background:linear-gradient(180deg,#7a45f0 0%,#5b28c9 55%,#3d1792 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 0 0 1.5px rgba(196,181,253,.75),0 6px 18px rgba(109,53,217,.45)}
+@media (min-width:641px){.lp-cat{height:72px;font-size:13px;line-height:16px;gap:5px}.lp-cat-ic,.lp-cat-ic img{width:36px;height:36px}}
+@media (min-width:1024px){.lp-cat{flex-direction:column;height:84px;font-size:14px;padding:8px}.lp-cat-ic,.lp-cat-ic img{width:42px;height:42px}}
+
+/* Category tiles equal width from tablet up */
+@media (min-width:641px){.lp-cat{flex:1 1 0}}
+/* Quick actions: 4 items incl. VIP Games */
+.lp-qa{grid-template-columns:repeat(4,minmax(0,1fr))}
+.lp-qa-btn{height:76px}
+.lp-qa-label b{font-size:12px;white-space:nowrap}
+.lp-qa-hot{position:absolute;top:-6px;right:6px;z-index:1;padding:1px 6px;border-radius:6px;background:linear-gradient(180deg,#ff4d5e,#d9203a);color:#fff;font-size:9.5px;line-height:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 3px 8px rgba(217,32,58,.45)}
+.lp-qa-cell{position:relative}
+.lp-qa-btn.is-vip{box-shadow:inset 0 0 0 1px rgba(255,184,0,.35)}
+@media (min-width:641px){.lp-qa-btn{height:64px}.lp-qa-label small{display:none}.lp-qa-go{display:none}.lp-qa-label b{font-size:13.5px}}
+@media (min-width:1024px){.lp-qa-btn{height:72px}.lp-qa-label small{display:block}.lp-qa-go{display:grid}.lp-qa-label b{font-size:15px}.lp-qa-hot{font-size:10.5px;top:-7px;right:10px}}
+
+/* Category tiles: identical box sizes at every width */
+.lp-catnav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;overflow:visible;margin-inline:0;padding-inline:0}
+.lp-cat{width:auto;min-width:0;padding:6px 1px 7px;font-size:10px;letter-spacing:-.02em;overflow:hidden}
+.lp-cat > span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:641px){.lp-catnav{gap:8px}.lp-cat{font-size:13px;letter-spacing:0}}
+@media (min-width:1024px){.lp-catnav{gap:10px}.lp-cat{font-size:14px}}
+
+/* Recent Big Wins: compact square cards */
+.lp-track{gap:8px}
+.lp-win{position:relative;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;width:112px;min-width:0;padding:8px 8px 9px;border-radius:14px;text-align:center;background:linear-gradient(180deg,rgba(44,28,90,.75),rgba(16,12,36,.95));box-shadow:inset 0 0 0 1px var(--edge)}
+.lp-win:nth-child(odd){box-shadow:inset 0 0 0 1px rgba(255,184,0,.35)}
+.lp-win img,.lp-win .lp-mono{width:100%;height:auto;aspect-ratio:1;border-radius:10px;font-size:28px}
+.lp-win > div:not(.lp-win-amt){width:100%;min-width:0;margin-top:6px}
+.lp-win-game{font-size:12px;line-height:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-win-player{font-size:9.5px;line-height:13px;overflow:hidden;text-overflow:ellipsis}
+.lp-win-amt{margin:5px 0 0;padding:2px 8px 2px 6px;border-radius:999px;background:rgba(255,184,0,.12);box-shadow:inset 0 0 0 1px rgba(255,184,0,.3);justify-content:center}
+.lp-win-amt b{font-size:13px;line-height:17px}
+.lp-sc{padding:0 3px;font-size:8.5px}
+@media (min-width:641px){.lp-win{width:128px}.lp-win-game{font-size:13px}.lp-win-player{font-size:10.5px}}
+@media (min-width:1024px){.lp-win{width:148px;min-width:0;padding:10px 10px 11px}.lp-win img,.lp-win .lp-mono{width:100%;height:auto}.lp-win-game{font-size:14px;line-height:18px}.lp-win-player{font-size:11px}.lp-win-amt b{font-size:15px}}
+
+/* Big Wins ticker: always moving, a little faster */
+.lp .lp-track{animation:lp-marquee 40s linear infinite !important}
+.lp-ticker:hover .lp-track{animation-play-state:running}
+.lp-ticker:focus-within .lp-track{animation-play-state:paused}
+@media (prefers-reduced-motion: reduce){.lp .lp-track{animation-duration:70s !important}.lp-ticker{overflow-x:hidden}}
+
+/* ===== Swipe rails: cards ease in from the edges as they slide into view (scroll-driven, GPU-only) ===== */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference) and (max-width:1023px){
+    .lp-rail > *,.lp-hot-grid > *{animation:pjr-edge linear both;animation-timeline:view(inline);animation-range:entry 0% exit 100%}
+  }
+}
+@keyframes pjr-edge{entry 0%{opacity:.4;scale:.86}entry 100%{opacity:1;scale:1}exit 0%{opacity:1;scale:1}exit 100%{opacity:.4;scale:.86}}
+
+.lp-dsk-only,.lp-win-coin{display:none}
+@media (min-width:1024px){
+  .lp-dsk-only{display:inline-flex}
+  main.lp-wrap{padding-top:4px}
+  .lp-sec{margin-top:26px}
+  .lp-sh{margin-bottom:12px}
+  .lp-eyebrow{display:none}
+  .lp-st{font-size:22px;line-height:28px}

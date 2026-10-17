@@ -1,0 +1,171 @@
+/* =========================================================
+   HALLOWEEN FX — decorative layer (pointer-events: none)
+   ========================================================= */
+.hw{position:fixed;inset:0;z-index:30;overflow:hidden;pointer-events:none;contain:layout paint}
+.hw[data-on="false"]{display:none}
+.hw-p{position:absolute;left:0;top:0;will-change:transform;opacity:0}
+.hw-p img{display:block;width:100%;height:auto;will-change:transform}
+/* witches — sweep across on a wavy path, then rest off-screen */
+.hw-witch{width:150px;filter:drop-shadow(0 0 14px rgba(255,140,40,.45))}
+.hw-witch.is-a{animation:hw-witch-a 32s linear infinite}
+.hw-witch.is-a img{animation:hw-bob 2.4s ease-in-out infinite}
+.hw-witch.is-b{width:96px;animation:hw-witch-b 40s linear -18s infinite;filter:drop-shadow(0 0 10px rgba(168,85,247,.5)) blur(.4px)}
+.hw-witch.is-b img{transform:scaleX(-1);animation:hw-bob-flip 2.8s ease-in-out infinite}
+@keyframes hw-witch-a{
+  0%{transform:translate(-20vw,16vh) rotate(-6deg);opacity:0}
+  2%{opacity:.95}
+  10%{transform:translate(12vw,8vh) rotate(-2deg)}
+  20%{transform:translate(38vw,20vh) rotate(4deg)}
+  30%{transform:translate(64vw,10vh) rotate(-4deg)}
+  40%{transform:translate(92vw,22vh) rotate(3deg)}
+  44%{transform:translate(112vw,14vh);opacity:.95}
+  45%,100%{transform:translate(112vw,14vh);opacity:0}}
+@keyframes hw-witch-b{
+  0%{transform:translate(110vw,62vh);opacity:0}
+  3%{opacity:.75}
+  14%{transform:translate(70vw,52vh)}
+  26%{transform:translate(36vw,66vh)}
+  38%{transform:translate(4vw,54vh)}
+  42%{transform:translate(-18vw,60vh);opacity:.75}
+  43%,100%{transform:translate(-18vw,60vh);opacity:0}}
+@keyframes hw-bob{50%{transform:translateY(-10px) rotate(2deg)}}
+@keyframes hw-bob-flip{0%,100%{transform:scaleX(-1)}50%{transform:scaleX(-1) translateY(-8px)}}
+/* bats — flap + swoop */
+.hw-bat{width:70px;filter:drop-shadow(0 0 8px rgba(168,85,247,.55))}
+.hw-bat img{animation:hw-flap .32s ease-in-out infinite alternate;transform-origin:50% 40%}
+.hw-bat.is-a{animation:hw-bat-a 18s ease-in-out infinite}
+.hw-bat.is-b{width:52px;animation:hw-bat-b 22s ease-in-out -7s infinite}
+.hw-bat.is-c{width:40px;animation:hw-bat-a 26s ease-in-out -15s infinite;filter:drop-shadow(0 0 6px rgba(168,85,247,.5)) blur(.6px)}
+@keyframes hw-flap{from{transform:scaleY(1) scaleX(1)}to{transform:scaleY(.62) scaleX(1.06)}}
+@keyframes hw-bat-a{
+  0%{transform:translate(105vw,30vh);opacity:0}
+  4%{opacity:.9}
+  15%{transform:translate(78vw,12vh)}
+  25%{transform:translate(55vw,34vh)}
+  35%{transform:translate(30vw,18vh)}
+  46%{transform:translate(-12vw,28vh);opacity:.9}
+  47%,100%{transform:translate(-12vw,28vh);opacity:0}}
+@keyframes hw-bat-b{
+  0%{transform:translate(-10vw,46vh);opacity:0}
+  4%{opacity:.85}
+  14%{transform:translate(18vw,30vh)}
+  26%{transform:translate(44vw,48vh)}
+  38%{transform:translate(72vw,36vh)}
+  50%{transform:translate(108vw,44vh);opacity:.85}
+  51%,100%{transform:translate(108vw,44vh);opacity:0}}
+/* ghosts — slow drift with a bouncy float */
+.hw-ghost{width:72px;filter:drop-shadow(0 0 14px rgba(196,181,253,.55))}
+.hw-ghost img{animation:hw-float 3.2s ease-in-out infinite}
+.hw-ghost.is-a{animation:hw-ghost-a 46s linear infinite}
+.hw-ghost.is-b{width:54px;animation:hw-ghost-b 54s linear -24s infinite}
+@keyframes hw-float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg) scale(1.03)}}
+@keyframes hw-ghost-a{
+  0%{transform:translate(-12vw,72vh);opacity:0}
+  4%{opacity:.8}
+  20%{transform:translate(20vw,60vh)}
+  40%{transform:translate(48vw,76vh)}
+  60%{transform:translate(78vw,64vh)}
+  76%{transform:translate(110vw,70vh);opacity:.8}
+  77%,100%{transform:translate(110vw,70vh);opacity:0}}
+@keyframes hw-ghost-b{
+  0%{transform:translate(104vw,40vh);opacity:0}
+  5%{opacity:.7}
+  25%{transform:translate(70vw,48vh)}
+  45%{transform:translate(40vw,36vh)}
+  65%{transform:translate(10vw,46vh)}
+  78%{transform:translate(-12vw,40vh);opacity:.7}
+  79%,100%{transform:translate(-12vw,40vh);opacity:0}}
+/* pumpkins — occasionally tumble down */
+.hw-pk{width:48px;filter:drop-shadow(0 0 10px rgba(255,140,40,.6))}
+.hw-pk img{animation:hw-spin 6s linear infinite}
+.hw-pk.is-a{animation:hw-fall 24s cubic-bezier(.45,0,.75,1) -2s infinite;--x:18vw;--dx:6vw}
+.hw-pk.is-b{width:38px;animation:hw-fall 30s cubic-bezier(.45,0,.75,1) -14s infinite;--x:66vw;--dx:-5vw}
+.hw-pk.is-c{width:30px;animation:hw-fall 36s cubic-bezier(.45,0,.75,1) -25s infinite;--x:86vw;--dx:-8vw}
+@keyframes hw-spin{to{rotate:360deg}}
+@keyframes hw-fall{
+  0%{transform:translate(var(--x),-10vh);opacity:0}
+  2%{opacity:.85}
+  30%{transform:translate(calc(var(--x) + var(--dx)),110vh);opacity:.85}
+  31%,100%{transform:translate(calc(var(--x) + var(--dx)),110vh);opacity:0}}
+/* leaves — drifting fall with sway */
+.hw-leaf{width:24px;opacity:0}
+.hw-leaf img{animation:hw-sway 3.6s ease-in-out infinite}
+.hw-leaf.is-1{--x:6vw;animation:hw-leaf 16s linear -1s infinite}
+.hw-leaf.is-2{--x:24vw;width:30px;animation:hw-leaf 20s linear -9s infinite}
+.hw-leaf.is-3{--x:38vw;width:18px;animation:hw-leaf 14s linear -5s infinite}
+.hw-leaf.is-4{--x:52vw;animation:hw-leaf 22s linear -13s infinite}
+.hw-leaf.is-5{--x:67vw;width:20px;animation:hw-leaf 18s linear -3s infinite}
+.hw-leaf.is-6{--x:79vw;width:28px;animation:hw-leaf 24s linear -17s infinite}
+.hw-leaf.is-7{--x:91vw;width:18px;animation:hw-leaf 15s linear -8s infinite}
+.hw-leaf.is-8{--x:45vw;width:22px;animation:hw-leaf 26s linear -21s infinite}
+@keyframes hw-sway{0%,100%{transform:translateX(-14px) rotate(-25deg)}50%{transform:translateX(14px) rotate(30deg)}}
+@keyframes hw-leaf{
+  0%{transform:translate(var(--x),-6vh);opacity:0}
+  5%{opacity:.75}
+  50%{transform:translate(calc(var(--x) - 6vw),50vh)}
+  92%{opacity:.75}
+  100%{transform:translate(calc(var(--x) + 4vw),106vh);opacity:0}}
+/* magic sparkles */
+.hw-sp{position:absolute;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#fff 0 30%,#ffd166 45%,rgba(255,184,0,0) 70%);box-shadow:0 0 8px 2px rgba(255,184,0,.45);animation:hw-tw 3.8s ease-in-out infinite;opacity:0}
+.hw-sp:nth-child(even){background:radial-gradient(circle,#fff 0 30%,#c084fc 45%,rgba(168,85,247,0) 70%);box-shadow:0 0 8px 2px rgba(168,85,247,.5)}
+@keyframes hw-tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1.2) translateY(-6px)}}
+/* toggle */
+.hw-toggle{position:fixed;left:14px;bottom:14px;z-index:46;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;cursor:pointer;background:rgba(20,14,44,.85);box-shadow:inset 0 0 0 1.5px rgba(255,140,40,.6),0 0 16px rgba(255,140,40,.35);transition:box-shadow .2s ease,translate .2s ease}
+.hw-toggle img{width:28px;height:auto;transition:filter .2s ease}
+.hw-toggle[aria-pressed="false"] img{filter:grayscale(1) brightness(.7)}
+.hw-toggle[aria-pressed="false"]{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.2)}
+.hw-toggle:hover{translate:0 -2px}
+.hw-toggle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (min-width:1024px){.hw-toggle{left:calc(var(--side,200px) + 14px)}}
+/* tablet / mobile — fewer, smaller */
+@media (max-width:1023px){
+  .hw-witch{width:110px}.hw-witch.is-b{width:72px}
+  .hw-bat{width:54px}.hw-bat.is-b{width:42px}
+  .hw-ghost{width:56px}
+  .hw-leaf.is-7,.hw-leaf.is-8,.hw-pk.is-c{display:none}
+}
+@media (max-width:640px){
+  .hw-witch{width:88px}.hw-witch.is-b,.hw-bat.is-c,.hw-ghost.is-b,.hw-leaf.is-5,.hw-leaf.is-6{display:none}
+  .hw-bat{width:44px}.hw-ghost{width:46px}.hw-pk{width:34px}.hw-pk.is-b{width:28px}
+  .hw-sp:nth-of-type(n+8){display:none}
+  .hw-toggle{bottom:76px;left:10px;width:40px;height:40px}
+}
+
+/* v2 sprites: spider, cat, sparkle stars */
+.hw-bat.is-b img,.hw-bat.is-c img{animation-duration:.22s}
+.hw-bat.is-b{width:70px}.hw-bat.is-c{width:56px}
+.hw-spider{width:60px;left:72vw;transform:translateY(-100%);opacity:.95;animation:hw-spider 20s ease-in-out -4s infinite}
+.hw-spider img{position:relative;animation:hw-wiggle 1.6s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,140,40,.35))}
+.hw-thread{position:absolute;left:50%;bottom:70%;width:1px;height:60vh;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.45))}
+@keyframes hw-spider{0%,62%,100%{transform:translateY(-110%)}14%,48%{transform:translateY(26vh)}22%{transform:translateY(22vh)}32%{transform:translateY(28vh)}}
+@keyframes hw-wiggle{0%,100%{rotate:-6deg}50%{rotate:6deg}}
+.hw-cat{width:96px;opacity:1;animation:hw-cat 34s ease-in-out -10s infinite}
+.hw-cat img{filter:drop-shadow(0 0 10px rgba(255,140,40,.35))}
+@keyframes hw-cat{0%,58%,100%{transform:translate(-120px,calc(100vh - 80px))}66%,86%{transform:translate(-14px,calc(100vh - 118px))}72%{transform:translate(-14px,calc(100vh - 118px)) rotate(4deg)}}
+.hw-star{width:34px;opacity:0;animation:hw-star 5s ease-in-out infinite}
+.hw-star.is-a{left:30vw;top:22vh}.hw-star.is-b{left:78vw;top:46vh;width:26px;animation-delay:-1.8s}.hw-star.is-c{left:12vw;top:68vh;width:30px;animation-delay:-3.3s}
+@keyframes hw-star{0%,100%{opacity:0;transform:scale(.3) rotate(0)}45%,55%{opacity:.95;transform:scale(1) rotate(45deg)}}
+@media (min-width:1024px){.hw-cat{left:var(--side,200px)}}
+@media (max-width:640px){.hw-spider{width:44px;left:78vw}.hw-cat{width:70px;animation-name:hw-cat-m}.hw-star.is-c{display:none}
+  @keyframes hw-cat-m{0%,58%,100%{transform:translate(-90px,calc(100vh - 130px))}66%,86%{transform:translate(-10px,calc(100vh - 160px))}}}
+/* =========================================================
+   HALLOWEEN CYCLONE
+   ========================================================= */
+.hw-g{position:absolute;inset:0}
+.hw-cv{position:absolute;left:0;top:0;z-index:2;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent)}
+.hw[data-wind="cyclone"] .hw-p,.hw[data-wind="cyclone"] .hw-sp{animation-play-state:paused}
+.hw[data-wind="cyclone"] .hw-bat img{animation-play-state:running;animation-duration:.12s}
+.hw[data-wind="cyclone"] .hw-g .hw-p img{animation-play-state:running}
+.hw[data-wind="calm"] .hw-g{opacity:0}
+.hw[data-wind="return"] .hw-g{animation:hw-back 1.6s ease-out both}
+@keyframes hw-back{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+.hw-cy-btn{position:fixed;left:66px;bottom:14px;z-index:46;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;cursor:pointer;color:#fde68a;background:radial-gradient(circle at 35% 30%,#7c3aed,#2a1466);box-shadow:inset 0 0 0 1.5px rgba(192,132,252,.7),0 0 18px rgba(168,85,247,.55);transition:translate .2s ease,box-shadow .2s ease}
+.hw-cy-btn svg{width:22px;height:22px}
+.hw-cy-btn:hover{translate:0 -2px;box-shadow:inset 0 0 0 1.5px #e9d5ff,0 0 24px rgba(168,85,247,.8)}
+.hw-cy-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.hw-cy-btn[data-on="false"]{display:none}
+@media (min-width:1024px){.hw-cy-btn{left:calc(var(--side,200px) + 66px)}}
+@media (max-width:640px){.hw-cy-btn{bottom:76px;left:58px;width:40px;height:40px}}
+@media (prefers-reduced-motion: reduce){.hw-cy-btn{display:none}}
+@media (prefers-reduced-motion: reduce){.hw{display:none}.hw-toggle{display:none}}
+

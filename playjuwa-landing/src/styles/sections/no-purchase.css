@@ -1,0 +1,60 @@
+/* =========================================================
+   NO PURCHASE NECESSARY banner
+   ========================================================= */
+.lp-npn{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:44% minmax(0,1fr);align-items:center;min-height:150px;border-radius:var(--r-lg);border:1.5px solid transparent;background:radial-gradient(60% 90% at 25% 55%,rgba(139,92,246,.45),transparent 70%) padding-box,linear-gradient(110deg,#170c3d 0%,#0e0b2b 55%,#0b0a22 100%) padding-box,linear-gradient(100deg,rgba(192,132,252,.95),rgba(139,92,246,.5) 45%,rgba(255,184,0,.85)) border-box;box-shadow:0 0 22px rgba(139,92,246,.35),0 14px 32px rgba(0,0,0,.45)}
+.lp-npn-art{position:absolute;left:0;top:0;bottom:0;width:50%;z-index:-1;-webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);mask-image:linear-gradient(90deg,#000 70%,transparent)}
+.lp-npn-art img{width:100%;height:100%;object-fit:cover;object-position:40% 50%;display:block}
+.lp-npn-trails{position:absolute;right:0;bottom:0;width:70%;height:70%;z-index:-1;opacity:.85;pointer-events:none}
+.lp-npn-copy{grid-column:2;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px 14px 14px 4px}
+.lp-npn h2{margin:0;font-size:17px;line-height:20px;font-weight:800;letter-spacing:.005em;text-transform:uppercase;color:#f1ecff;text-shadow:0 0 14px rgba(196,181,253,.45)}
+.lp-npn h2 .pj-text-gold{filter:drop-shadow(0 0 8px rgba(255,184,0,.35))}
+.lp-npn p{margin:0;font-size:11.5px;line-height:15px;color:#cfd0e2}
+.lp-npn .pj-btn{margin-top:4px;height:36px;padding:0 14px;font-size:13px;border-radius:10px}
+@media (min-width:641px){
+  .lp-npn{grid-template-columns:42% minmax(0,1fr);min-height:190px}
+  .lp-npn-copy{gap:8px;padding:20px 28px 20px 8px}
+  .lp-npn h2{font-size:26px;line-height:30px}
+  .lp-npn p{font-size:14px;line-height:20px}
+  .lp-npn .pj-btn{height:42px;padding:0 20px;font-size:14.5px;border-radius:12px}
+}
+@media (min-width:1024px){
+  .lp-npn{grid-template-columns:40% minmax(0,1fr);min-height:230px}
+  .lp-npn-art{width:46%}
+  .lp-npn-copy{gap:10px;padding:28px 48px 28px 12px}
+  .lp-npn h2{font-size:clamp(28px,2.6vw,40px);line-height:1.1}
+  .lp-npn p{font-size:16px;line-height:22px}
+  .lp-npn .pj-btn{height:50px;padding:0 30px;font-size:16px;margin-top:6px}
+}
+
+/* ===== No Purchase Necessary: animated slot machine stage ===== */
+.lp-npn-stage{position:absolute;left:0;top:0;bottom:0;width:46%;z-index:-1;pointer-events:none}
+.lp-npn-glow{position:absolute;left:50%;top:52%;width:92%;aspect-ratio:1.4;translate:-50% -50%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,40,.38),rgba(168,85,247,.32) 45%,rgba(109,53,217,0) 100%);filter:blur(6px)}
+.lp-npn-waves{position:absolute;inset:8% -10% 0 -6%;width:116%;height:92%;overflow:visible;opacity:.7}
+.lp-npn-waves path{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:60 140;filter:drop-shadow(0 0 4px rgba(192,132,252,.8))}
+.lp-npn-waves .w2{stroke-width:1.8;stroke-dasharray:40 160;filter:drop-shadow(0 0 4px rgba(255,184,0,.8))}
+.lp-npn-waves .w3{stroke-width:1.4;opacity:.7;stroke-dasharray:30 170}
+.lp-npn-slot{position:absolute;inset:4% 2% 4% 4%;display:flex;align-items:center;justify-content:center;transform-origin:50% 55%}
+.lp-npn-slot img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55)) drop-shadow(0 0 16px rgba(168,85,247,.45))}
+.lp-npn-spark{position:absolute;width:9px;height:9px;background:#fff3b0;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 4px #ffb800);opacity:.85}
+.lp-npn-spark:nth-of-type(even){background:#e9d5ff;filter:drop-shadow(0 0 4px #a855f7);width:7px;height:7px}
+.lp-npn-spark.s1{left:8%;top:22%}.lp-npn-spark.s2{left:22%;top:78%}.lp-npn-spark.s3{left:46%;top:12%}.lp-npn-spark.s4{left:70%;top:84%}
+.lp-npn-spark.s5{left:88%;top:26%}.lp-npn-spark.s6{left:58%;top:64%}.lp-npn-spark.s7{left:14%;top:52%}.lp-npn-spark.s8{left:94%;top:62%}
+@media (min-width:641px){.lp-npn-stage{width:44%}.lp-npn-spark{width:11px;height:11px}.lp-npn-spark:nth-of-type(even){width:8px;height:8px}}
+@media (min-width:1024px){.lp-npn-stage{width:42%}.lp-npn-slot{inset:5% 4% 5% 5%}}
+@media (prefers-reduced-motion: no-preference){
+  .lp-npn-glow{animation:pjn-pulse 3.6s ease-in-out infinite}
+  .lp-npn-waves path{animation:pjn-flow 4.5s linear infinite}
+  .lp-npn-waves .w2{animation-duration:3.6s;animation-direction:reverse}
+  .lp-npn-waves .w3{animation-duration:6s}
+  .lp-npn-spark{animation:pjn-twinkle 3.2s ease-in-out infinite}
+  .lp-npn-spark.s2{animation-delay:-.5s}.lp-npn-spark.s3{animation-delay:-1.1s}.lp-npn-spark.s4{animation-delay:-1.7s}.lp-npn-spark.s5{animation-delay:-2.3s}.lp-npn-spark.s6{animation-delay:-.8s}.lp-npn-spark.s7{animation-delay:-2.7s}.lp-npn-spark.s8{animation-delay:-1.4s}
+  .lp-npn-stage[data-wait] .lp-npn-slot{scale:0}
+  .lp-npn-stage[data-in] .lp-npn-slot{animation:pjn-pop .75s cubic-bezier(.34,1.56,.64,1) both}
+  .lp-npn-slot img{animation:pjn-float 4.8s ease-in-out .8s infinite}
+}
+@keyframes pjn-pop{0%{scale:.25}62%{scale:1.08}82%{scale:.97}100%{scale:1}}
+@keyframes pjn-float{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -7px;rotate:1.2deg}}
+@keyframes pjn-pulse{0%,100%{opacity:.75;scale:.94}50%{opacity:1;scale:1.06}}
+@keyframes pjn-flow{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+@keyframes pjn-twinkle{0%,100%{opacity:.15;scale:.5;translate:0 4px}45%{opacity:1;scale:1.15;translate:0 -4px}70%{opacity:.6;scale:.8;translate:0 -7px}}
+
