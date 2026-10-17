@@ -2,11 +2,11 @@
 // (e.g. '/casino', '/buy') once those pages exist in your app or router.
 export const ROUTES = {
   nHome: '/',           // the landing page
-  nCasino: '#casino',
-  nBuy: '#buy',
-  nWithdraw: '#withdraw',
-  nWallet: '#wallet',
-  nTx: '#transactions',
-  nSignup: '#signup',
-  nLogin: '#login',
+  nCasino: '/casino',
+  nBuy: '/#buy',
+  nWithdraw: '/#withdraw',
+  nWallet: '/#wallet',
+  nTx: '/#transactions',
+  nSignup: '/#signup',
+  nLogin: '/#login',
 };

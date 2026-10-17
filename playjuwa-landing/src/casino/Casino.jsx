@@ -15,6 +15,7 @@ import CategoryNav from './sections/CategoryNav.jsx';
 import PromoTiles from './sections/PromoTiles.jsx';
 import GameRails from './sections/GameRails.jsx';
 import SiteFooter from '../landing/sections/Footer.jsx';
+import MobileTabBar from '../landing/sections/MobileTabBar.jsx';
 
 const FAVORITES_STORAGE_KEY = 'playjuwa-casino-favorites';
 
@@ -470,7 +471,8 @@ export default class Casino extends React.Component {
       { cls: 'is-c', img: B('8f14686d83e94ff65cd7af7fe492e7f9'), eyebrow: 'Sweepstakes', t1: 'No Purchase', t2: 'Necessary', text: 'Play instantly — discover the free bonuses across our website.', cta: 'Start Playing', href: NL.nSignup }
     ];
     return {
-      ...NL, goBuyBtn: function () { self.navTo(NL.nBuy); }, goAcctBtn: function () { self.navTo(NL.nWallet); },
+      ...NL, nPlatforms: '/#platforms', nPromotions: '/#promotions', nSupport: '/#support', tabCasino: 'page',
+      goBuyBtn: function () { self.navTo(NL.nBuy); }, goAcctBtn: function () { self.navTo(NL.nWallet); },
       balSc: '104.00', balGc: '0',
       casOpen: st.casOpen ? 'true' : 'false', casShow: st.casOpen, toggleCas: function () { self.setState({ casOpen: !self.state.casOpen }); },
       subCats: CATS.map(function (c, i) { var it = catItem(c); if (i === 0) it.label = 'All Casino Games'; return it; }),
@@ -521,6 +523,7 @@ export default class Casino extends React.Component {
           </main>
           <SiteFooter v={v} />
         </div>
+        <MobileTabBar v={v} />
       </div>
     );
   }

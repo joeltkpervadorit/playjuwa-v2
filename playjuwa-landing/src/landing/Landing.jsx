@@ -803,14 +803,14 @@ export default class Landing extends React.Component {
     var topLinks = [
       { key: 'games', label: 'Games', icon: 'games', href: '#games' },
       { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
-      { key: 'casino', label: 'Casino', icon: 'casino', href: '#casino' },
+      { key: 'casino', label: 'Casino', icon: 'casino', href: ROUTES.nCasino },
       { key: 'promotions', label: 'Promotions', icon: 'promo', href: '#promotions' }
     ].map(function (l) { return Object.assign(l, { current: cur(l.key), pick: go(l.key) }); });
     var groupData = [
       { title: 'Play', cls: 'nv-group-play', items: [
         { key: 'home', label: 'Home', icon: 'home', href: '#top' },
         { key: 'games', label: 'Games', icon: 'games', href: '#games' },
-        { key: 'casino', label: 'Casino', icon: 'casino', href: '#casino' },
+        { key: 'casino', label: 'Casino', icon: 'casino', href: ROUTES.nCasino },
         { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
         { key: 'link2play', label: 'Link2Play', icon: 'link', href: '#link2play' } ] },
       { title: 'Rewards', cls: 'nv-group-rewards', items: [
