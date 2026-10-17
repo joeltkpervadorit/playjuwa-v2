@@ -1943,7 +1943,7 @@ main.lp-wrap{padding-bottom:88px}
     .lp-rail > *,.lp-hot-grid > *{animation:pjr-edge linear both;animation-timeline:view(inline);animation-range:entry 0% exit 100%}
   }
 }
-@keyframes pjr-edge{entry 0%{opacity:.4;scale:.86}entry 100%{opacity:1;scale:1}exit 0%{opacity:1;scale:1}exit 100%{opacity:.4;scale:.86}}
+@keyframes pjr-edge{0%{opacity:.4;scale:.86}50%{opacity:1;scale:1}100%{opacity:.4;scale:.86}}
 
 /* ===== No Purchase Necessary: animated slot machine stage ===== */
 .lp-npn-stage{position:absolute;left:0;top:0;bottom:0;width:46%;z-index:-1;pointer-events:none}

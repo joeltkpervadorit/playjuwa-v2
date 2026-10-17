@@ -2,7 +2,7 @@
 // (e.g. '/casino', '/buy') once those pages exist in your app or router.
 export const ROUTES = {
   nHome: '#top',
-  nCasino: '#games',
+  nCasino: '/casino',
   nBuy: '#buy',
   nWithdraw: '#withdraw',
   nWallet: '#wallet',
