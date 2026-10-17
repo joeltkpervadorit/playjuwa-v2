@@ -4,6 +4,7 @@
  */
 import '../styles/casino.css';
 import React from 'react';
+import { FOOTER_GAMES } from '../data/catalogs.js';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
@@ -13,7 +14,7 @@ import DailySpinCard from './sections/DailySpinCard.jsx';
 import CategoryNav from './sections/CategoryNav.jsx';
 import PromoTiles from './sections/PromoTiles.jsx';
 import GameRails from './sections/GameRails.jsx';
-import Footer from './sections/Footer.jsx';
+import SiteFooter from '../landing/sections/Footer.jsx';
 
 const FAVORITES_STORAGE_KEY = 'playjuwa-casino-favorites';
 
@@ -27,7 +28,7 @@ function loadFavorites() {
 }
 
 export default class Casino extends React.Component {
-  constructor(props) { super(props); this.state = { casOpen: true, cat: 'all', slide: 0, favs: loadFavorites(), sound: true }; }
+  constructor(props) { super(props); this.state = { casOpen: true, cat: 'all', slide: 0, favs: loadFavorites(), sound: true, ftAcc: '' }; }
   componentDidMount() { document.title = 'PlayJuwa — Casino'; this.installTapFx(); this.installMotion(); var self = this; if (!this.rm()) this._t = setInterval(function () { self.setState({ slide: (self.state.slide + 1) % 3 }); }, 6000); }
   componentWillUnmount() { clearInterval(this._t); }
   rm() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
@@ -449,7 +450,7 @@ export default class Casino extends React.Component {
     var SEC = [
       { id: 'top', title: 'Top 10 Games', sub: 'Most popular games right now', icon: 'all', games: mk(D.top, 'top', { hot: true }), kind: 'is-rank is-top' },
       { id: 'live', title: 'Live Casino', sub: 'Real tables · Real dealers', icon: 'live', games: mk(D.live, 'live', { live: true }), kind: 'is-live',
-        strip: true, stripId: 'signup', stripCls: 'is-npn', stripImg: '/assets/npn-slot.webp', stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary.', stripText: 'Play instantly — discover the free bonuses', stripHi: 'across our website.', stripCta: 'Start Playing', stripHref: NL.nSignup },
+        strip: true, stripId: 'signup', stripCls: 'is-npn', stripImg: '/assets/npn-slot.webp', stripEye: 'Sweepstakes', stripTitle: 'No Purchase Necessary', stripT1: 'No Purchase', stripT2: 'Necessary.', stripText: 'Play instantly.', stripHi: 'Find free bonuses.', stripCta: 'Play Now', stripHref: NL.nSignup },
       { id: 'fishing', title: 'Top 10 Fishing Games', sub: 'Ranked by players this week', icon: 'fish', games: mk(D.fish, 'fish'), kind: 'is-rank' },
       { id: 'popular', title: 'Popular Games', sub: 'Most played and trending games', icon: 'crash', games: mk(D.pop, 'pop') },
       { id: 'slots', title: 'Slots', sub: 'Spin. Win. Repeat.', icon: 'slots', games: mk(rot(10, 0), 'slots'),
@@ -485,6 +486,19 @@ export default class Casino extends React.Component {
         { cls: 'is-table', img: B('6f4bd2e6c760be3af86b570c66280813'), title: 'Table Games', sub: 'Classic games. Real thrills.', cta: 'Play Now', href: '#table' }
       ],
       sections: SEC,
+      footGames: FOOTER_GAMES,
+      accPlat: st.ftAcc === 'plat' ? 'true' : 'false',
+      accSup: st.ftAcc === 'sup' ? 'true' : 'false',
+      accGames: st.ftAcc === 'games' ? 'true' : 'false',
+      accLeg: st.ftAcc === 'leg' ? 'true' : 'false',
+      accTPlat: function () { self.setState({ ftAcc: self.state.ftAcc === 'plat' ? '' : 'plat' }); },
+      accTSup: function () { self.setState({ ftAcc: self.state.ftAcc === 'sup' ? '' : 'sup' }); },
+      accTGames: function () { self.setState({ ftAcc: self.state.ftAcc === 'games' ? '' : 'games' }); },
+      accTLeg: function () { self.setState({ ftAcc: self.state.ftAcc === 'leg' ? '' : 'leg' }); },
+      toTop: function () {
+        try { window.scrollTo({ top: 0, behavior: self.rm() ? 'auto' : 'smooth' }); }
+        catch (e) { window.scrollTo(0, 0); }
+      },
       soundOn: st.sound ? 'true' : 'false', soundLabel: st.sound ? 'Mute sound' : 'Unmute sound', toggleSound: function () { self.setState({ sound: !self.state.sound }); }
     };
   }
@@ -492,7 +506,7 @@ export default class Casino extends React.Component {
   render() {
     const v = this.renderVals();
     return (
-      <div className="by">
+      <div className="by" id="top">
         <Sidebar v={v} />
         <div className="by-shell">
           <Header v={v} />
@@ -505,7 +519,7 @@ export default class Casino extends React.Component {
             <PromoTiles v={v} />
             <GameRails v={v} />
           </main>
-          <Footer v={v} />
+          <SiteFooter v={v} />
         </div>
       </div>
     );

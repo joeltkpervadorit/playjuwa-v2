@@ -168,10 +168,6 @@ button{font-family:inherit}
 .by-secure-m img{width:30px;height:30px}
 .by-secure-m b{display:block;color:#fff;font-size:13px}
 
-.by-foot{display:flex;flex-direction:column;gap:6px;padding:14px var(--gut) 20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-muted)}
-.by-foot nav{display:flex;flex-wrap:wrap;gap:4px 14px}
-.by-foot a{color:#c9c8dc}
-
 /* tablet */
 @media (min-width:641px){
   :root{--gut:20px}
@@ -183,7 +179,6 @@ button{font-family:inherit}
   .by-acts{grid-template-columns:1.25fr 1fr}
   .by-head h1{font-size:30px}
   .by-step{padding:14px 16px}
-  .by-foot{flex-direction:row;justify-content:space-between}
 }
 /* desktop */
 @media (min-width:1024px){
@@ -577,10 +572,12 @@ button{font-family:inherit}
 .cs-strip i svg{width:15px;height:15px;transition:translate .2s ease}
 .cs-strip:hover i svg{translate:3px 0}
 @media (max-width:640px){
-  .cs-strip.is-npn{display:grid;grid-template-columns:minmax(0,1fr) 44%;grid-template-rows:1fr auto;gap:5px 0;min-height:190px;padding:14px}
-  .cs-strip.is-npn .cs-strip-art{width:50%;right:0}
+  .cs-strip.is-npn{display:grid;grid-template-columns:minmax(0,1fr) 46%;grid-template-rows:1fr auto;gap:5px 0;min-height:174px;padding:14px}
+  .cs-strip.is-npn .cs-strip-art{width:58%;right:0}
   .cs-strip.is-npn .cs-strip-copy{grid-column:1;grid-row:1;max-width:none}
   .cs-strip.is-npn > i{grid-column:1;grid-row:2;justify-self:start;margin:0}
+  .cs-strip.is-npn b{font-size:18px;line-height:1.05}
+  .cs-strip.is-npn em{font-size:11px;line-height:14px}
 }
 @media (min-width:641px){
   .cs-strip{flex-direction:row;align-items:center;gap:16px;min-height:120px;padding:14px 22px 14px 26px}
