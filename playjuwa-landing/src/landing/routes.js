@@ -3,6 +3,7 @@
 export const ROUTES = {
   nHome: '#top',
   nCasino: '/casino',
+  nPlatforms: '/platforms',
   nBuy: '#buy',
   nWithdraw: '#withdraw',
   nWallet: '#wallet',

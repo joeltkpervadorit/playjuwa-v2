@@ -3,6 +3,7 @@
 export const ROUTES = {
   nHome: '/',           // the landing page
   nCasino: '/casino',
+  nPlatforms: '/platforms',
   nBuy: '/#buy',
   nWithdraw: '/#withdraw',
   nWallet: '/#wallet',

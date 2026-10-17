@@ -471,7 +471,7 @@ export default class Casino extends React.Component {
       { cls: 'is-c', img: B('8f14686d83e94ff65cd7af7fe492e7f9'), eyebrow: 'Sweepstakes', t1: 'No Purchase', t2: 'Necessary', text: 'Play instantly — discover the free bonuses across our website.', cta: 'Start Playing', href: NL.nSignup }
     ];
     return {
-      ...NL, nPlatforms: '/#platforms', nPromotions: '/#promotions', nSupport: '/#support', tabCasino: 'page',
+      ...NL, nPlatforms: '/platforms', nPromotions: '/#promotions', nSupport: '/#support', tabCasino: 'page',
       goBuyBtn: function () { self.navTo(NL.nBuy); }, goAcctBtn: function () { self.navTo(NL.nWallet); },
       balSc: '104.00', balGc: '0',
       casOpen: st.casOpen ? 'true' : 'false', casShow: st.casOpen, toggleCas: function () { self.setState({ casOpen: !self.state.casOpen }); },

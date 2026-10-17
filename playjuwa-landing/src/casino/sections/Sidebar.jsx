@@ -6,7 +6,7 @@ export default function Sidebar({ v }) {
       <a className="by-side-logo" href={v.nHome} aria-label="PlayJuwa home"><img src="/assets/9048a242fcde0c3b392353f435007399.png" alt="PlayJuwa" /></a>
       <nav className="lp-sd-nav">
       <h3 className="lp-sd-h">Lobby</h3>
-      <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-gold" aria-hidden="true"><span className="nv-ic ic-platforms" /></span><span className="lp-sd-label">Platforms</span></a>
+      <a className="lp-sd-link" href={v.nPlatforms || v.nHome}><span className="lp-sd-ic t-gold" aria-hidden="true"><span className="nv-ic ic-platforms" /></span><span className="lp-sd-label">Platforms</span></a>
       <button className="lp-sd-link" type="button" aria-current="page" aria-expanded={v.casOpen} aria-controls="cs-sub" onClick={v.toggleCas}><span className="lp-sd-ic t-violet" aria-hidden="true"><span className="nv-ic ic-casino" /></span><span className="lp-sd-label">Casino</span><span className="lp-sd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></span></button>
       {v.casShow ? (
       <>

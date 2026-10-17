@@ -802,7 +802,7 @@ export default class Landing extends React.Component {
     var cur = function (key) { return active === key ? 'page' : 'false'; };
     var topLinks = [
       { key: 'games', label: 'Games', icon: 'games', href: '#games' },
-      { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
+      { key: 'platforms', label: 'Platforms', icon: 'platforms', href: ROUTES.nPlatforms },
       { key: 'casino', label: 'Casino', icon: 'casino', href: ROUTES.nCasino },
       { key: 'promotions', label: 'Promotions', icon: 'promo', href: '#promotions' }
     ].map(function (l) { return Object.assign(l, { current: cur(l.key), pick: go(l.key) }); });
@@ -811,7 +811,7 @@ export default class Landing extends React.Component {
         { key: 'home', label: 'Home', icon: 'home', href: '#top' },
         { key: 'games', label: 'Games', icon: 'games', href: '#games' },
         { key: 'casino', label: 'Casino', icon: 'casino', href: ROUTES.nCasino },
-        { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
+        { key: 'platforms', label: 'Platforms', icon: 'platforms', href: ROUTES.nPlatforms },
         { key: 'link2play', label: 'Link2Play', icon: 'link', href: '#link2play' } ] },
       { title: 'Rewards', cls: 'nv-group-rewards', items: [
         { key: 'spin', label: 'Daily Spin', icon: 'spin', href: '#spin' },
@@ -893,6 +893,7 @@ export default class Landing extends React.Component {
       resultLabel: stS.prize || '',
       resetSpin: function () { try { window.localStorage.removeItem('pj-daily-spin'); } catch (e) {} self.setState({ lastSpin: 0, prize: null }); },
       topLinks: topLinks,
+      nPlatforms: ROUTES.nPlatforms,
       groups: groups,
       menuOpen: menuOpen,
       menuCls: menuOpen ? 'is-open' : '',

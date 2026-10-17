@@ -33,7 +33,7 @@ export default function Header({ v }) {
       <div className="nv-sd">
       <nav className="lp-sd-nav">
       <h3 className="lp-sd-h">Lobby</h3>
-      <a className="lp-sd-link" href="#platforms" aria-current={v.sdPlat.cur} onClick={v.sdPlat.pick}><span className="lp-sd-ic t-gold" aria-hidden="true"><span className="nv-ic ic-platforms" /></span><span className="lp-sd-label">Platforms</span></a>
+      <a className="lp-sd-link" href={v.nPlatforms} aria-current={v.sdPlat.cur}><span className="lp-sd-ic t-gold" aria-hidden="true"><span className="nv-ic ic-platforms" /></span><span className="lp-sd-label">Platforms</span></a>
       <button className="lp-sd-link" type="button" aria-expanded={v.sdCasinoOpen} aria-controls="nv-sd-casino" onClick={v.sdCasinoToggle}><span className="lp-sd-ic t-violet" aria-hidden="true"><span className="nv-ic ic-casino" /></span><span className="lp-sd-label">Casino</span><span className="lp-sd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></span></button>
       {v.sdCasinoShow ? (
       <>
