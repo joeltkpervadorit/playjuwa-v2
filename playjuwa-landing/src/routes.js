@@ -1,0 +1,29 @@
+export const PATHS = {
+  home: '/',
+  casino: '/casino',
+  platforms: '/platforms',
+  bonus: '/bonus',
+  deposit: '/deposit',
+  buy: '/buy',
+  chat: '/chat',
+  wallet: '/wallet',
+  withdraw: '/withdraw',
+  link2play: '/link2play',
+  blog: '/blog',
+};
+
+export const ROUTES = {
+  nHome: PATHS.home,
+  nCasino: PATHS.casino,
+  nPlatforms: PATHS.platforms,
+  nPlat: PATHS.platforms,
+  nBonus: PATHS.bonus,
+  nBuy: PATHS.deposit,
+  nWithdraw: PATHS.withdraw,
+  nWallet: PATHS.wallet,
+  nTx: PATHS.wallet + '?view=history',
+  nChat: PATHS.chat,
+  nBlog: PATHS.blog,
+  nSignup: '/signup',
+  nLogin: '/login',
+};

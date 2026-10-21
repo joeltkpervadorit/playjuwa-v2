@@ -1,0 +1,182 @@
+:root {
+  --pj-sidebar-width: 220px;
+  --pj-content-max: 1360px;
+  --pj-layout-gutter: clamp(16px, 2vw, 32px);
+}
+
+#root,
+#root .by,
+#root .lp,
+#root .by-shell {
+  min-width: 0;
+}
+
+#root .pj-shared-sidebar {
+  background:
+    radial-gradient(120% 40% at 0% 0%, rgba(109, 53, 217, 0.28), transparent 70%),
+    linear-gradient(180deg, var(--surface), var(--background));
+  font-family: "Manrope", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+#root .pj-shared-sidebar * {
+  font-family: inherit;
+}
+
+#root .pj-shared-sidebar .lp-side-logo,
+#root .pj-shared-sidebar .by-side-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 -10px;
+  padding: 0 0 10px;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+#root .pj-shared-sidebar .lp-side-logo img,
+#root .pj-shared-sidebar .by-side-logo img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 48px;
+  object-fit: contain;
+}
+
+#root .lp > .lp-hero,
+#root .lp > .lp-hspin,
+#root .lp > .lp-qa,
+#root .lp > .lp-sec {
+  width: calc(100% - 2 * var(--gut));
+  max-width: var(--pj-content-max);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#root .lp > .lp-hspin,
+#root .lp > .lp-qa {
+  margin-top: clamp(14px, 1.4vw, 20px);
+}
+
+#root .lp > .lp-sec {
+  margin-top: clamp(28px, 2.7vw, 40px);
+}
+
+@media (min-width: 1024px) {
+  #root .by {
+    --gut: var(--pj-layout-gutter);
+    display: grid;
+    grid-template-columns: var(--pj-sidebar-width) minmax(0, 1fr);
+  }
+
+  #root .by > .by-side {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 42;
+    display: flex;
+    flex-direction: column;
+    width: var(--pj-sidebar-width);
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #root .by > .by-shell {
+    grid-column: 2;
+  }
+
+  #root .lp {
+    --gut: var(--pj-layout-gutter);
+    padding-left: var(--pj-sidebar-width);
+  }
+
+  #root .lp > .lp-side {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: var(--pj-sidebar-width);
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  #root .pj-shared-sidebar .lp-sd-nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  #root .by > .by-shell {
+    width: 100%;
+  }
+
+  #root .by-shell > main {
+    width: 100%;
+    max-width: var(--pj-content-max);
+    margin-inline: auto;
+    padding-inline: var(--pj-layout-gutter);
+    row-gap: clamp(16px, 2vw, 28px);
+  }
+
+  #root .by-shell > main h1 {
+    font-size: clamp(24px, 2.5vw, 36px);
+    line-height: 1.12;
+  }
+
+  #root .lp-wrap {
+    max-width: calc(var(--pj-content-max) + 2 * var(--gut));
+  }
+
+  #root .lp-sec {
+    margin-top: clamp(28px, 2.7vw, 40px);
+  }
+}
+
+@media (max-width: 1023px) {
+  #root .by {
+    --gut: clamp(12px, 3vw, 24px);
+    display: block;
+  }
+
+  #root .by > .by-side,
+  #root .lp > .lp-side {
+    display: none;
+  }
+
+  #root .by > .by-shell {
+    width: 100%;
+  }
+
+  #root .by-shell > main {
+    width: 100%;
+    max-width: var(--pj-content-max);
+    margin-inline: auto;
+    padding-inline: var(--gut);
+    row-gap: clamp(16px, 4vw, 24px);
+  }
+
+  #root .by-shell > main h1 {
+    font-size: clamp(24px, 2.5vw, 30px);
+    line-height: 1.12;
+  }
+
+  #root .lp {
+    --gut: clamp(12px, 3vw, 24px);
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 359px) {
+  #root .by-top {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  #root .by-top .pj-wal-pill.is-gc {
+    display: none;
+  }
+
+  #root .by-right {
+    gap: 4px;
+  }
+}

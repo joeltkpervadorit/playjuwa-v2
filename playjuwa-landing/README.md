@@ -1,6 +1,6 @@
-# PlayJuwa Landing Page (React + Vite)
+# PlayJuwa Pages (React + Vite)
 
-This is the PlayJuwa landing page from the design canvas, ported to React 18 and Vite 5. It includes the desktop, tablet and mobile layouts, every animation, and all the images.
+This React 18 and Vite 5 app integrates the PlayJuwa page package while preserving the existing project setup and shared catalog data.
 
 ## Run it
 
@@ -13,45 +13,60 @@ npm run preview   # serve the production build
 
 You need Node 18 or newer.
 
-## What's included
+## Routes
 
-The page has these parts:
+| Page | Path |
+| --- | --- |
+| Home | `/` |
+| Casino | `/casino` |
+| Platforms | `/platforms` |
+| Bonus | `/bonus` |
+| Deposit | `/deposit` |
+| Buy | `/buy` |
+| Chat | `/chat` |
+| Wallet | `/wallet` |
+| Withdraw | `/withdraw` |
+| Link2Play | `/link2play` |
+| Blog | `/blog` |
+| Login / Sign-up | `/login`, `/signup` |
 
-- A desktop sidebar, a sticky header, and a slide-out menu with a mobile bottom tab bar (Casino, Platform, Deposit, Bonus, Chat).
-- A hero image carousel, quick action tiles, and a Recent Big Wins ticker.
-- Top Game Platforms, a 3D Slot Games coverflow, No Purchase Necessary, Hottest Casino Games, and Browse Games with category filters.
-- A Daily Spin wheel that works: weighted prizes, a 24-hour cooldown, and pointer-tick physics.
-- How to Play in 3 Easy Steps, Biggest Weekly Wins, Why Join Us, a player reviews rail, FAQ, the final call to action, and the footer.
-- Login and Sign-up modals with validation, plus the "log in to continue" prompt.
-- The Daily Bonus popup. It appears 3 seconds after the page loads, at most once per day (tracked in localStorage), and never while another modal is open. Claim Now scrolls to the Daily Spin wheel and spins it.
-- Motion: tap and click sparkle effects, scroll reveals, carousels, and the seasonal Halloween layer. The Halloween layer has an on/off toggle and a cyclone button.
-- Respect for `prefers-reduced-motion` throughout.
+The app uses its existing pathname-based routing; no router dependency is required.
 
 ## Project structure
 
 ```
 index.html                  fonts (Fredoka, Manrope), meta tags
 public/assets/              all images (named by their original design-canvas id)
-src/main.jsx                entry point, imports the CSS
-src/App.jsx                 renders <Landing />
+src/main.jsx                app entry point and shared design CSS
+src/App.jsx                 pathname routing and page selection
+src/routes.js               shared page paths and navigation targets
+src/lib/session.js          placeholder auth, balance and service state
 src/styles/tokens.css       PlayJuwa design tokens (colours, spacing, radii, type)
 src/styles/ds.css           design-system component styles (.pj-btn, .pj-badge, …)
-src/styles/landing.css      all landing page styles and keyframes (mobile-first)
+src/pages/                  integrated page components, sections and scoped styles
 src/components/ds.jsx       Button, Badge, CategoryTile, GameCard, SectionHeader
-src/landing/Landing.jsx     state, data, event handlers and animation engines
-src/landing/sections/*.jsx  page markup, one file per section
-src/landing/routes.js       where nav links point (edit for your router)
+src/landing/Landing.jsx     existing landing page state and data
+src/landing/sections/*.jsx  existing landing page sections
+src/landing/routes.js       re-exports shared route constants
 src/landing/assets.js       image id → /assets/... lookup for images chosen in code
 src/landing/css.js          helper that turns an inline CSS string into a style object
 ```
 
-### How the page is wired
+### Integration status
 
-`Landing.jsx` is a single class component. `renderVals()` computes everything the markup needs and passes it to each section as the prop `v`. To change copy or markup, edit the section file. To change data (games, platforms, reviews, FAQ, wheel prizes), edit the arrays in `Landing.jsx`.
+- Shared page navigation is defined in `src/routes.js`; the landing page re-exports its route constants.
+- Existing platform cards use the project catalog. Game launches and platform credentials are unavailable until their services are connected.
+- Authentication, wallet balances, payments, withdrawals, chat, reward claims, and live promotion data are not connected. The UI should show unavailable states rather than simulated success or sample account balances.
+- Blog entries and live purchase activity remain empty until real records and destinations are provided.
+- Login and sign-up routes open the landing-page auth modal; the form is not connected to an authentication provider.
+- The daily spin and reward claims require their respective services. No reward or balance is generated locally.
+- Verify promotional values, reward terms, eligibility and compliance copy with the product owner before connecting or publishing live offers.
+
+### Page implementation
+
+Each page lives in `src/pages/<page>/`; page sections are in that folder's `sections/` subdirectory. Page styles are loaded only while the page is mounted. Shared session props are in `src/lib/session.js`.
 
 ### Notes
 
-- Navigation targets live in `src/landing/routes.js`. They point at on-page anchors for now. Swap them for real routes (or React Router paths) as you build the Casino, Buy and Wallet pages.
 - `React.StrictMode` is left off on purpose. The page installs its animation layers once on mount, and StrictMode's double mount in development would install them twice.
-- Login and Sign-up are front-end only. Hook the form submit handlers in `Landing.jsx` (`openAuth`, the `auth*` handlers) up to your API.
-- The Halloween layer is seasonal. To turn it off by default, change its initial state in the `Landing` constructor, or remove the `Halloween*` sections.
+- The Halloween layer is seasonal. To turn it off by default, change the page's initial state or remove its seasonal sections.
