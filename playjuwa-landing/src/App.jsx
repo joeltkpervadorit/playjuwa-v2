@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState, useTransition } from 'react';
+import MobileNavigation from './components/MobileNavigation.jsx';
 import { PATHS } from './routes.js';
 import { usePageProps } from './lib/session.js';
 
@@ -83,14 +84,17 @@ export default function App() {
   }, [startTransition]);
 
   return (
-    <Suspense fallback={null}>
-      <PageRoute
-        key={route.pathname}
-        name={name}
-        authOpen={authOpen}
-        scrollKey={route.pathname + route.hash}
-        hash={route.hash}
-      />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <PageRoute
+          key={route.pathname}
+          name={name}
+          authOpen={authOpen}
+          scrollKey={route.pathname + route.hash}
+          hash={route.hash}
+        />
+      </Suspense>
+      <MobileNavigation path={path} />
+    </>
   );
 }

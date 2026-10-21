@@ -6,7 +6,7 @@ import React from 'react';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import Header2 from './sections/Header2.jsx';
 import DpMethodSection from './sections/DpMethodSection.jsx';
 import DpPkgSection from './sections/DpPkgSection.jsx';

@@ -3,6 +3,7 @@
  * renderVals() computes every value the markup reads (passed down as `v`).
  */
 import React from 'react';
+import { isTestLoginEnabled, startTestSession } from '../../lib/session.js';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import HalloweenLayer from './sections/HalloweenLayer.jsx';
@@ -10,10 +11,9 @@ import HalloweenCycloneButton from './sections/HalloweenCycloneButton.jsx';
 import HalloweenToggle from './sections/HalloweenToggle.jsx';
 import Background from './sections/Background.jsx';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import LoginPrompt from './sections/LoginPrompt.jsx';
 import AuthModal from './sections/AuthModal.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import HeroImgsSection from './sections/HeroImgsSection.jsx';
 import Hspin from './sections/Hspin.jsx';
 import QuickActions from './sections/QuickActions.jsx';
@@ -293,7 +293,7 @@ export default class HomePage extends React.Component {
     var e = {}, v = function (n) { return (f[n] && f[n].value || '').trim(); };
     if (mode === 'login') {
       if (!v('id')) e.id = 'Enter your username or email.';
-      if (!v('lpw')) e.lpw = 'Enter your password.';
+      if (!isTestLoginEnabled() && !v('lpw')) e.lpw = 'Enter your password.';
       return e;
     }
     if (!/^[A-Za-z0-9_]{3,20}$/.test(v('user'))) e.user = 'Use 3–20 letters, numbers or underscores.';
@@ -306,6 +306,9 @@ export default class HomePage extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     var st = this.state;
+    if (prevProps.loggedIn !== this.props.loggedIn && st.loggedIn !== !!this.props.loggedIn) {
+      this.setState({ loggedIn: !!this.props.loggedIn });
+    }
     if ((st.auth && (st.auth !== prevState.auth || prevState.authDone !== st.authDone)) ) {
       if (!prevState.auth) this._authReturn = document.activeElement;
       setTimeout(function () { var el = document.querySelector(st.authDone ? '.lp-au-done .lp-au-submit' : '.lp-au-form input'); if (el) el.focus({ preventScroll: true }); }, 40);
@@ -1040,7 +1043,7 @@ export default class HomePage extends React.Component {
       isLogin: this.state.auth === 'login', isSignup: this.state.auth === 'signup',
       tabLogin: this.state.auth === 'login' ? 'true' : 'false', tabSignup: this.state.auth === 'signup' ? 'true' : 'false',
       authTitle: this.state.auth === 'login' ? 'Welcome back' : 'Create your account',
-      authSub: this.state.auth === 'login' ? 'Log in to play, spin the wheel and manage your wallet.' : 'Join PlayJuwa in under a minute.',
+      authSub: this.state.auth === 'login' ? (isTestLoginEnabled() ? 'Development test login: enter any username. Password is optional.' : 'Log in to play, spin the wheel and manage your wallet.') : 'Join PlayJuwa in under a minute.',
       doneTitle: this.state.auth === 'login' ? 'You’re logged in' : 'Account created',
       doneText: this.state.auth === 'login' ? 'Welcome back to PlayJuwa.' : 'Welcome to PlayJuwa! Your account is ready.',
       err: ['id', 'lpw', 'user', 'email', 'phone', 'ref', 'pw', 'pw2', 'terms'].reduce(function (o, k) { var m = self.state.authErr[k] || ''; o[k] = { on: m ? 'true' : 'false', msg: m }; return o; }, {}),
@@ -1052,7 +1055,7 @@ export default class HomePage extends React.Component {
       toSignup: function () { self.setState({ auth: 'signup', authErr: {}, pwShown: false }); },
       closeAuth: function () { var done = self.state.authDone; self.setState({ auth: '', authDone: false, authErr: {}, loggedIn: self.state.loggedIn || done }); if (done) setTimeout(function () { if (window.__pjRewards) window.__pjRewards(); }, 500); },
       authKey: function (e) { if (e.key === 'Escape') self.setState({ auth: '', authDone: false, authErr: {} }); },
-      submitLogin: function (e) { e.preventDefault(); var er = self.validate('login', e.currentTarget.elements); if (Object.keys(er).length) { self.setState({ authErr: er, authDone: false }); var f = e.currentTarget.querySelector('[name="' + Object.keys(er)[0] + '"]'); if (f) f.focus(); return; } self.setState({ authErr: { form: 'Login is unavailable because authentication is not connected.' }, authDone: false }); },
+      submitLogin: function (e) { e.preventDefault(); var er = self.validate('login', e.currentTarget.elements); if (Object.keys(er).length) { self.setState({ authErr: er, authDone: false }); var f = e.currentTarget.querySelector('[name="' + Object.keys(er)[0] + '"]'); if (f) f.focus(); return; } if (isTestLoginEnabled()) { try { startTestSession(e.currentTarget.elements.id.value.trim()); self.setState({ authErr: {}, authDone: true, loggedIn: true }); } catch (error) { console.error('Unable to start development test session.', error); self.setState({ authErr: { form: 'Could not start the test session. Please check browser storage settings.' }, authDone: false }); } return; } self.setState({ authErr: { form: 'Login is unavailable because authentication is not connected.' }, authDone: false }); },
       submitSignup: function (e) { e.preventDefault(); var er = self.validate('signup', e.currentTarget.elements); if (Object.keys(er).length) { self.setState({ authErr: er, authDone: false }); var f = e.currentTarget.querySelector('[name="' + Object.keys(er)[0] + '"]'); if (f) f.focus(); return; } self.setState({ authErr: { form: 'Sign up is unavailable because authentication is not connected.' }, authDone: false }); },
       authMessage: self.state.authErr.form || '',
       loginOpen: !!this.state.loginAsk,
@@ -1237,7 +1240,6 @@ export default class HomePage extends React.Component {
         <Header v={v} />
         <LoginPrompt v={v} />
         <AuthModal v={v} />
-        <MobileTabBar v={v} />
         <HeroImgsSection v={v} />
         <Hspin v={v} />
         <QuickActions v={v} />

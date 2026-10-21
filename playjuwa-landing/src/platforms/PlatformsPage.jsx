@@ -17,7 +17,6 @@ import SearchFilters from './sections/SearchFilters.jsx';
 import PlatformGrid from './sections/PlatformGrid.jsx';
 import RequestPlatform from './sections/RequestPlatform.jsx';
 import SiteFooter from '../landing/sections/Footer.jsx';
-import MobileTabBar from '../landing/sections/MobileTabBar.jsx';
 
 export default class PlatformsPage extends React.Component {
   constructor(props) { super(props); this.state = { casOpen: false, cat: 'all', slide: 0, favs: {}, sound: true, q: '', filter: 'all', shown: {}, copied: '', ftAcc: '' }; }
@@ -565,7 +564,6 @@ export default class PlatformsPage extends React.Component {
           </main>
           <SiteFooter v={v} />
         </div>
-        <MobileTabBar v={v} />
       </div>
     );
   }

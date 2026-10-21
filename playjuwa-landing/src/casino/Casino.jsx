@@ -15,7 +15,6 @@ import CategoryNav from './sections/CategoryNav.jsx';
 import PromoTiles from './sections/PromoTiles.jsx';
 import GameRails from './sections/GameRails.jsx';
 import SiteFooter from '../landing/sections/Footer.jsx';
-import MobileTabBar from '../landing/sections/MobileTabBar.jsx';
 
 const FAVORITES_STORAGE_KEY = 'playjuwa-casino-favorites';
 
@@ -523,7 +522,6 @@ export default class Casino extends React.Component {
           </main>
           <SiteFooter v={v} />
         </div>
-        <MobileTabBar v={v} />
       </div>
     );
   }

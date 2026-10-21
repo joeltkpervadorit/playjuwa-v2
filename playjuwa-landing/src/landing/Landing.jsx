@@ -16,7 +16,6 @@ import Sidebar from './sections/Sidebar.jsx';
 import Header from './sections/Header.jsx';
 import LoginPrompt from './sections/LoginPrompt.jsx';
 import AuthModal from './sections/AuthModal.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import HeroImgsSection from './sections/HeroImgsSection.jsx';
 import QuickActions from './sections/QuickActions.jsx';
 import WinsSection from './sections/WinsSection.jsx';
@@ -1053,7 +1052,6 @@ export default class Landing extends React.Component {
         <Header v={v} />
         <LoginPrompt v={v} />
         <AuthModal v={v} />
-        <MobileTabBar v={v} />
         <HeroImgsSection v={v} />
         <QuickActions v={v} />
         <WinsSection v={v} />

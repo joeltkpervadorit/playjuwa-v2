@@ -7,14 +7,13 @@ import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import { PLATFORMS } from '../../data/catalogs.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import Header2 from './sections/Header2.jsx';
 import LkSearch from './sections/LkSearch.jsx';
 import LkTabs from './sections/LkTabs.jsx';
 import LkBar from './sections/LkBar.jsx';
 import LkGrid from './sections/LkGrid.jsx';
 import LkEmptyBlock from './sections/LkEmptyBlock.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import Footer from './sections/Footer.jsx';
 
 export default class Link2PlayPage extends React.Component {
@@ -870,7 +869,6 @@ export default class Link2PlayPage extends React.Component {
             <LkGrid v={v} />
             <LkEmptyBlock v={v} />
           </main>
-          <MobileTabBar v={v} />
           <Footer v={v} />
         </div>
       </div>

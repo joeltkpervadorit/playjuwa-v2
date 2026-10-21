@@ -6,14 +6,13 @@ import React from 'react';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import Header2 from './sections/Header2.jsx';
 import BlSearch from './sections/BlSearch.jsx';
 import BlTabs from './sections/BlTabs.jsx';
 import Sr from './sections/Sr.jsx';
 import BlGrid from './sections/BlGrid.jsx';
 import BlEmptyBlock from './sections/BlEmptyBlock.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import Footer from './sections/Footer.jsx';
 
 export default class BlogPage extends React.Component {
@@ -864,7 +863,6 @@ export default class BlogPage extends React.Component {
             <BlGrid v={v} />
             <BlEmptyBlock v={v} />
           </main>
-          <MobileTabBar v={v} />
           <Footer v={v} />
         </div>
       </div>

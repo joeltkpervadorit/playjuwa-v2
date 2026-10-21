@@ -19,8 +19,8 @@
   @keyframes tb-tw{0%,100%{opacity:.25;scale:.6}50%{opacity:1;scale:1}}
   .tb-center:active .tb-coin{scale:.94}
   main.lp-wrap{padding-bottom:104px}
-}
 @media (prefers-reduced-motion: reduce){.tb-coin,.tb-sp{animation:none !important}}
 @media (max-width:640px){
   .nv-tabbar.tb{left:0;right:0;bottom:0;height:calc(64px + env(safe-area-inset-bottom));padding:0 6px env(safe-area-inset-bottom);border-radius:20px 20px 0 0;box-shadow:inset 0 1.5px 0 rgba(168,85,247,.8),0 -6px 24px rgba(139,92,246,.3)}
   .nv-tabbar.tb::after{bottom:auto;top:0;z-index:0}
+}

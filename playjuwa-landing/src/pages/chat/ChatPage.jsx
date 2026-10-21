@@ -6,10 +6,9 @@ import React from 'react';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import ChSection from './sections/ChSection.jsx';
 import HelpSection from './sections/HelpSection.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import Footer from './sections/Footer.jsx';
 
 export default class ChatPage extends React.Component {
@@ -849,7 +848,6 @@ export default class ChatPage extends React.Component {
             <ChSection v={v} />
             <HelpSection v={v} />
           </main>
-          <MobileTabBar v={v} />
           <Footer v={v} />
         </div>
       </div>

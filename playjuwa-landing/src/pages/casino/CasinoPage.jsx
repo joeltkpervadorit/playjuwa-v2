@@ -6,7 +6,7 @@ import React from 'react';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import CsBannerSection from './sections/CsBannerSection.jsx';
 import CsSpin from './sections/CsSpin.jsx';
 import CsCats from './sections/CsCats.jsx';

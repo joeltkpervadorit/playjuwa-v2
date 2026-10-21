@@ -28,8 +28,13 @@ const helpItems = [
 const casinoItems = ['All Casino Games', 'Slots', 'Live Casino', 'Fishing', 'Table Games'];
 
 function NavigationLink({ item }) {
+  const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+  const itemUrl = new URL(item.href, window.location.origin);
+  const itemPath = itemUrl.pathname.replace(/\/+$/, '') || '/';
+  const isCurrent = !itemUrl.hash && itemPath === currentPath;
+
   return (
-    <a className="lp-sd-link" href={item.href}>
+    <a className="lp-sd-link" href={item.href} aria-current={isCurrent ? 'page' : undefined}>
       <span className={`lp-sd-ic ${item.tone}`} aria-hidden="true">
         <span className={`nv-ic ic-${item.icon}`} />
       </span>

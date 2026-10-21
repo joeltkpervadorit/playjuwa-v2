@@ -58,7 +58,7 @@ src/landing/css.js          helper that turns an inline CSS string into a style 
 - Existing platform cards use the project catalog. Game launches and platform credentials are unavailable until their services are connected.
 - Authentication, wallet balances, payments, withdrawals, chat, reward claims, and live promotion data are not connected. The UI should show unavailable states rather than simulated success or sample account balances.
 - Blog entries and live purchase activity remain empty until real records and destinations are provided.
-- Login and sign-up routes open the landing-page auth modal; the form is not connected to an authentication provider.
+- Login and sign-up routes open the landing-page auth modal. In Vite development mode only, login accepts any non-empty username with an optional password and stores a test session for the current browser tab. Production builds do not enable this test login. Sign-up remains unavailable until an authentication provider is connected.
 - The daily spin and reward claims require their respective services. No reward or balance is generated locally.
 - Verify promotional values, reward terms, eligibility and compliance copy with the product owner before connecting or publishing live offers.
 

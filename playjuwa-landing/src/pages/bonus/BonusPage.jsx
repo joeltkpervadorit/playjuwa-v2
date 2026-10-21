@@ -6,7 +6,7 @@ import React from 'react';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
 import Sidebar from './sections/Sidebar.jsx';
-import Header from './sections/Header.jsx';
+import Header from '../../components/SiteHeader.jsx';
 import Header2 from './sections/Header2.jsx';
 import RwTop from './sections/RwTop.jsx';
 import RwTabsWrap from './sections/RwTabsWrap.jsx';
@@ -15,7 +15,6 @@ import RwFeat from './sections/RwFeat.jsx';
 import RwInfo from './sections/RwInfo.jsx';
 import PromotionsSection from './sections/PromotionsSection.jsx';
 import AuthOutBlock from './sections/AuthOutBlock.jsx';
-import MobileTabBar from './sections/MobileTabBar.jsx';
 import Footer from './sections/Footer.jsx';
 
 export default class BonusPage extends React.Component {
@@ -1038,7 +1037,6 @@ export default class BonusPage extends React.Component {
             <PromotionsSection v={v} />
             <AuthOutBlock v={v} />
           </main>
-          <MobileTabBar v={v} />
           <Footer v={v} />
         </div>
       </div>
