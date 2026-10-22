@@ -20,7 +20,7 @@ export default function WinsSection({ v }) {
       ) : null}
       <div>
       <div className="lp-win-game">{w.game}</div>
-      <div className="lp-win-player">{w.player}</div>
+      <div className="lp-win-player" title={w.player}>{w.short}</div>
       </div>
       <div className="lp-win-amt"><img className="lp-win-coin" src="/assets/edbab742e888b020a93dd88ac36e1531.png" alt="" /><b>{w.amountNum}</b><span className="lp-sc" aria-label="SC">SC</span></div>
       </div>

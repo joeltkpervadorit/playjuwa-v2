@@ -10,7 +10,7 @@ export default function PopularSection({ v }) {
       <div className="lp-hot-grid" role="list">
       {(v.hotGames || []).map((h, __i4) => (
       <React.Fragment key={__i4}>
-      <a className="lp-hot-card" role="listitem" href={v.nCasino} aria-label={h.label}><img src={h.img} alt="" loading="lazy" /><span className="lp-hot-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg></span></a>
+      <a className="lp-hot-card" role="listitem" href={v.nCasino} aria-label={h.label} data-game={h.name} data-img={h.img} data-prov={h.prov}><img src={h.img} alt="" loading="lazy" /><span className="lp-hot-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg></span></a>
       </React.Fragment>
       ))}
       </div>

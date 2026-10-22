@@ -6,6 +6,8 @@ import React from 'react';
 import { isTestLoginEnabled, startTestSession } from '../../lib/session.js';
 import { ROUTES } from './routes.js';
 import { blob } from './assets.js';
+import TourOpenBlock from './sections/TourOpenBlock.jsx';
+import GmOpenBlock from './sections/GmOpenBlock.jsx';
 import HalloweenLayer from './sections/HalloweenLayer.jsx';
 import HalloweenCycloneButton from './sections/HalloweenCycloneButton.jsx';
 import HalloweenToggle from './sections/HalloweenToggle.jsx';
@@ -19,14 +21,18 @@ import Hspin from './sections/Hspin.jsx';
 import QuickActions from './sections/QuickActions.jsx';
 import WinsSection from './sections/WinsSection.jsx';
 import PlatformsSection from './sections/PlatformsSection.jsx';
+import TopGamesSection from './sections/TopGamesSection.jsx';
+import GameCollageSection from './sections/GameCollageSection.jsx';
 import SlotsSection from './sections/SlotsSection.jsx';
 import NpnSection from './sections/NpnSection.jsx';
 import PopularSection from './sections/PopularSection.jsx';
 import GamesSection from './sections/GamesSection.jsx';
 import SpinSection from './sections/SpinSection.jsx';
 import HowSection from './sections/HowSection.jsx';
+import FollowSection from './sections/FollowSection.jsx';
 import WeeklySection from './sections/WeeklySection.jsx';
 import SupportSection from './sections/SupportSection.jsx';
+import WaitingSection from './sections/WaitingSection.jsx';
 import PromotionsSection from './sections/PromotionsSection.jsx';
 import FaqSection from './sections/FaqSection.jsx';
 import FinalSection from './sections/FinalSection.jsx';
@@ -35,11 +41,98 @@ import Footer from './sections/Footer.jsx';
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: !!props.loggedIn, menuOpen: !!props.menuOpen, walletOpen: !!props.walletOpen, active: 'home', cat: 'all', faq: 3, favs: {}, sound: true, loginAsk: '', auth: props.authOpen || '', authDone: false, authErr: {}, pwShown: false, heroSlide: 0, cfi: 0, rot: 0, spinning: false, prize: null, lastSpin: 0, now: Date.now(), ftOpen: false, ftAcc: '', hw: (function () { try { return localStorage.getItem('pj_hw') !== 'off'; } catch (e) { return true; } })(), hwWind: '' };
+    this.state = { loggedIn: !!props.loggedIn, menuOpen: !!props.menuOpen, walletOpen: !!props.walletOpen, active: 'home', cat: 'all', faq: 3, favs: {}, tour: null, gm: null, gmCur: 'gc', sound: true, loginAsk: '', auth: props.authOpen || '', authDone: false, authErr: {}, pwShown: false, heroSlide: 0, cfi: 0, rot: 0, spinning: false, prize: null, lastSpin: 0, now: Date.now(), ftOpen: false, ftAcc: '', hw: (function () { try { return localStorage.getItem('pj_hw') !== 'off'; } catch (e) { return true; } })(), hwWind: '' };
     this.SPIN_MS = 5600; this.COOLDOWN = 24 * 60 * 60 * 1000;
     this.PRIZES = ['Bonus SC', 'Mystery Prize', 'Free Spin', 'Lucky Chip', 'Gift Box', 'VIP Reward', 'Extra Spin', 'Free Game'];
   }
-  componentDidMount() { this.installRewards(); this.installTapFx(); this.installMotion(); this.installNpnPop();
+  openGame(g, from) {
+    if (from) this._gmReturn = from;
+    this.setState({ gm: g, gmCur: this.state.gmCur || 'gc' });
+    var self = this;
+    setTimeout(function () { try { var c = document.querySelector('.pj-gm-x'); if (c) c.focus({ preventScroll: true }); var b = document.querySelector('.pj-gm-body'); if (b) b.scrollTop = 0; } catch (e) {} }, 40);
+  }
+  closeGame() {
+    this.setState({ gm: null });
+    var r = this._gmReturn; this._gmReturn = null;
+    if (r && r.focus) setTimeout(function () { try { r.focus({ preventScroll: true }); } catch (e) {} }, 30);
+  }
+  installWw() {
+    /* "What's Waiting For You?": cards pop in when they scroll into view */
+    var run = function () {
+      var cards = document.querySelectorAll('.lp-ww-card');
+      if (!cards.length) return;
+      if (!('IntersectionObserver' in window)) return;
+      var sec = document.querySelector('[data-ww]'); if (sec) sec.setAttribute('data-ready', '');
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.setAttribute('data-in', ''); io.unobserve(e.target); } }); }, { threshold: 0.18 });
+      cards.forEach(function (c) { io.observe(c); });
+      var fu = document.querySelector('[data-fu]');
+      if (fu) { fu.setAttribute('data-ready', ''); var io2 = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.setAttribute('data-in', ''); io2.unobserve(e.target); } }); }, { threshold: 0.15 }); io2.observe(fu); }
+      this._wwIo = io;
+    }.bind(this);
+    setTimeout(run, 80);
+  }
+  installColAuto() {
+    /* Explore Games: rails drift on their own (block 1 forward, block 2 backward), bounce at the ends,
+       and pause while the player hovers, touches, focuses or uses the arrows. */
+    try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    var self = this, last = 0, SPEED = 28; /* px per second */
+    var setup = function () {
+      var rails = document.querySelectorAll('.lp-col-rail');
+      rails.forEach(function (r, i) {
+        if (r._auto) return;
+        r._auto = { dir: i % 2 ? -1 : 1, pos: 0, hold: 0 };
+        r.setAttribute('data-auto', '');
+        if (i % 2) { r.scrollLeft = r.scrollWidth; }
+        r._auto.pos = r.scrollLeft;
+        var pause = function (ms) { return function () { r._auto.hold = performance.now() + ms; }; };
+        r.addEventListener('pointerenter', function () { r._auto.hold = Infinity; });
+        r.addEventListener('pointerleave', pause(600));
+        r.addEventListener('touchstart', pause(3500), { passive: true });
+        r.addEventListener('wheel', pause(3000), { passive: true });
+        r.addEventListener('focusin', function () { r._auto.hold = Infinity; });
+        r.addEventListener('focusout', pause(800));
+        var blk = r.closest('.lp-col-block');
+        if (blk) blk.querySelectorAll('.lp-col-arw').forEach(function (b) { b.addEventListener('click', pause(4000)); });
+      });
+    };
+    var tick = function (t) {
+      self._colRaf = requestAnimationFrame(tick);
+      var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
+      document.querySelectorAll('.lp-col-rail').forEach(function (r) {
+        var a = r._auto; if (!a) return;
+        if (t < a.hold || r.matches(':hover') || r.contains(document.activeElement)) { a.pos = r.scrollLeft; return; }
+        var max = r.scrollWidth - r.clientWidth; if (max <= 0) return;
+        var rect = r.getBoundingClientRect(); if (rect.bottom < 0 || rect.top > innerHeight) return;
+        if (Math.abs(r.scrollLeft - a.pos) > 2) a.pos = r.scrollLeft;   /* user moved it */
+        a.pos += a.dir * SPEED * dt;
+        if (a.pos >= max) { a.pos = max; a.dir = -1; a.hold = t + 1200; }
+        if (a.pos <= 0) { a.pos = 0; a.dir = 1; a.hold = t + 1200; }
+        r.scrollLeft = a.pos;
+      });
+    };
+    setTimeout(function () { setup(); self._colRaf = requestAnimationFrame(tick); }, 300);
+    this._colSetup = setup;
+  }
+  tourDone() { try { window.localStorage.setItem('pj_tour_done', '1'); } catch (e) {} }
+  openTour(i) {
+    this._tourReturn = document.activeElement;
+    this.setState({ tour: i || 0, menuOpen: false });
+    setTimeout(function () { try { var b = document.querySelector('.pj-tour-slide[aria-hidden="false"] .is-next'); if (b) b.focus({ preventScroll: true }); } catch (e) {} }, 80);
+  }
+  closeTour() {
+    this.tourDone(); this.setState({ tour: null });
+    var r = this._tourReturn; this._tourReturn = null; if (r && r.focus) try { r.focus({ preventScroll: true }); } catch (e) {}
+  }
+  goTour(i) {
+    var n = 4; if (i >= n) { this.closeTour(); return; } if (i < 0) i = 0;
+    this.setState({ tour: i });
+    setTimeout(function () { try { var b = document.querySelector('.pj-tour-slide[aria-hidden="false"] .is-next'); if (b) b.focus({ preventScroll: true }); } catch (e) {} }, 470);
+  }
+  componentDidMount() {
+    var tsp = this.props.tourStep; tsp = (tsp === '' || tsp == null) ? -1 : Number(tsp);
+    if (tsp >= 0) this.setState({ tour: Math.min(3, tsp) });
+    else { var done = false; try { done = window.localStorage.getItem('pj_tour_done') === '1'; } catch (e) {} var selfT = this; if (!done && !this.props.loggedIn) setTimeout(function () { if (selfT.state.tour == null) selfT.openTour(0); }, 900); }
+    this.installColAuto(); this.installWw(); this.installPfx(); this.installRewards(); this.installDailyBonus(); this.installTapFx(); this.installMotion(); this.installNpnPop();
     var selfV = this;
     this._onVw = function () { var w = window.innerWidth || 1440; if ((w >= 1024) !== ((selfV.state.vw || 1440) >= 1024)) selfV.setState({ vw: w, heroSlide: 0 }); };
     try { this.setState({ vw: window.innerWidth || 1440 }); window.addEventListener('resize', this._onVw); } catch (e) {}
@@ -283,7 +376,31 @@ export default class HomePage extends React.Component {
     if (this.reducedMotion()) return;
     this._heroTimer = setInterval(function () { self.setState({ heroSlide: (self.state.heroSlide + 1) % (self._heroN || 5) }); }, 5000);
   }
-  componentWillUnmount() { try { window.removeEventListener('resize', this._onVw); } catch (e) {} this.stopCyclone(); document.removeEventListener('keydown', this._onDocKey); clearInterval(this._tick); clearInterval(this._heroTimer); clearTimeout(this._spinTimer); }
+  installPfx() {
+    /* Parallax for the Top Game Platforms banner: the art drifts slower than the page, the two card rows a little faster. */
+    var self = this;
+    try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    var raf = 0;
+    var update = function () {
+      raf = 0;
+      var els = document.querySelectorAll('[data-pfx]');
+      var vh = window.innerHeight || 800;
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i], r = el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) continue;
+        var p = ((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2);   /* -1 (leaving top) .. 1 (entering bottom) */
+        p = Math.max(-1.2, Math.min(1.2, p));
+        el.style.setProperty('--pfx-bg', (p * 34).toFixed(1) + 'px');
+        el.style.setProperty('--pfx-fg', (p * -12).toFixed(1) + 'px');
+        el.style.setProperty('--pfx-x', (p * 36).toFixed(1) + 'px');
+      }
+    };
+    this._pfxOn = function () { if (!raf) raf = requestAnimationFrame(update); };
+    window.addEventListener('scroll', this._pfxOn, { passive: true, capture: true });
+    window.addEventListener('resize', this._pfxOn, { passive: true });
+    setTimeout(update, 60); setTimeout(update, 600);
+  }
+  componentWillUnmount() { try { cancelAnimationFrame(this._colRaf); } catch (e) {} try { window.removeEventListener('scroll', this._pfxOn, { capture: true }); window.removeEventListener('resize', this._pfxOn); } catch (e) {} try { window.removeEventListener('resize', this._onVw); } catch (e) {} this.stopCyclone(); document.removeEventListener('keydown', this._onDocKey); clearInterval(this._tick); clearInterval(this._heroTimer); clearTimeout(this._spinTimer); }
   reducedMotion() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   doSpin() {
     this.setState({ spinNotice: 'Daily rewards are unavailable until a rewards service is connected.' });
@@ -900,8 +1017,10 @@ export default class HomePage extends React.Component {
       { game: 'Dragon Fury', player: 'TON***** · Denver, CO', amount: '1,960 SC', img: '/assets/217af7aef0266cbb7951f4de25570c6c.png' },
       { game: 'Juwa', player: 'NIC***** · Orlando, FL', amount: '1,745 SC', img: '/assets/aa87199e47eb134efcc8687c6ebfa039.png' }
     ];
-    var winsLoop = wins.concat(wins).map(function (w, i) {
-      return Object.assign({}, w, { noImg: !w.img, dup: i >= wins.length ? 'true' : 'false', amountNum: w.amount.replace(' SC', '') });
+    /* repeated 4x: the marquee scrolls by half the track, so each half must be wider than the widest screen */
+    var winsLoop = wins.concat(wins, wins, wins).map(function (w, i) {
+      var nm = w.player.split(' \u00b7 ')[0].replace(/\*+$/, '');
+      return Object.assign({}, w, { noImg: !w.img, dup: i >= wins.length ? 'true' : 'false', amountNum: w.amount.replace(' SC', ''), short: nm.charAt(0) + nm.slice(1).toLowerCase() + '***' });
     });
     var platforms = [
       { name: 'Golden Dragon', img: '/assets/7f020f296ac87bbe2c73bee88a24b1a2.png' },
@@ -1032,6 +1151,10 @@ export default class HomePage extends React.Component {
       heroDots: heroSet.map(function (h, i) { var on = self.state.heroSlide % heroSet.length === i; return { on: on ? 'true' : 'false', label: 'Show slide ' + (i + 1) + ' of ' + heroSet.length, pick: function () { self.setState({ heroSlide: i }); self.startHero(); } }; }),
       authDelegate: function (e) {
         if (e.defaultPrevented) return;
+        var tl = e.target && e.target.closest ? e.target.closest('a[href="#tour"]') : null;
+        if (tl) { e.preventDefault(); self.openTour(0); return; }
+        var gc = e.target && e.target.closest ? e.target.closest('[data-game]') : null;
+        if (gc && gc.getAttribute('data-game')) { e.preventDefault(); self.openGame({ name: gc.getAttribute('data-game'), img: gc.getAttribute('data-img'), prov: gc.getAttribute('data-prov') || '' }, gc); return; }
         var a = e.target && e.target.closest ? e.target.closest('a[href="#login"],a[href="#signup"]') : null;
         if (!a || (a.closest && a.closest('.lp-au'))) return;
         e.preventDefault(); self.openAuth(a.getAttribute('href') === '#login' ? 'login' : 'signup');
@@ -1093,6 +1216,115 @@ export default class HomePage extends React.Component {
       pickGames: go('games'), pickPlat: go('platforms'), pickPromo: go('promotions'), pickChat: go('support'),
       winsLoop: winsLoop,
       platforms: platforms,
+      ...(function () {
+        /* Onboarding tour: card art + Skip/Next hit-areas measured from each card (px of a 972px-tall card) */
+        var T = [
+          { img: '/assets/79a0944c6cbcd451ff8e7fc830a5b44f.webp', w: 410, skip: [54, 186], next: [202, 374], alt: 'Step 1 of 4. Welcome to Golden Dragon Casino! We are excited to have you here. Let\u2019s get you started with a quick tour of our platform.' },
+          { img: '/assets/f94eb162c74c6145ce9cd47305855210.webp', w: 361, skip: [30, 160], next: [176, 329], alt: 'Step 2 of 4. Explore the menu. Find games, bonuses, and more in the sidebar.' },
+          { img: '/assets/e63b85954c46fdcc64bc120c1af12b94.webp', w: 366, skip: [29, 159], next: [174, 334], alt: 'Step 3 of 4. Claim your daily bonus. Visit the sidebar and click on Bonuses to collect your daily rewards.' },
+          { img: '/assets/14656e4e673113977093488a1bd5101f.webp', w: 381, skip: [31, 161], next: [179, 339], alt: 'Step 4 of 4. Two game modes: Gold Coins (GC) for fun play and Sweep Coins (SC) for redeemable prizes.' }
+        ];
+        var cur = self.state.tour, open = cur != null && cur >= 0;
+        var hit = function (t, r) { return 'left: ' + (r[0] / t.w * 100).toFixed(2) + '%; width: ' + ((r[1] - r[0]) / t.w * 100).toFixed(2) + '%; top: 90.2%; height: 5.6%'; };
+        return {
+          tourOpen: open,
+          tourTrack: 'transform: translateX(' + (-(open ? cur : 0) * 100) + '%)',
+          tourStepText: open ? 'Step ' + (cur + 1) + ' of ' + T.length : '',
+          tourSlides: T.map(function (t, i) {
+            var on = open && cur === i;
+            return { img: t.img, alt: t.alt, hidden: on ? 'false' : 'true', tab: on ? '0' : '-1',
+              style: 'width: calc(var(--h) * ' + t.w + ' / 972); height: var(--h)', skipStyle: hit(t, t.skip), nextStyle: hit(t, t.next),
+              nextLabel: i === T.length - 1 ? 'Finish tour' : 'Next step' };
+          }),
+          tourNext: function () { self.goTour((self.state.tour || 0) + 1); },
+          tourSkip: function () { self.closeTour(); },
+          tourKey: function (e) {
+            if (e.key === 'Escape') self.closeTour();
+            else if (e.key === 'ArrowRight') self.goTour((self.state.tour || 0) + 1);
+            else if (e.key === 'ArrowLeft') self.goTour((self.state.tour || 0) - 1);
+          },
+          tourDown: function (e) { self._tx = e.clientX; },
+          tourUp: function (e) { if (self._tx == null) return; var dx = e.clientX - self._tx; self._tx = null; if (Math.abs(dx) > 50) self.goTour((self.state.tour || 0) + (dx < 0 ? 1 : -1)); }
+        };
+      })(),
+      wwCards: (function () {
+        var li = !!self.state.loggedIn;
+        return [
+          { cls: 'is-welcome', isCrown: true, t1: 'First Time at', t2: 'PlayJuwa?', text: 'Jump in and claim your exclusive welcome rewards.', cta: 'Start Playing', href: li ? NL.nCasino : '#signup',
+            mascot: '/assets/d8411de8953d066e820f5f961a6d4369.webp', decoA: '/assets/11ef8cbb2900a3979b8a2493012e9391.webp', decoB: '/assets/7fec325bc2590983a0687ec17309f58a.webp', decoC: '/assets/96c8e0e9aadd3d69b1e069a0e6fd647e.webp' },
+          { cls: 'is-daily', isGift: true, t1: 'Fresh Rewards', t2: 'Await Every Day!', text: 'Come back daily and unlock your bonus.', cta: 'Check In Now', href: NL.nBonus,
+            mascot: '/assets/abbf3540822695234b73178343552998.webp', decoA: '/assets/70a07a22e738ed875a4b6b5462b43c32.webp', decoB: '/assets/cabf0dbe7572dd0a60753b3e0147bc9b.webp', decoC: '/assets/11ef8cbb2900a3979b8a2493012e9391.webp' },
+          { cls: 'is-tourney', isTrophy: true, t1: 'Tournament', t2: 'Glory Awaits!', text: 'Compete, climb the ranks, and go for the biggest wins.', cta: 'Join The Fun', href: NL.nBonus,
+            mascot: '/assets/2db9cbbae39a0d5d8c699913e4c21209.webp', decoA: '/assets/cabf0dbe7572dd0a60753b3e0147bc9b.webp', decoB: '/assets/70a07a22e738ed875a4b6b5462b43c32.webp', decoC: '/assets/11ef8cbb2900a3979b8a2493012e9391.webp' }
+        ].map(function (c, i) { return Object.assign({ isCrown: false, isGift: false, isTrophy: false }, c, { style: '--i: ' + i }); });
+      })(),
+      ...(function () {
+        /* Game pop-up: opened by tapping any single game card (see authDelegate) */
+        var g = self.state.gm, cur = self.state.gmCur || 'gc', li = !!self.state.loggedIn;
+        var bGc = self.props.balGc || '0', bSc = self.props.balSc || '0.00';
+        var favK = g ? 'gm-' + g.name : '', fav = !!(g && self.state.favs && self.state.favs[favK]);
+        var recs = !g ? [] : CATD.pool.filter(function (x) { return x[0] !== g.name; }).slice(0, 8).map(function (x) {
+          return { name: x[0], img: blob(x[2]), label: 'Open ' + x[0], pick: function () { self.openGame({ name: x[0], img: blob(x[2]), prov: x[1] }); } };
+        });
+        return {
+          gmOpen: !!g, gmName: g ? g.name : '', gmImg: g ? g.img : '', gmProv: g && g.prov ? g.prov : 'PlayJuwa', gmTag: 'Win solid rewards',
+          gmFav: fav ? 'true' : 'false', gmFavLabel: g ? (fav ? 'Remove ' : 'Add ') + g.name + (fav ? ' from favorites' : ' to favorites') : '',
+          gmToggleFav: function () { var f = Object.assign({}, self.state.favs); f[favK] = !fav; self.setState({ favs: f }); },
+          gmClose: function () { self.closeGame(); },
+          gmKey: function (e) { if (e.key === 'Escape') self.closeGame(); },
+          gmCur: cur, gmCurGc: cur === 'gc', gmCurSc: cur === 'sc',
+          gmBal: li ? (cur === 'gc' ? bGc : bSc) : '\u2014',
+          gmPickCur: function (e) { self.setState({ gmCur: e.target.value }); },
+          gmBalGc: li ? bGc : '\u2014', gmBalSc: li ? bSc : '\u2014', gmIn: li, gmOut: !li,
+          gmPlayText: li ? 'Play Now' : 'Log in to Play',
+          gmModeText: cur === 'gc' ? 'Playing with Gold Coins (for fun)' : 'Playing with Sweeps Coins',
+          gmPlay: function () { if (!li) { self.setState({ gm: null }); self.openAuth('login'); return; } try { var a = document.createElement('a'); a.href = NL.nCasino; a.style.display = 'none'; document.body.appendChild(a); a.click(); a.remove(); } catch (e) {} },
+          gmBuyHref: NL.nBuy, gmRecs: recs
+        };
+      })(),
+      colBlocks: (function () {
+        /* Explore Games: each block mixes wide feature tiles (landscape art) with square tiles (pool art) */
+        var W = {}; games.forEach(function (g) { if (!g.placeholder) W[g.title] = g.img; });
+        var pool = CATD.pool.map(function (g) { return { name: g[0], img: blob(g[2]) }; });
+        var defs = [
+          { key: 'slots', emoji: '\ud83c\udfb0', title: 'Slots', wide: ['Sweet Bonanza', 'Wolf Gold', 'The Dog House'], small: pool.slice(12, 24) },
+          { key: 'popular', emoji: '\ud83d\udd25', title: 'Popular Now', wide: ['Gates of Olympus', 'Big Bass Bonanza', 'Buffalo King'], small: pool.slice(0, 12).reverse() }
+        ];
+        return defs.map(function (d, bi) {
+          var items = [], s = 0;
+          d.wide.forEach(function (wt, wi) {
+            var low = wi % 2 === 1;
+            items.push({ name: wt, img: W[wt], cls: 'is-wide' + (low ? ' is-low' : '') });
+            for (var k = 0; k < 4 && s < d.small.length; k++) items.push(d.small[s++]);
+          });
+          while (s < d.small.length) items.push(d.small[s++]);
+          var scroll = function (dir) { return function (e) { try { var r = e.currentTarget.closest('.lp-col-block').querySelector('.lp-col-rail'); r.scrollBy({ left: dir * r.clientWidth * 0.8, behavior: self.reducedMotion() ? 'auto' : 'smooth' }); } catch (x) {} }; };
+          return {
+            hid: 'col-h-' + d.key, emoji: d.emoji, title: d.title, href: NL.nCasino, allLabel: 'All ' + d.title + ' games',
+            prevLabel: 'Scroll ' + d.title + ' back', nextLabel: 'Scroll ' + d.title + ' forward', prev: scroll(-1), next: scroll(1),
+            items: items.map(function (g, i) {
+              var k = 'col-' + d.key + '-' + g.name, fav = !!(self.state.favs && self.state.favs[k]);
+              return { cls: g.cls || '', img: g.img, name: g.name, href: NL.nCasino, label: 'Play ' + g.name, fav: fav ? 'true' : 'false',
+                favLabel: (fav ? 'Remove ' : 'Add ') + g.name + (fav ? ' from favorites' : ' to favorites'),
+                toggleFav: function () { var f = Object.assign({}, self.state.favs); f[k] = !fav; self.setState({ favs: f }); } };
+            })
+          };
+        });
+      })(),
+      ...(function () {
+        /* moving rows: each row's set is repeated to be wider than the screen, then doubled for a seamless loop */
+        var mkRow = function (items, minN) {
+          var set = []; while (set.length < minN) set = set.concat(items);
+          return set.concat(set).map(function (it, i) {
+            var dup = i >= set.length;
+            return Object.assign({ isNew: false, isMore: false, hasImg: true, cls: '', img: '', game: '', prov: '' }, it, { dup: dup ? 'true' : 'false', tab: dup ? '-1' : '0' });
+          });
+        };
+        var P = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew, href: '#platform' }; });
+        P.push({ name: 'View All', isMore: true, hasImg: false, cls: 'lp-plat-more', href: '#all-platforms' });
+        var G = CATD.pool.slice(0, 12).map(function (g) { return { name: g[0], game: g[0], prov: g[1], img: blob(g[2]), href: NL.nCasino }; });
+        return { platRowA: mkRow(P.slice(0, 5), 10), platRowB: mkRow(P.slice(5), 10), topRowA: mkRow(G.slice(0, 6), 12), topRowB: mkRow(G.slice(6), 12) };
+      })(),
       cats: cats,
       sbSpin: askSpin, soundOn: this.state.sound ? 'true' : 'false', soundLabel: this.state.sound ? 'Mute sound' : 'Unmute sound', toggleSound: function () { self.setState({ sound: !self.state.sound }); },
       sdPlat: { cur: cur('platforms'), pick: go('platforms') },
@@ -1145,7 +1377,7 @@ export default class HomePage extends React.Component {
         ['Candy Stash', 'ef62da4b74d88c8c72ee4630bbfaaddb'],
         ['San Quentin Ways', '40ee24a239a244885d941aab35402849'],
         ['Thunderstruck II', '05f01eabab8372a5c940df2a97c1a4a6']
-      ].map(function (h) { return { label: 'Play ' + h[0], img: blob(h[1]) }; }),
+      ].map(function (h) { return { label: 'Play ' + h[0], name: h[0], prov: '', img: blob(h[1]) }; }),
       cfCards: (function () {
         var list = games, n = list.length, cfi = self.state.cfi; self._cfN = n;
         return list.map(function (g, i) {
@@ -1232,6 +1464,8 @@ export default class HomePage extends React.Component {
     const v = this.renderVals();
     return (
       <div className="lp" onClick={v.authDelegate}>
+        <TourOpenBlock v={v} />
+        <GmOpenBlock v={v} />
         <HalloweenLayer v={v} />
         <HalloweenCycloneButton v={v} />
         <HalloweenToggle v={v} />
@@ -1245,14 +1479,18 @@ export default class HomePage extends React.Component {
         <QuickActions v={v} />
         <WinsSection v={v} />
         <PlatformsSection v={v} />
+        <TopGamesSection v={v} />
+        <GameCollageSection v={v} />
         <SlotsSection v={v} />
         <NpnSection v={v} />
         <PopularSection v={v} />
         <GamesSection v={v} />
         <SpinSection v={v} />
         <HowSection v={v} />
+        <FollowSection v={v} />
         <WeeklySection v={v} />
         <SupportSection v={v} />
+        <WaitingSection v={v} />
         <PromotionsSection v={v} />
         <FaqSection v={v} />
         <FinalSection v={v} />
