@@ -980,7 +980,7 @@ export default class HomePage extends React.Component {
         { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
         { key: 'link2play', label: 'Link2Play', icon: 'link', href: (function () { var w = 1440; try { w = window.innerWidth || 1440; } catch (e) {} return w < 641 ? '/link2play' : '/link2play'; })() } ] },
       { title: 'Rewards', cls: 'nv-group-rewards', items: [
-        { key: 'spin', label: 'Daily Spin', icon: 'spin', href: '#spin' },
+        { key: 'spin', label: 'Daily Spin', icon: 'spin', href: ROUTES.nSpin },
         { key: 'promotions', label: 'Promotions', icon: 'promo', href: '#promotions' },
         { key: 'vip', label: 'VIP', icon: 'vip', href: '#vip' },
         { key: 'referral', label: 'Referral', icon: 'referral', href: '#referral' } ] },
@@ -1100,7 +1100,7 @@ export default class HomePage extends React.Component {
       sdCasinoToggle: function () { self.setState({ sdCasino: !self.state.sdCasino }); },
       sdCasinoSub: ['Live Casino', 'Slots', 'Fishing', 'Table Games'].map(function (c) { return { label: c, pick: function () { self.setState({ cat: c === 'Table Games' ? 'Table' : c, active: 'games' }); } }; }),
       sdMenu: [
-        { key: 'spin', label: 'Daily Spin', icon: 'spin', tone: 't-cyan', href: '#spin', pick: askSpin },
+        { key: 'spin', label: 'Daily Spin', icon: 'spin', tone: 't-cyan', href: ROUTES.nSpin, pick: askSpin },
         { key: 'bonus', label: 'Daily Bonus', icon: 'gift', tone: 't-gold', href: '#spin', pick: askSpin, badge: 'Free' },
         { key: 'promotions', label: 'Promotions', icon: 'promo', tone: 't-orange', href: '#promotions' },
         { key: 'referral', label: 'Referral', icon: 'referral', tone: 't-green', href: '#referral' },

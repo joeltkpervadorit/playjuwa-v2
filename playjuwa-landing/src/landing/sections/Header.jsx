@@ -62,7 +62,7 @@ export default function Header({ v }) {
       ))}
       </nav>
       <div className="lp-sb-foot">
-      <a className="lp-sb-banner" href="#spin" onClick={v.sbSpin} aria-label="Daily rewards: spin the wheel. Spin now">
+      <a className="lp-sb-banner" href={v.nSpin} onClick={v.sbSpin} aria-label="Daily rewards: spin the wheel. Spin now">
       <img src="/assets/sb-banner.jpg" alt="" />
       <span className="lp-sb-bcopy"><span className="lp-sb-pill"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8l4.5 4 4.5-7 4.5 7L21 8l-2 11H5z" /></svg>Daily Rewards</span><b>Spin the <span className="pj-text-gold">Wheel</span></b><i>Spin Now →</i></span>
       </a>

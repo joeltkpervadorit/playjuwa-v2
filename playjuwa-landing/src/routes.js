@@ -10,6 +10,7 @@ export const PATHS = {
   withdraw: '/withdraw',
   link2play: '/link2play',
   blog: '/blog',
+  spinwheel: '/spinwheel',
 };
 
 export const ROUTES = {
@@ -24,6 +25,7 @@ export const ROUTES = {
   nTx: PATHS.wallet + '?view=history',
   nChat: PATHS.chat,
   nBlog: PATHS.blog,
+  nSpin: PATHS.spinwheel,
   nSignup: '/signup',
   nLogin: '/login',
 };

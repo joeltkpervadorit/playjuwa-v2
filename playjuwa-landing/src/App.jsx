@@ -15,6 +15,7 @@ const pages = {
   withdraw: lazy(() => import('./pages/withdraw/index.jsx')),
   link2play: lazy(() => import('./pages/link2play/index.jsx')),
   blog: lazy(() => import('./pages/blog/index.jsx')),
+  spinwheel: lazy(() => import('./pages/spinwheel/index.jsx')),
 };
 
 function PageRoute({ name, authOpen, scrollKey, hash }) {

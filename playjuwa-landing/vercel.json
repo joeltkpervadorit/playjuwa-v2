@@ -3,6 +3,8 @@
     { "source": "/casino", "destination": "/index.html" },
     { "source": "/casino/:path*", "destination": "/index.html" },
     { "source": "/platforms", "destination": "/index.html" },
-    { "source": "/platforms/:path*", "destination": "/index.html" }
+    { "source": "/platforms/:path*", "destination": "/index.html" },
+    { "source": "/spinwheel", "destination": "/index.html" },
+    { "source": "/spinwheel/:path*", "destination": "/index.html" }
   ]
 }

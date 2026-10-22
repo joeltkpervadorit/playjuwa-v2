@@ -7,7 +7,7 @@ const lobbyItems = [
 ];
 
 const menuItems = [
-  { label: 'Daily Spin', icon: 'spin', tone: 't-cyan', href: ROUTES.nHome + '#spin' },
+  { label: 'Daily Spin', icon: 'spin', tone: 't-cyan', href: ROUTES.nSpin },
   { label: 'Daily Bonus', icon: 'gift', tone: 't-gold', href: ROUTES.nBonus, badge: 'Free' },
   { label: 'Promotions', icon: 'promo', tone: 't-orange', href: ROUTES.nBonus },
   { label: 'Referral', icon: 'referral', tone: 't-green', href: ROUTES.nHome + '#referral' },
@@ -89,7 +89,7 @@ export default function Sidebar({ v }) {
         {helpItems.map((item) => <NavigationLink key={item.label} item={item} />)}
       </nav>
       <div className="lp-sb-foot">
-        <a className="lp-sb-banner" href={ROUTES.nHome + '#spin'} onClick={v.sbSpin} aria-label="Daily rewards: spin the wheel. Spin now">
+        <a className="lp-sb-banner" href={ROUTES.nSpin} onClick={v.sbSpin} aria-label="Daily rewards: spin the wheel. Spin now">
           <img src="/assets/20eb22d655df983fd0ead079aad2c923.jpg" alt="" loading="lazy" decoding="async" />
           <span className="lp-sb-bcopy">
             <span className="lp-sb-pill">

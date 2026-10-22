@@ -18,7 +18,7 @@ export default function Sidebar({ v }) {
       </>
       ) : null}
       <h3 className="lp-sd-h">Menu</h3>
-      <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-cyan" aria-hidden="true"><span className="nv-ic ic-spin" /></span><span className="lp-sd-label">Daily Spin</span></a>
+      <a className="lp-sd-link" href={v.nSpin}><span className="lp-sd-ic t-cyan" aria-hidden="true"><span className="nv-ic ic-spin" /></span><span className="lp-sd-label">Daily Spin</span></a>
       <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-gold" aria-hidden="true"><span className="nv-ic ic-gift" /></span><span className="lp-sd-label">Daily Bonus</span><span className="lp-sd-badge">Free</span></a>
       <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-orange" aria-hidden="true"><span className="nv-ic ic-promo" /></span><span className="lp-sd-label">Promotions</span></a>
       <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-green" aria-hidden="true"><span className="nv-ic ic-referral" /></span><span className="lp-sd-label">Referral</span></a>
@@ -34,7 +34,7 @@ export default function Sidebar({ v }) {
       <a className="lp-sd-link" href={v.nHome}><span className="lp-sd-ic t-violet" aria-hidden="true"><span className="nv-ic ic-blog" /></span><span className="lp-sd-label">Blog posts</span></a>
       </nav>
       <div className="lp-sb-foot">
-      <a className="lp-sb-banner" href={v.nHome} aria-label="Daily rewards: spin the wheel. Spin now">
+      <a className="lp-sb-banner" href={v.nSpin} aria-label="Daily rewards: spin the wheel. Spin now">
       <img src="/assets/20eb22d655df983fd0ead079aad2c923.jpg" alt="" />
       <span className="lp-sb-bcopy"><span className="lp-sb-pill"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8l4.5 4 4.5-7 4.5 7L21 8l-2 11H5z" /></svg>Daily Rewards</span><b>Spin the <span className="pj-text-gold">Wheel</span></b><i>Spin Now →</i></span>
       </a>

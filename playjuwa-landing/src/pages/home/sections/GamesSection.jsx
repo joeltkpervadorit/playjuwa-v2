@@ -9,7 +9,7 @@ export default function GamesSection({ v }) {
       </div>
       <div className="lp-promos lp-rail" role="list" aria-label="Promotions">
       <a className="lp-promo" role="listitem" href="#signup" aria-label="Welcome offer: 100% welcome bonus. Claim now"><img src="/assets/067ae5d124c6ce754a2427a4ee831e45.webp" alt="" /></a>
-      <a className="lp-promo" role="listitem" href="#spin" onClick={v.askSpin} aria-label="Daily rewards: spin every 24 hours. Spin now"><img src="/assets/de541fefe9e2624b755896ebdf539481.jpg" alt="" /></a>
+      <a className="lp-promo" role="listitem" href={v.nSpin} onClick={v.askSpin} aria-label="Daily rewards: spin every 24 hours. Spin now"><img src="/assets/de541fefe9e2624b755896ebdf539481.jpg" alt="" /></a>
       </div>
       <div className="lp-chipbar">
       <div className="lp-chips" role="tablist" aria-label="Game categories">
