@@ -14,9 +14,42 @@ import DpTwo from './sections/DpTwo.jsx';
 import DpBar from './sections/DpBar.jsx';
 import ModalOpenBlock from './sections/ModalOpenBlock.jsx';
 import Footer from './sections/Footer.jsx';
+import { createCheckout } from './checkout.js';
+
+// Checkout phases: idle → opening → (demo | redirecting | failed) → success
+const IDLE_CHECKOUT = { phase: 'idle', error: '', demo: false };
 
 export default class DepositPage extends React.Component {
-  constructor(props) { super(props); this.state = { casOpen: false, cat: 'all', slide: 0, favs: {}, sound: true, q: '', filter: 'all', shown: {}, copied: '', method: props.method || '', pkg: (props.pkg === 0 || props.pkg > 0) ? Number(props.pkg) : -1, modal: !!props.modal, amt: '', code: '', codeBusy: false, refreshing: false, payBusy: false, flash: false }; }
+  constructor(props) { super(props); this.state = { casOpen: false, cat: 'all', slide: 0, favs: {}, sound: true, q: '', filter: 'all', shown: {}, copied: '', method: props.method || '', pkg: (props.pkg === 0 || props.pkg > 0) ? Number(props.pkg) : -1, modal: !!props.modal, amt: '', code: '', codeBusy: false, refreshing: false, checkout: IDLE_CHECKOUT, flash: false }; }
+  startPay(methodKey, pkgIndex) {
+    var self = this;
+    var token = (this._payToken = (this._payToken || 0) + 1);
+    var current = function () { return token === self._payToken; };
+    if (this.state.checkout.phase === 'opening' || this.state.checkout.phase === 'redirecting') return;
+    this.setState({ checkout: { phase: 'opening', error: '', demo: false } });
+    createCheckout({ method: methodKey, pkgIndex: pkgIndex }).then(function (r) {
+      if (!current()) return;
+      if (r.mode === 'live' && r.url) {
+        self.setState({ checkout: { phase: 'redirecting', error: '', demo: false } });
+        window.location.assign(r.url);
+        return;
+      }
+      self.setState({ checkout: { phase: 'demo', error: '', demo: true } });
+    }).catch(function (err) {
+      if (!current()) return;
+      self.setState({ checkout: { phase: 'failed', error: err && err.message ? err.message : 'Checkout could not start. Please try again.', demo: false } });
+    });
+  }
+  // Demo outcomes are display-only: they never change coin balances or call any payment API.
+  simulatePay(outcome) {
+    this.setState({ checkout: outcome === 'success'
+      ? { phase: 'success', error: '', demo: true }
+      : { phase: 'failed', error: 'Simulated failure: the payment was declined. No charge was made.', demo: true } });
+  }
+  cancelPay() {
+    this._payToken = (this._payToken || 0) + 1;
+    this.setState({ checkout: IDLE_CHECKOUT });
+  }
   componentDidMount() { this.installHalloween(); this.installTapFx(); this.installMotion(); var self = this; if (!this.rm()) this._t = setInterval(function () { self.setState({ slide: (self.state.slide + 1) % 3 }); }, 6000); }
   componentWillUnmount() { clearInterval(this._t); }
   rm() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
@@ -733,7 +766,9 @@ export default class DepositPage extends React.Component {
         var stepNow = !M ? 1 : (!P ? 2 : 3);
         var STEP = [['1', 'Payment Method'], ['2', 'Choose Package'], ['3', 'Secure Payment']];
         var amtNum = parseFloat(st.amt);
-        var openModal = function () { if (M && P) self.setState({ modal: true, payBusy: false }); };
+        var openModal = function () { if (M && P) self.setState({ modal: true, checkout: IDLE_CHECKOUT }); };
+        var checkoutPhase = st.checkout.phase;
+        var payBusy = checkoutPhase === 'opening' || checkoutPhase === 'redirecting';
         return {
           balSc: self.props.balSc || '0.03', balGc: self.props.balGc || '0',
           steps: STEP.map(function (s, i) { var n = i + 1; return { n: s[0], label: s[1], state: n < stepNow ? 'done' : n === stepNow ? 'now' : 'next', cur: n === stepNow ? 'step' : 'false' }; }),
@@ -762,15 +797,21 @@ export default class DepositPage extends React.Component {
           barDisabled: !(M && P),
           barAction: openModal,
           modalOpen: !!(st.modal && M && P),
-          closeModal: function () { self.setState({ modal: false, payBusy: false }); },
-          modalKey: function (e) { if (e.key === 'Escape') self.setState({ modal: false, payBusy: false }); },
+          closeModal: function () { self.cancelPay(); self.setState({ modal: false }); },
+          modalKey: function (e) { if (e.key === 'Escape') { self.cancelPay(); self.setState({ modal: false }); } },
           selImg: P ? art(st.pkg) : '', selSc: P ? P.sc.toFixed(2) : '', selGc: P ? P.gc : '',
           hasFree: !!(P && P.save), saveAmt: P && P.save ? money(P.save) : '', discPct: P && P.disc ? P.disc : '',
           selMethod: M ? M[1] : '', selMethodIcon: M ? B(M[4]) : '',
           pkgValue: P ? money(P.was || P.price) : '', payAmt: P ? money(P.price) : '',
-          payBusy: !!st.payBusy, payBusyStr: st.payBusy ? 'true' : 'false',
-          payLabel: st.payBusy ? 'Opening secure checkout…' : (P ? 'Pay ' + money(P.price) : 'Pay'),
-          pay: function () { if (self.state.payBusy) return; self.setState({ payBusy: true }); }
+          checkoutPhase: checkoutPhase, checkoutErr: st.checkout.error,
+          isPhaseIdle: checkoutPhase === 'idle', isOpening: checkoutPhase === 'opening', isRedirect: checkoutPhase === 'redirecting',
+          isDemoPhase: checkoutPhase === 'demo', isSuccess: checkoutPhase === 'success', isFailed: checkoutPhase === 'failed',
+          isDemo: !!st.checkout.demo,
+          payBusy: payBusy, payBusyStr: payBusy ? 'true' : 'false',
+          payLabel: checkoutPhase === 'redirecting' ? 'Redirecting to secure checkout…' : checkoutPhase === 'opening' ? 'Opening secure checkout…' : (P ? 'Pay ' + money(P.price) : 'Pay'),
+          pay: function () { if (M && P) self.startPay(M[0], st.pkg); },
+          simulateSuccess: function () { self.simulatePay('success'); },
+          simulateFailure: function () { self.simulatePay('failure'); }
         };
       })(),
       ...(function () {

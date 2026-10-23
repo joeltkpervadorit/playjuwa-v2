@@ -1135,3 +1135,13 @@ body .hw-toggle,body .hw-cy-btn{bottom:calc(98px + env(safe-area-inset-bottom))}
 
 /* wider sidebar (desktop) */
 @media (min-width:1024px){:root{--side:244px}}
+
+/* ---- checkout: demo banner, outcome panels ---- */
+.dp-demo-tag{flex:none;margin-left:auto;margin-right:6px;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2a1600;background:var(--gold)}
+.dp-demo{display:grid;gap:2px;margin-bottom:12px;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;color:#ffe9a6;background:rgba(255,184,0,.1);box-shadow:inset 0 0 0 1px rgba(255,184,0,.55)}
+.dp-demo b{font-size:12px;letter-spacing:.08em;color:var(--gold)}
+.dp-demo-note{margin:0 0 4px;font-size:13px;text-align:center;color:#b9b3d6}
+.dp-result{display:grid;gap:4px;margin-bottom:12px;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.4;text-align:left}
+.dp-result b{font-size:15px}
+.dp-result.is-ok{color:#c8f5d6;background:rgba(34,197,94,.12);box-shadow:inset 0 0 0 1px rgba(34,197,94,.5)}
+.dp-result.is-bad{color:#ffd0d6;background:rgba(239,68,68,.12);box-shadow:inset 0 0 0 1px rgba(239,68,68,.55)}
