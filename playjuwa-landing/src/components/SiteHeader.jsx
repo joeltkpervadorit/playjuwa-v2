@@ -1,14 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './ds.jsx';
 import { useSession } from '../lib/session.js';
+import { setMenuOpen, useMenuOpen } from '../lib/navMenu.js';
 
-function WalletPill({ type, balance, label }) {
+const COINS = [
+  { type: 'sc', label: 'Sweepstakes Coins' },
+  { type: 'gc', label: 'Gold Coins' },
+];
+
+// Each page mounts its own header, so the chosen coin is kept outside the component
+// to survive navigation instead of snapping back to GC.
+let lastCoin = 'gc';
+
+function MenuButton() {
+  const open = useMenuOpen();
   return (
-    <a className={`pj-wal-pill is-${type}`} href="/wallet" aria-label={`${label}: ${balance}`}>
-      <span className="pj-header-coin" aria-hidden="true">{type === 'gc' ? 'G' : 'S'}</span>
-      <span className="pj-wal-v">{balance}</span>
-      <span className="pj-wal-t">{type.toUpperCase()}</span>
-    </a>
+    <button
+      className="nv-menu-btn pj-global-menu-btn"
+      type="button"
+      aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+      aria-expanded={open}
+      aria-controls="pj-mobile-sidebar"
+      onClick={() => setMenuOpen((value) => !value)}
+    >
+      <svg className="nv-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+        <rect x="4" y="4" width="6.5" height="6.5" rx="2" />
+        <rect x="13.5" y="4" width="6.5" height="6.5" rx="2" />
+        <rect x="4" y="13.5" width="6.5" height="6.5" rx="2" />
+        <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2" />
+      </svg>
+    </button>
+  );
+}
+
+function CoinSelector({ balGc, balSc }) {
+  const [active, setActiveState] = useState(lastCoin);
+  const setActive = (type) => {
+    lastCoin = type;
+    setActiveState(type);
+  };
+  const balance = active === 'gc' ? balGc : balSc;
+  const current = COINS.find((coin) => coin.type === active);
+
+  return (
+    <div className={`pj-wal is-${active}`} role="group" aria-label="Your wallets">
+      <div className="pj-wal-toggle" role="radiogroup" aria-label="Choose coin">
+        {COINS.map(({ type, label }) => (
+          <button
+            key={type}
+            className={`pj-header-coin is-${type}`}
+            type="button"
+            role="radio"
+            aria-checked={active === type}
+            aria-label={label}
+            onClick={() => setActive(type)}
+          >
+            {type.toUpperCase()}
+          </button>
+        ))}
+      </div>
+      <a className="pj-wal-bal" href="/wallet" aria-label={`${current.label} balance: ${balance}. Open wallet`}>
+        <span className="pj-wal-v">{balance}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </a>
+    </div>
   );
 }
 
@@ -19,7 +76,7 @@ export default function SiteHeader() {
   return (
     <header className="by-top pj-site-header">
       <a className="by-logo" href="/" aria-label="PlayJuwa home">
-        <img src="/assets/9048a242fcde0c3b392353f435007399.png" alt="PlayJuwa" />
+        <img src="/assets/9048a242fcde0c3b392353f435007399.png" alt="PlayJuwa" width="480" height="240" decoding="async" fetchPriority="high" />
       </a>
       <a className="by-search" href="/casino#search" aria-label="Search games">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
@@ -31,10 +88,7 @@ export default function SiteHeader() {
       <div className="by-right pj-site-header-actions">
         {loggedIn ? (
           <>
-            <div className="pj-wal" role="group" aria-label="Your wallets">
-              <WalletPill type="gc" balance={balGc} label="Gold Coins balance" />
-              <WalletPill type="sc" balance={balSc} label="Sweepstakes Coins balance" />
-            </div>
+            <CoinSelector balGc={balGc} balSc={balSc} />
             <a className="by-plus" href="/deposit" aria-label="Add funds">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
                 <path d="M12 5v14M5 12h14" />
@@ -59,6 +113,7 @@ export default function SiteHeader() {
             <Button variant="outline" size="sm" href="/login">Login</Button>
           </div>
         )}
+        <MenuButton />
       </div>
     </header>
   );

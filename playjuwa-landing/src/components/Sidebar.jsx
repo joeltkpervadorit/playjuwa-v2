@@ -4,6 +4,7 @@ import { ROUTES } from '../routes.js';
 const lobbyItems = [
   { label: 'Platforms', icon: 'platforms', tone: 't-gold', href: ROUTES.nPlatforms },
   { label: 'Casino', icon: 'casino', tone: 't-violet', href: ROUTES.nCasino },
+  { label: 'Providers', icon: 'platforms', tone: 't-cyan', href: ROUTES.nCasino },
 ];
 
 const menuItems = [
@@ -14,8 +15,6 @@ const menuItems = [
   { label: 'VIP', icon: 'vip', tone: 't-gold', href: ROUTES.nHome + '#vip' },
   { label: 'Buy SC', icon: 'buy', tone: 't-green', href: ROUTES.nBuy },
   { label: 'Withdraw SC', icon: 'withdraw', tone: 't-red', href: ROUTES.nWithdraw },
-  { label: 'Wallet', icon: 'wallet', tone: 't-violet', href: ROUTES.nWallet },
-  { label: 'Transactions', icon: 'history', tone: 't-cyan', href: ROUTES.nTx },
 ];
 
 const helpItems = [
@@ -26,6 +25,7 @@ const helpItems = [
 ];
 
 const casinoItems = ['All Casino Games', 'Slots', 'Live Casino', 'Fishing', 'Table Games'];
+const providerItems = ['Pragmatic Play', 'JILI', 'PG Soft', 'Spadegaming', 'Hacksaw', 'Play\u2019n GO', 'Nolimit City', 'Microgaming'];
 
 function NavigationLink({ item }) {
   const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
@@ -44,8 +44,25 @@ function NavigationLink({ item }) {
   );
 }
 
+function DropdownButton({ item, open, controls, onToggle }) {
+  return (
+    <button className="lp-sd-link" type="button" aria-expanded={open} aria-controls={controls} onClick={onToggle}>
+      <span className={`lp-sd-ic ${item.tone}`} aria-hidden="true">
+        <span className={`nv-ic ic-${item.icon}`} />
+      </span>
+      <span className="lp-sd-label">{item.label}</span>
+      <span className="lp-sd-chev" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </span>
+    </button>
+  );
+}
+
 export default function Sidebar({ v }) {
   const [casinoOpen, setCasinoOpen] = useState(false);
+  const [providersOpen, setProvidersOpen] = useState(false);
   const isLanding = Boolean(v.sdPlat);
 
   return (
@@ -55,32 +72,17 @@ export default function Sidebar({ v }) {
       </a>
       <nav className="lp-sd-nav">
         <h3 className="lp-sd-h">Lobby</h3>
-        {lobbyItems.map((item) => (
-          <React.Fragment key={item.label}>
-            {item.label === 'Casino' ? (
-              <button
-                className="lp-sd-link"
-                type="button"
-                aria-expanded={casinoOpen}
-                aria-controls="pj-sidebar-casino"
-                onClick={() => setCasinoOpen((open) => !open)}
-              >
-                <span className={`lp-sd-ic ${item.tone}`} aria-hidden="true">
-                  <span className={`nv-ic ic-${item.icon}`} />
-                </span>
-                <span className="lp-sd-label">{item.label}</span>
-                <span className="lp-sd-chev" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </span>
-              </button>
-            ) : <NavigationLink item={item} />}
-          </React.Fragment>
-        ))}
+        <NavigationLink item={lobbyItems[0]} />
+        <DropdownButton item={lobbyItems[1]} open={casinoOpen} controls="pj-sidebar-casino" onToggle={() => setCasinoOpen((open) => !open)} />
         {casinoOpen ? (
           <div className="lp-sd-sub cs-sub" id="pj-sidebar-casino">
             {casinoItems.map((label) => <a key={label} href={ROUTES.nCasino}>{label}</a>)}
+          </div>
+        ) : null}
+        <DropdownButton item={lobbyItems[2]} open={providersOpen} controls="pj-sidebar-providers" onToggle={() => setProvidersOpen((open) => !open)} />
+        {providersOpen ? (
+          <div className="lp-sd-sub cs-sub" id="pj-sidebar-providers">
+            {providerItems.map((label) => <a key={label} href={ROUTES.nCasino}>{label}</a>)}
           </div>
         ) : null}
         <h3 className="lp-sd-h">Menu</h3>
@@ -90,7 +92,7 @@ export default function Sidebar({ v }) {
       </nav>
       <div className="lp-sb-foot">
         <a className="lp-sb-banner" href={ROUTES.nSpin} onClick={v.sbSpin} aria-label="Daily rewards: spin the wheel. Spin now">
-          <img src="/assets/20eb22d655df983fd0ead079aad2c923.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="/assets/87159ae6d7369c353461e45ca2c20202.webp" alt="" loading="lazy" decoding="async" />
           <span className="lp-sb-bcopy">
             <span className="lp-sb-pill">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8l4.5 4 4.5-7 4.5 7L21 8l-2 11H5z" /></svg>

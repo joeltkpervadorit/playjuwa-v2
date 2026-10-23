@@ -1,4 +1,4 @@
-﻿
+
 .spinwheel-page{--font-sans:"Manrope","Plus Jakarta Sans",system-ui,sans-serif;--panel:#11132a;--panel-2:#171a36;--edge:rgba(139,99,240,.28);--edge-hi:rgba(167,139,250,.65);--gut:12px;--ok:#22c55e;--bad:#f87171}
 *{box-sizing:border-box}
 body{margin:0;background:var(--background);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45}
@@ -418,3 +418,6 @@ button{font-family:inherit}
 }
 @media (min-width:1600px){.sp-main{max-width:none;padding-inline:max(24px,calc((100% - 1440px) / 2))}}
 @media (prefers-reduced-motion:reduce){.sp-main *,.sp-main *::before{animation:none !important}.sp-sky i{opacity:.5}}
+
+/* wider sidebar (desktop) */
+@media (min-width:1024px){.spinwheel-page{--side:244px}}

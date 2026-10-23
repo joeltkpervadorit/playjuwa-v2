@@ -3,9 +3,9 @@ import { Badge } from '../../../components/ds.jsx';
 
 export default function TopGamesSection({ v }) {
   return (
-    <section className="lp-sec" id="top-games" aria-labelledby="topg-title">
+    <section className="lp-sec lp-tpx is-games" id="top-games" aria-labelledby="topg-title">
       <div className="lp-sh">
-      <div><span className="lp-eyebrow">Games</span><h2 className="lp-st" id="topg-title"><svg className="lp-st-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3.5 4.5 5 4.5 9.5A4.5 4.5 0 0 1 12 16a4.5 4.5 0 0 1-4.5-4.5C7.5 9 9 8 9 6c2 1 3 2.5 3 2.5S13 5 12 2zM5 18h14v3H5z" /></svg>Top <span className="pj-text-gold">Games</span></h2></div>
+      <div><span className="lp-eyebrow">Games</span><h2 className="lp-st" id="topg-title"><svg className="lp-st-ic lp-tpx-flame" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="tpx-fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffd21f" /><stop offset=".55" stopColor="#ff7a00" /><stop offset="1" stopColor="#e23b1a" /></linearGradient></defs><path d="M12 2c.6 3.2 4.8 5.4 4.8 10.4A4.8 4.8 0 0 1 12 22a6 6 0 0 1-6-6c0-3 1.7-4.8 2.6-6.6.4 1.6 1.2 2.6 2.4 3.1C10.6 9 11 5.6 12 2z" fill="url(#tpx-fl)" /><path d="M12 13c1.4 1.4 2.4 2.6 2.4 4.2a2.4 2.4 0 0 1-4.8 0c0-1.3.9-2.4 2.4-4.2z" fill="#fff2b0" /></svg>Top <span className="pj-text-gold">Games</span></h2><p className="lp-tpx-sub">Play the most popular and exciting games right now</p></div>
       <a className="lp-viewall" href={v.nCasino}>View All<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></a>
       </div>
       <div className="lp-pfx is-games" data-pfx="">
@@ -54,6 +54,18 @@ export default function TopGamesSection({ v }) {
       ))}
       </div>
       </div>
+      </div>
+      <div className="lp-tpx-grid is-games" role="list">
+      {(v.gameDk || []).map((g, __i5) => (
+      <React.Fragment key={__i5}>
+      <a className="lp-tpx-card" role="listitem" href={g.href} data-game={g.game} data-img={g.img} data-prov={g.prov}>
+      <span className="lp-tpx-thumb"><img src={g.img} alt="" loading="lazy" />{g.isNew ? (
+      <><span className="lp-tpx-badge">NEW</span></>
+      ) : null}</span>
+      <span className="lp-tpx-name">{g.name}</span>
+      </a>
+      </React.Fragment>
+      ))}
       </div>
       </div>
       </section>

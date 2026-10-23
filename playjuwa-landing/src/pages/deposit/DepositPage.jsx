@@ -286,10 +286,10 @@ export default class DepositPage extends React.Component {
       var cv = document.createElement('canvas');
       cv.setAttribute('aria-hidden', 'true');
       cv.className = 'pj-tapfx';
-      cv.style.cssText = 'position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:2147483000;display:block';
+      cv.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none;z-index:2147483000;display:block';
       document.body.appendChild(cv);
       var ctx = cv.getContext('2d'), W = 0, H = 0, DPR = 1, fx = [], raf = 0, last = 0;
-      var size = function () { DPR = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); };
+      var size = function () { DPR = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px'; };
       size(); window.addEventListener('resize', size, { passive: true });
       var COLS = ['#a855f7', '#c084fc', '#7c3aed', '#ffd21f', '#ffb800', '#ff8a00', '#fff3b0'];
       var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
@@ -299,11 +299,7 @@ export default class DepositPage extends React.Component {
         for (var i = 0; i < 8; i++) { var a = rot + i * Math.PI / 4, rr = i % 2 ? r * 0.28 : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
         ctx.closePath(); ctx.fill();
       };
-      var rrect = function (x, y, w, h, r) {
-        r = Math.max(0, Math.min(r, w / 2, h / 2));
-        ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
-      };
-      var burst = function (x, y, el) {
+      var burst = function (x, y) {
         var now = performance.now(), n = coarse ? 10 : 14, parts = [], sp = [];
         for (var i = 0; i < n; i++) {
           var a = Math.random() * Math.PI * 2, v = 90 + Math.random() * 170;
@@ -313,17 +309,9 @@ export default class DepositPage extends React.Component {
           var b = Math.random() * Math.PI * 2, d = 14 + Math.random() * 30;
           sp.push({ x: Math.cos(b) * d, y: Math.sin(b) * d, r: 3 + Math.random() * 3.5, delay: 40 + Math.random() * 160, rot: Math.random() * Math.PI });
         }
-        var box = null;
-        if (el) {
-          var rc = el.getBoundingClientRect();
-          if (rc.width > 4 && rc.height > 4 && rc.width < W * 0.95 && rc.height < 400) {
-            var br = parseFloat((getComputedStyle(el).borderTopLeftRadius || '0')) || 0;
-            box = { x: rc.left, y: rc.top, w: rc.width, h: rc.height, r: br };
-          }
-        }
         var rays = [], nr = coarse ? 6 : 8, base = Math.random() * Math.PI;
         for (var m = 0; m < nr; m++) rays.push({ a: base + m * Math.PI * 2 / nr + (Math.random() - 0.5) * 0.35, len: 30 + Math.random() * 26, d: Math.random() * 50, gold: m % 2 === 0 });
-        fx.push({ t0: now, x: x, y: y, parts: parts, sp: sp, box: box, rays: rays, rot: Math.PI / 4 * (Math.random() < 0.5 ? 0 : 1) + (Math.random() - 0.5) * 0.3 });
+        fx.push({ t0: now, x: x, y: y, parts: parts, sp: sp, rays: rays, rot: Math.PI / 4 * (Math.random() < 0.5 ? 0 : 1) + (Math.random() - 0.5) * 0.3 });
         if (fx.length > 8) fx.shift();
         if (!raf) { last = now; raf = requestAnimationFrame(loop); }
       };
@@ -333,20 +321,6 @@ export default class DepositPage extends React.Component {
         ctx.globalCompositeOperation = 'lighter';
         for (var k = fx.length - 1; k >= 0; k--) {
           var f = fx[k], t = now - f.t0, alive = false;
-          // element feedback: soft gold/purple outline pulse
-          if (f.box && t < 420) {
-            alive = true;
-            var p = t / 420, g = ease(p) * 6, b = f.box;
-            var grd = ctx.createLinearGradient(b.x, b.y, b.x + b.w, b.y + b.h);
-            grd.addColorStop(0, 'rgba(255,210,31,' + (0.85 * (1 - p)) + ')');
-            grd.addColorStop(1, 'rgba(168,85,247,' + (0.85 * (1 - p)) + ')');
-            ctx.save(); ctx.strokeStyle = grd; ctx.lineWidth = 2 * (1 - p) + 0.5; ctx.shadowColor = 'rgba(255,184,0,' + (0.7 * (1 - p)) + ')'; ctx.shadowBlur = 14;
-            rrect(b.x - g, b.y - g, b.w + 2 * g, b.h + 2 * g, b.r + g); ctx.stroke(); ctx.restore();
-            ctx.save(); rrect(b.x, b.y, b.w, b.h, b.r); ctx.clip();
-            var rg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, Math.max(b.w, b.h) * (0.25 + ease(p) * 0.9));
-            rg.addColorStop(0, 'rgba(255,236,170,' + (0.28 * (1 - p)) + ')'); rg.addColorStop(1, 'rgba(168,85,247,0)');
-            ctx.fillStyle = rg; ctx.fillRect(b.x, b.y, b.w, b.h); ctx.restore();
-          }
           // lens-flare star: crossed light streaks that snap open then shrink
           if (t < 440) {
             alive = true;
@@ -392,14 +366,11 @@ export default class DepositPage extends React.Component {
         ctx.globalCompositeOperation = 'source-over';
         if (fx.length) raf = requestAnimationFrame(loop); else { raf = 0; ctx.clearRect(0, 0, W, H); }
       };
-      window.__pjBurst = function (x, y, big) { if (mq && mq.matches) return; burst(x, y, null); if (big) { setTimeout(function () { burst(x - 18, y + 6, null); }, 70); setTimeout(function () { burst(x + 18, y - 4, null); }, 140); } };
-      var SEL = 'a,button,[role="button"],[role="tab"],[role="radio"],input[type="submit"],input[type="button"],summary,label,select';
+      window.__pjBurst = function (x, y, big) { if (mq && mq.matches) return; burst(x, y); if (big) { setTimeout(function () { burst(x - 18, y + 6); }, 70); setTimeout(function () { burst(x + 18, y - 4); }, 140); } };
       var down = null;
       var fire = function (e) {
         if (mq && mq.matches) return;
-        var el = e.target && e.target.closest ? e.target.closest(SEL) : null;
-        if (el && (el.disabled || el.getAttribute('aria-disabled') === 'true')) el = null;
-        burst(e.clientX, e.clientY, el);
+        burst(e.clientX, e.clientY);
       };
       document.addEventListener('pointerdown', function (e) {
         if (e.button > 0) return;
@@ -412,6 +383,7 @@ export default class DepositPage extends React.Component {
         if (Math.abs(e.clientX - d.x) < 12 && Math.abs(e.clientY - d.y) < 12 && performance.now() - d.t < 700) fire(e);
       }, { capture: true, passive: true });
       document.addEventListener('pointercancel', function () { down = null; }, { capture: true, passive: true });
+      document.addEventListener('touchstart', function () {}, { passive: true });
     } catch (err) {}
   }
   installMotion() {

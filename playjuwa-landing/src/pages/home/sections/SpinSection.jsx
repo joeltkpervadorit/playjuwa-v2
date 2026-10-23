@@ -6,6 +6,12 @@ export default function SpinSection({ v }) {
     <section className="lp-sec" id="spin" aria-labelledby="spin-title">
       <div className="lp-spin">
       <div className="lp-spin-bg" aria-hidden="true"><img src="/assets/c9c52d7ca67312a52bdb4c7cbdea1a87.webp" alt="" /></div>
+      <div className="lp-swx-fx" aria-hidden="true">
+      <span className="lp-swx-beam" />
+      <i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" /><i className="lp-swx-p" />
+      <img className="lp-swx-coin is-a" src="/assets/11ef8cbb2900a3979b8a2493012e9391.webp" alt="" /><img className="lp-swx-coin is-b" src="/assets/cabf0dbe7572dd0a60753b3e0147bc9b.webp" alt="" /><img className="lp-swx-coin is-c" src="/assets/70a07a22e738ed875a4b6b5462b43c32.webp" alt="" />
+      <img className="lp-swx-girl" src="/assets/988301d8da00c991c7936cc48864a610.webp" alt="" />
+      </div>
       <div className="lp-spin-stage">
       <div className={v.wheelCls}>
       <svg className="lp-wheel-pointer" viewBox="0 0 56 62" aria-hidden="true"><defs><linearGradient id="lpw-ptr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff3b0" /><stop offset=".5" stopColor="#ffb800" /><stop offset="1" stopColor="#c26a00" /></linearGradient></defs><path d="M28 60L6 18A22 18 0 0 1 50 18z" fill="url(#lpw-ptr)" stroke="#7a3e00" strokeWidth="2.5" strokeLinejoin="round" /><path d="M28 10l7 9-7 9-7-9z" fill="#fff6c2" opacity=".85" /></svg>
@@ -45,6 +51,12 @@ export default function SpinSection({ v }) {
       <div className="lp-spin-feat"><span className="lp-hfeat-ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.5 2L6 18h8.5l-2.5 12L26 13h-8.5z" fill="#c4b5fd" stroke="#7c3aed" strokeWidth=".8" strokeLinejoin="round" /></svg></span>Spin Every 24 Hours</div>
       </div>
       </div>
+      <ul className="lp-swx-strip" aria-label="Daily spin highlights">
+      <li><span className="lp-swx-si is-gift" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="13" width="22" height="15" rx="3" fill="#ff5fa2" /><rect x="3" y="9" width="26" height="6" rx="2" fill="#ff86bb" /><rect x="14" y="9" width="4" height="19" fill="#ffd21f" /><path d="M16 9c-2-4-7-5-7-2s5 2 7 2zm0 0c2-4 7-5 7-2s-5 2-7 2z" fill="#ffd21f" /></svg></span><span><b>Daily Rewards</b><small>Win amazing prizes</small></span></li>
+      <li><span className="lp-swx-si" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3l11 4.5v7.5c0 6.5-4.6 11.4-11 14-6.4-2.6-11-7.5-11-14V7.5z" fill="#ffd21f" /><path d="M16 7l7.5 3v5.3c0 4.4-3 7.8-7.5 9.7z" fill="#ff9500" /><path d="M11 16l3.5 3.5L21 13" fill="none" stroke="#4a2600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></span><span><b>Safe &amp; Secure</b><small>100% protected</small></span></li>
+      <li><span className="lp-swx-si" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M18.5 2L6 18h8.5l-2.5 12L26 13h-8.5z" fill="#c4b5fd" stroke="#7c3aed" strokeWidth=".8" strokeLinejoin="round" /></svg></span><span><b>Spin Every 24 Hours</b><small>New rewards daily</small></span></li>
+      <li><span className="lp-swx-si" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#ffb800" /><circle cx="16" cy="16" r="10" fill="#ffd21f" /><path d="M16 8.5l2.2 4.6 5 .6-3.7 3.4 1 5-4.5-2.5-4.5 2.5 1-5-3.7-3.4 5-.6z" fill="#b45309" /></svg></span><span><b>Exciting Prizes</b><small>Games, chips &amp; more</small></span></li>
+      </ul>
       </div>
       </section>
   );

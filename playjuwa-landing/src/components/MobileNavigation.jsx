@@ -1,52 +1,11 @@
 import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import Sidebar from './Sidebar.jsx';
 import MobileTabBar from '../landing/sections/MobileTabBar.jsx';
-
-function MenuButton({ open, onClick }) {
-  return (
-    <button
-      className="nv-menu-btn pj-global-menu-btn"
-      type="button"
-      aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-      aria-expanded={open}
-      aria-controls="pj-mobile-sidebar"
-      onClick={onClick}
-    >
-      <svg className="nv-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-        <rect x="4" y="4" width="6.5" height="6.5" rx="2" />
-        <rect x="13.5" y="4" width="6.5" height="6.5" rx="2" />
-        <rect x="4" y="13.5" width="6.5" height="6.5" rx="2" />
-        <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2" />
-      </svg>
-    </button>
-  );
-}
+import { setMenuOpen as setOpen, useMenuOpen } from '../lib/navMenu.js';
 
 export default function MobileNavigation({ path }) {
-  const [headerTarget, setHeaderTarget] = useState(null);
-  const [open, setOpen] = useState(false);
+  const open = useMenuOpen();
   const [soundOn, setSoundOn] = useState(true);
-
-  useEffect(() => {
-    setHeaderTarget(null);
-    const attachMenuButton = () => {
-      const target = document.querySelector('.pj-site-header-actions')
-        || document.querySelector('.by-top')
-        || document.querySelector('.lp-header-bar .nv-right')
-        || document.querySelector('.lp-header-bar');
-      if (!target) return false;
-      setHeaderTarget(target);
-      return true;
-    };
-    if (attachMenuButton()) return undefined;
-
-    const observer = new MutationObserver(() => {
-      if (attachMenuButton()) observer.disconnect();
-    });
-    observer.observe(document.getElementById('root'), { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, [path]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -91,10 +50,6 @@ export default function MobileNavigation({ path }) {
 
   return (
     <>
-      {headerTarget ? createPortal(
-        <MenuButton open={open} onClick={() => setOpen((value) => !value)} />,
-        headerTarget,
-      ) : null}
       <div className={`pj-mobile-navigation${open ? ' is-open' : ''}`}>
         <button
           className="pj-mobile-backdrop"

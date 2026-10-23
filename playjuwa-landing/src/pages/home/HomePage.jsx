@@ -96,6 +96,7 @@ export default class HomePage extends React.Component {
       });
     };
     var tick = function (t) {
+      if (!self._colVis) { self._colRaf = 0; last = 0; return; }   /* idle while the collage is off-screen */
       self._colRaf = requestAnimationFrame(tick);
       var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
       document.querySelectorAll('.lp-col-rail').forEach(function (r) {
@@ -110,7 +111,13 @@ export default class HomePage extends React.Component {
         r.scrollLeft = a.pos;
       });
     };
-    setTimeout(function () { setup(); self._colRaf = requestAnimationFrame(tick); }, 300);
+    setTimeout(function () {
+      setup();
+      var sec = document.querySelector('.lp-col');
+      if (sec && 'IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { self._colVis = es[0].isIntersecting; if (self._colVis && !self._colRaf) self._colRaf = requestAnimationFrame(tick); }, { rootMargin: '100px 0px' }).observe(sec);
+      } else { self._colVis = true; self._colRaf = requestAnimationFrame(tick); }
+    }, 300);
     this._colSetup = setup;
   }
   tourDone() { try { window.localStorage.setItem('pj_tour_done', '1'); } catch (e) {} }
@@ -128,11 +135,25 @@ export default class HomePage extends React.Component {
     this.setState({ tour: i });
     setTimeout(function () { try { var b = document.querySelector('.pj-tour-slide[aria-hidden="false"] .is-next'); if (b) b.focus({ preventScroll: true }); } catch (e) {} }, 470);
   }
+  installCatDrag() {
+    /* desktop category carousel: mouse drag + progress bar (touch keeps native swipe) */
+    setTimeout(function () {
+      var bar = document.querySelector('.lp-catx .lp-chipbar'); if (!bar) return;
+      var prog = document.querySelector('.lp-catx-bar > i');
+      var upd = function () { if (!prog) return; var max = bar.scrollWidth - bar.clientWidth; var vis = Math.min(1, bar.clientWidth / bar.scrollWidth); prog.style.width = (vis * 100) + '%'; prog.style.left = (max > 0 ? bar.scrollLeft / max * (100 - vis * 100) : 0) + '%'; };
+      bar.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
+      var down = false, sx = 0, sl = 0, moved = false;
+      bar.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || innerWidth < 1024) return; down = true; moved = false; sx = e.clientX; sl = bar.scrollLeft; });
+      window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - sx; if (Math.abs(dx) > 4) { moved = true; bar.classList.add('is-drag'); } bar.scrollLeft = sl - dx; });
+      window.addEventListener('pointerup', function () { if (!down) return; down = false; bar.classList.remove('is-drag'); });
+      bar.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    }, 300);
+  }
   componentDidMount() {
     var tsp = this.props.tourStep; tsp = (tsp === '' || tsp == null) ? -1 : Number(tsp);
     if (tsp >= 0) this.setState({ tour: Math.min(3, tsp) });
     else { var done = false; try { done = window.localStorage.getItem('pj_tour_done') === '1'; } catch (e) {} var selfT = this; if (!done && !this.props.loggedIn) setTimeout(function () { if (selfT.state.tour == null) selfT.openTour(0); }, 900); }
-    this.installColAuto(); this.installWw(); this.installPfx(); this.installRewards(); this.installDailyBonus(); this.installTapFx(); this.installMotion(); this.installNpnPop();
+    this.installCatDrag(); this.installColAuto(); this.installWw(); this.installPfx(); this.installRewards(); this.installDailyBonus(); this.installTapFx(); this.installMotion(); this.installNpnPop();
     var selfV = this;
     this._onVw = function () { var w = window.innerWidth || 1440; if ((w >= 1024) !== ((selfV.state.vw || 1440) >= 1024)) selfV.setState({ vw: w, heroSlide: 0 }); };
     try { this.setState({ vw: window.innerWidth || 1440 }); window.addEventListener('resize', this._onVw); } catch (e) {}
@@ -621,10 +642,10 @@ export default class HomePage extends React.Component {
       var cv = document.createElement('canvas');
       cv.setAttribute('aria-hidden', 'true');
       cv.className = 'pj-tapfx';
-      cv.style.cssText = 'position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:2147483000;display:block';
+      cv.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none;z-index:2147483000;display:block';
       document.body.appendChild(cv);
       var ctx = cv.getContext('2d'), W = 0, H = 0, DPR = 1, fx = [], raf = 0, last = 0;
-      var size = function () { DPR = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); };
+      var size = function () { DPR = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px'; };
       size(); window.addEventListener('resize', size, { passive: true });
       var COLS = ['#a855f7', '#c084fc', '#7c3aed', '#ffd21f', '#ffb800', '#ff8a00', '#fff3b0'];
       var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
@@ -634,11 +655,7 @@ export default class HomePage extends React.Component {
         for (var i = 0; i < 8; i++) { var a = rot + i * Math.PI / 4, rr = i % 2 ? r * 0.28 : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
         ctx.closePath(); ctx.fill();
       };
-      var rrect = function (x, y, w, h, r) {
-        r = Math.max(0, Math.min(r, w / 2, h / 2));
-        ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
-      };
-      var burst = function (x, y, el) {
+      var burst = function (x, y) {
         var now = performance.now(), n = coarse ? 10 : 14, parts = [], sp = [];
         for (var i = 0; i < n; i++) {
           var a = Math.random() * Math.PI * 2, v = 90 + Math.random() * 170;
@@ -648,17 +665,9 @@ export default class HomePage extends React.Component {
           var b = Math.random() * Math.PI * 2, d = 14 + Math.random() * 30;
           sp.push({ x: Math.cos(b) * d, y: Math.sin(b) * d, r: 3 + Math.random() * 3.5, delay: 40 + Math.random() * 160, rot: Math.random() * Math.PI });
         }
-        var box = null;
-        if (el) {
-          var rc = el.getBoundingClientRect();
-          if (rc.width > 4 && rc.height > 4 && rc.width < W * 0.95 && rc.height < 400) {
-            var br = parseFloat((getComputedStyle(el).borderTopLeftRadius || '0')) || 0;
-            box = { x: rc.left, y: rc.top, w: rc.width, h: rc.height, r: br };
-          }
-        }
         var rays = [], nr = coarse ? 6 : 8, base = Math.random() * Math.PI;
         for (var m = 0; m < nr; m++) rays.push({ a: base + m * Math.PI * 2 / nr + (Math.random() - 0.5) * 0.35, len: 30 + Math.random() * 26, d: Math.random() * 50, gold: m % 2 === 0 });
-        fx.push({ t0: now, x: x, y: y, parts: parts, sp: sp, box: box, rays: rays, rot: Math.PI / 4 * (Math.random() < 0.5 ? 0 : 1) + (Math.random() - 0.5) * 0.3 });
+        fx.push({ t0: now, x: x, y: y, parts: parts, sp: sp, rays: rays, rot: Math.PI / 4 * (Math.random() < 0.5 ? 0 : 1) + (Math.random() - 0.5) * 0.3 });
         if (fx.length > 8) fx.shift();
         if (!raf) { last = now; raf = requestAnimationFrame(loop); }
       };
@@ -668,20 +677,6 @@ export default class HomePage extends React.Component {
         ctx.globalCompositeOperation = 'lighter';
         for (var k = fx.length - 1; k >= 0; k--) {
           var f = fx[k], t = now - f.t0, alive = false;
-          // element feedback: soft gold/purple outline pulse
-          if (f.box && t < 420) {
-            alive = true;
-            var p = t / 420, g = ease(p) * 6, b = f.box;
-            var grd = ctx.createLinearGradient(b.x, b.y, b.x + b.w, b.y + b.h);
-            grd.addColorStop(0, 'rgba(255,210,31,' + (0.85 * (1 - p)) + ')');
-            grd.addColorStop(1, 'rgba(168,85,247,' + (0.85 * (1 - p)) + ')');
-            ctx.save(); ctx.strokeStyle = grd; ctx.lineWidth = 2 * (1 - p) + 0.5; ctx.shadowColor = 'rgba(255,184,0,' + (0.7 * (1 - p)) + ')'; ctx.shadowBlur = 14;
-            rrect(b.x - g, b.y - g, b.w + 2 * g, b.h + 2 * g, b.r + g); ctx.stroke(); ctx.restore();
-            ctx.save(); rrect(b.x, b.y, b.w, b.h, b.r); ctx.clip();
-            var rg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, Math.max(b.w, b.h) * (0.25 + ease(p) * 0.9));
-            rg.addColorStop(0, 'rgba(255,236,170,' + (0.28 * (1 - p)) + ')'); rg.addColorStop(1, 'rgba(168,85,247,0)');
-            ctx.fillStyle = rg; ctx.fillRect(b.x, b.y, b.w, b.h); ctx.restore();
-          }
           // lens-flare star: crossed light streaks that snap open then shrink
           if (t < 440) {
             alive = true;
@@ -727,14 +722,11 @@ export default class HomePage extends React.Component {
         ctx.globalCompositeOperation = 'source-over';
         if (fx.length) raf = requestAnimationFrame(loop); else { raf = 0; ctx.clearRect(0, 0, W, H); }
       };
-      window.__pjBurst = function (x, y, big) { if (mq && mq.matches) return; burst(x, y, null); if (big) { setTimeout(function () { burst(x - 18, y + 6, null); }, 70); setTimeout(function () { burst(x + 18, y - 4, null); }, 140); } };
-      var SEL = 'a,button,[role="button"],[role="tab"],[role="radio"],input[type="submit"],input[type="button"],summary,label,select';
+      window.__pjBurst = function (x, y, big) { if (mq && mq.matches) return; burst(x, y); if (big) { setTimeout(function () { burst(x - 18, y + 6); }, 70); setTimeout(function () { burst(x + 18, y - 4); }, 140); } };
       var down = null;
       var fire = function (e) {
         if (mq && mq.matches) return;
-        var el = e.target && e.target.closest ? e.target.closest(SEL) : null;
-        if (el && (el.disabled || el.getAttribute('aria-disabled') === 'true')) el = null;
-        burst(e.clientX, e.clientY, el);
+        burst(e.clientX, e.clientY);
       };
       document.addEventListener('pointerdown', function (e) {
         if (e.button > 0) return;
@@ -747,6 +739,7 @@ export default class HomePage extends React.Component {
         if (Math.abs(e.clientX - d.x) < 12 && Math.abs(e.clientY - d.y) < 12 && performance.now() - d.t < 700) fire(e);
       }, { capture: true, passive: true });
       document.addEventListener('pointercancel', function () { down = null; }, { capture: true, passive: true });
+      document.addEventListener('touchstart', function () {}, { passive: true });
     } catch (err) {}
   }
   installMotion() {
@@ -784,13 +777,14 @@ export default class HomePage extends React.Component {
         clearTimeout(pressTimer); pressTimer = 0;
         if (!pressed) return;
         var el = pressed; pressed = null;
+        if (el.classList.contains('pj-press')) { el.classList.remove('pj-press'); el.classList.add('pj-press-out'); setTimeout(function () { el.classList.remove('pj-press-out'); }, 300); }
         var wasDown = !!pressAnim;
         if (pressAnim) { try { pressAnim.cancel(); } catch (e) {} pressAnim = null; }
         if (!wasDown) return;
         if (soft === true) anim(el, [{ scale: '.955' }, { scale: '1' }], { duration: 180, easing: 'ease-out' });
-        else anim(el, [{ scale: '.955' }, { scale: '1.025', offset: .55 }, { scale: '1' }], { duration: 340, easing: 'ease-out' });
+        else anim(el, [{ scale: '.955' }, { scale: '1.025', offset: .55 }, { scale: '1' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1)' });
       };
-      var pressNow = function () { pressTimer = 0; if (pressed) pressAnim = anim(pressed, [{ scale: '1' }, { scale: '.955' }], { duration: 110, easing: 'ease-out', fill: 'forwards' }); };
+      var pressNow = function () { pressTimer = 0; if (pressed) { pressed.classList.remove('pj-press-out'); pressed.classList.add('pj-press'); } if (pressed) pressAnim = anim(pressed, [{ scale: '1' }, { scale: '.955' }], { duration: 110, easing: 'ease-out', fill: 'forwards' }); };
       document.addEventListener('pointermove', function (e) {
         if (!pressed || !pressPt) return;
         if (Math.abs(e.clientX - pressPt.x) > 7 || Math.abs(e.clientY - pressPt.y) > 7) release(true);
@@ -999,6 +993,16 @@ export default class HomePage extends React.Component {
       kickWheel();
     } catch (err) {}
   }
+  provVals() {
+    /* sidebar "Providers" group (collapsible, like Casino) */
+    var self = this, open = !!(this.state && this.state.provOpen), NLp = this.navLinks ? this.navLinks() : {};
+    var cas = NLp.nCasino || '#casino';
+    return {
+      provOpen: open ? 'true' : 'false', provShow: open,
+      toggleProv: function () { self.setState({ provOpen: !self.state.provOpen }); },
+      provSub: ['Pragmatic Play', 'JILI', 'PG Soft', 'Spadegaming', 'Hacksaw', 'Play\u2019n GO', 'Nolimit City', 'Microgaming'].map(function (p) { return { label: p, href: cas }; })
+    };
+  }
   renderVals() {
     var NL = this.navLinks();
     var self = this;
@@ -1136,6 +1140,7 @@ export default class HomePage extends React.Component {
     this._heroN = heroSet.length;
     var rm = this.reducedMotion();
     return {
+      ...this.provVals(),
       ...NL,
       loggedIn: !!this.state.loggedIn, loggedOut: !this.state.loggedIn,
       balGc: this.props.balGc || '0', balSc: this.props.balSc || '0.00',
@@ -1178,6 +1183,7 @@ export default class HomePage extends React.Component {
       toSignup: function () { self.setState({ auth: 'signup', authErr: {}, pwShown: false }); },
       closeAuth: function () { var done = self.state.authDone; self.setState({ auth: '', authDone: false, authErr: {}, loggedIn: self.state.loggedIn || done }); if (done) setTimeout(function () { if (window.__pjRewards) window.__pjRewards(); }, 500); },
       authKey: function (e) { if (e.key === 'Escape') self.setState({ auth: '', authDone: false, authErr: {} }); },
+      startPlaying: function () { var d = self.state.authDone && self.state.auth === 'login'; self.state.authDone && self.setState({ auth: '', authDone: false, authErr: {}, loggedIn: true }); if (d) window.location.assign(self.navLinks().nCasino || '/casino'); else self.setState({ auth: '', authDone: false }); },
       submitLogin: function (e) { e.preventDefault(); var er = self.validate('login', e.currentTarget.elements); if (Object.keys(er).length) { self.setState({ authErr: er, authDone: false }); var f = e.currentTarget.querySelector('[name="' + Object.keys(er)[0] + '"]'); if (f) f.focus(); return; } if (isTestLoginEnabled()) { try { startTestSession(e.currentTarget.elements.id.value.trim()); self.setState({ authErr: {}, authDone: true, loggedIn: true }); } catch (error) { console.error('Unable to start development test session.', error); self.setState({ authErr: { form: 'Could not start the test session. Please check browser storage settings.' }, authDone: false }); } return; } self.setState({ authErr: { form: 'Login is unavailable because authentication is not connected.' }, authDone: false }); },
       submitSignup: function (e) { e.preventDefault(); var er = self.validate('signup', e.currentTarget.elements); if (Object.keys(er).length) { self.setState({ authErr: er, authDone: false }); var f = e.currentTarget.querySelector('[name="' + Object.keys(er)[0] + '"]'); if (f) f.focus(); return; } self.setState({ authErr: { form: 'Sign up is unavailable because authentication is not connected.' }, authDone: false }); },
       authMessage: self.state.authErr.form || '',
@@ -1192,7 +1198,7 @@ export default class HomePage extends React.Component {
       spinDisabled: true,
       isSpinning: stS.spinning,
       onCooldown: false,
-      hubText: 'Unavailable',
+      hubText: stS.spinning ? 'GOOD LUCK!' : 'Unavailable',
       hubLabel: 'Daily rewards are unavailable until a rewards service is connected.',
       btnText: 'Unavailable',
       statusPre: 'Daily rewards are unavailable until a rewards service is connected.',
@@ -1216,6 +1222,8 @@ export default class HomePage extends React.Component {
       pickGames: go('games'), pickPlat: go('platforms'), pickPromo: go('promotions'), pickChat: go('support'),
       winsLoop: winsLoop,
       platforms: platforms,
+      catPrev: function (e) { try { var r = e.currentTarget.parentNode.querySelector('.lp-chipbar'); r.scrollBy({ left: -r.clientWidth * 0.6, behavior: self.reducedMotion() ? 'auto' : 'smooth' }); } catch (x) {} },
+      catNext: function (e) { try { var r = e.currentTarget.parentNode.querySelector('.lp-chipbar'); r.scrollBy({ left: r.clientWidth * 0.6, behavior: self.reducedMotion() ? 'auto' : 'smooth' }); } catch (x) {} },
       ...(function () {
         /* Onboarding tour: card art + Skip/Next hit-areas measured from each card (px of a 972px-tall card) */
         var T = [
@@ -1323,7 +1331,15 @@ export default class HomePage extends React.Component {
         var P = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew, href: '#platform' }; });
         P.push({ name: 'View All', isMore: true, hasImg: false, cls: 'lp-plat-more', href: '#all-platforms' });
         var G = CATD.pool.slice(0, 12).map(function (g) { return { name: g[0], game: g[0], prov: g[1], img: blob(g[2]), href: NL.nCasino }; });
-        return { platRowA: mkRow(P.slice(0, 5), 10), platRowB: mkRow(P.slice(5), 10), topRowA: mkRow(G.slice(0, 6), 12), topRowB: mkRow(G.slice(6), 12) };
+        /* desktop grids (>=1024px): unique items only, no marquee duplicates */
+        /* 9 platforms with art + the other platforms PlayJuwa lists (Link2Play), then View All = 16 = two rows of 8 */
+        var more = [['Orionstars', '/assets/f6f1dbc8105c622e9df305f405e6f8a6.webp'], ['CashMachine777', '/assets/92b95d7012e99b1a0d4af52685f8b07a.webp'], ['Panda Master', '/assets/9e581632fba4ea41f2cd0dc6d6433e87.webp'], ['River Sweeps', '/assets/b934096a94b1020a56fd155d300f9f68.webp'], ['Milkyway', '/assets/bc6c97d1d834de8ecc760b5359cce3f3.webp'], ['VegasX', '/assets/740a5c6748c6bf00e699f05f3f173656.webp']];
+        var platDk = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew }; })
+          .concat(more.map(function (m) { return { name: m[0], img: m[1], isNew: false }; }))
+          .map(function (x) { return Object.assign(x, { href: '#platform', game: '', prov: '', hasImg: !!x.img, noImg: !x.img, isMore: false, mono: x.name.charAt(0), cls: '' }); });
+        platDk.push({ name: 'View All', img: '', isNew: false, href: '#all-platforms', game: '', prov: '', hasImg: false, noImg: false, isMore: true, mono: '', cls: 'is-more' });
+        var gameDk = CATD.pool.slice(0, 16).map(function (g) { return { name: g[0], game: g[0], prov: g[1], img: blob(g[2]), href: NL.nCasino, isNew: false, hasImg: true, noImg: false, isMore: false, mono: '', cls: '' }; });
+        return { platRowA: mkRow(P.slice(0, 5), 10), platRowB: mkRow(P.slice(5), 10), topRowA: mkRow(G.slice(0, 6), 12), topRowB: mkRow(G.slice(6), 12), platDk: platDk, gameDk: gameDk };
       })(),
       cats: cats,
       sbSpin: askSpin, soundOn: this.state.sound ? 'true' : 'false', soundLabel: this.state.sound ? 'Mute sound' : 'Unmute sound', toggleSound: function () { self.setState({ sound: !self.state.sound }); },
@@ -1386,7 +1402,7 @@ export default class HomePage extends React.Component {
           return { img: g.img, on: on ? 'true' : 'false', ad: String(Math.min(ad, 4)), hidden: on ? 'false' : 'true', tab: on ? '0' : '-1',
             label: 'Play ' + g.title + ' by ' + g.provider,
             style: '--d:' + d + ';--ad:' + Math.min(ad, 4) + ';z-index:' + (20 - ad),
-            click: function (e) { if (self._cfMoved) { e.preventDefault(); return; } if (!on) { e.preventDefault(); self.setState({ cfi: i }); } } };
+            click: function (e) { if (self._cfMoved) { e.preventDefault(); return; } e.preventDefault(); e.stopPropagation(); if (!on) { self.setState({ cfi: i }); return; } self.openGame({ name: g.title, img: g.img, prov: g.provider || '' }, e.currentTarget); } };
         });
       })(),
       cfTitle: games[this.state.cfi % games.length].title,

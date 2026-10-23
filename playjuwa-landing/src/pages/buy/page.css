@@ -453,3 +453,6 @@ button{font-family:inherit}
 
 /* ---- packaging fix: clip a few pixels of decorative/edge-to-edge overflow on phones ---- */
 .by{overflow-x:clip}
+
+/* wider sidebar (desktop) */
+@media (min-width:1024px){:root{--side:244px}}

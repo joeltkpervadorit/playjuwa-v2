@@ -23,7 +23,7 @@ export default function AuthModal({ v }) {
       <span className="lp-au-done-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
       <h2 id="lp-au-title">{v.doneTitle}</h2>
       <p>{v.doneText}</p>
-      <button className="lp-au-submit" type="button" onClick={v.closeAuth}>Start Playing</button>
+      <button className="lp-au-submit" type="button" onClick={v.startPlaying}>Start Playing</button>
       </div>
       </>
       ) : null}

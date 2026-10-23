@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
+import SiteFooter from '../../components/SiteFooter.jsx';
 import SiteHeader from '../../components/SiteHeader.jsx';
 import { ROUTES } from '../../routes.js';
 import SpinBackground from './sections/SpinBackground.jsx';
@@ -163,6 +164,7 @@ export default function SpinWheelPage({ auth }) {
           <SpinWheelStage v={values} />
           <SpinInfo v={values} />
         </main>
+        <SiteFooter />
       </div>
     </div>
   );
