@@ -23,12 +23,13 @@ function notifySessionChange() {
 }
 
 export function isTestLoginEnabled() {
-  return import.meta.env.DEV;
+  // Demo login: no auth backend is connected yet, so this is on in production too.
+  return true;
 }
 
 export function startTestSession(username) {
   if (!isTestLoginEnabled()) {
-    throw new Error('Test login is only available in development.');
+    throw new Error('Test login is not available.');
   }
 
   window.sessionStorage.setItem(TEST_SESSION_KEY, username);
@@ -37,7 +38,7 @@ export function startTestSession(username) {
 
 export function endTestSession() {
   if (!isTestLoginEnabled()) {
-    throw new Error('Test logout is only available in development.');
+    throw new Error('Test logout is not available.');
   }
 
   window.sessionStorage.removeItem(TEST_SESSION_KEY);

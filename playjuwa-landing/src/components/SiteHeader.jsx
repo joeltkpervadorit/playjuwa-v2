@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './ds.jsx';
-import { useSession } from '../lib/session.js';
+import { endTestSession, isTestLoginEnabled, useSession } from '../lib/session.js';
+import '../styles/profile-menu.css';
 import { setMenuOpen, useMenuOpen } from '../lib/navMenu.js';
 
 const COINS = [
@@ -69,6 +70,106 @@ function CoinSelector({ balGc, balSc }) {
   );
 }
 
+const Icon = ({ children }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {children}
+  </svg>
+);
+
+const MENU_GROUPS = [
+  {
+    title: 'Account',
+    links: [
+      { label: 'Profile', href: '/wallet', icon: <><circle cx="12" cy="8" r="4" /><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" /></> },
+      { label: 'Wallet', href: '/wallet', icon: <><rect x="3" y="6" width="18" height="13" rx="3" /><path d="M16 12.5h2M3 10h18" /></> },
+      { label: 'Transactions', href: '/wallet?view=history', icon: <><path d="M7 4v14M7 18l-3-3M7 18l3-3M17 20V6M17 6l-3 3M17 6l3 3" /></> },
+      { label: 'Settings', href: '/wallet?view=settings', icon: <><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" /></> },
+    ],
+  },
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Casino', href: '/casino', icon: <><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1" /><circle cx="15" cy="15" r="1" /></> },
+      { label: 'Platforms', href: '/platforms', icon: <><rect x="3" y="5" width="18" height="12" rx="2" /><path d="M8 21h8" /></> },
+      { label: 'Buy Coins', href: '/deposit', icon: <><circle cx="12" cy="12" r="8" /><path d="M12 8v8M8 12h8" /></> },
+      { label: 'Promotions', href: '/bonus', icon: <><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7c-3 0-4-4-1-4s2 4 1 4zM12 7c3 0 4-4 1-4s-2 4-1 4z" /></> },
+      { label: 'Daily Spin', href: '/spinwheel', icon: <><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></> },
+      { label: 'Support', href: '/chat', icon: <><path d="M4 5h16v11H9l-5 4z" /></> },
+    ],
+  },
+];
+
+function ProfileMenu() {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onPointerDown = (event) => {
+      if (rootRef.current && !rootRef.current.contains(event.target)) setOpen(false);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        rootRef.current?.querySelector('.by-ava')?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  const logOut = () => {
+    setOpen(false);
+    if (isTestLoginEnabled()) endTestSession();
+    window.location.assign('/');
+  };
+
+  return (
+    <div className={`pj-pm${open ? ' is-open' : ''}`} ref={rootRef}>
+      <button
+        className="by-ava"
+        type="button"
+        aria-label="Account menu"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls="pj-profile-menu"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <b>J</b>
+        <Icon><path d="M6 9l6 6 6-6" /></Icon>
+      </button>
+      <div className="pj-pm-panel" id="pj-profile-menu" role="menu" aria-hidden={!open} onClick={(event) => { if (event.target.closest('a[href]')) setOpen(false); }}>
+        <div className="pj-pm-head">
+          <b aria-hidden="true">J</b>
+          <div>
+            <span>My Account</span>
+            <small>PlayJuwa Member</small>
+          </div>
+        </div>
+        {MENU_GROUPS.map((group) => (
+          <div className={`pj-pm-group${group.title === 'Explore' ? ' is-grid' : ''}`} key={group.title}>
+            <div className="pj-pm-h">{group.title}</div>
+            {group.links.map((link) => (
+              <a className="pj-pm-link" role="menuitem" href={link.href} key={link.label}>
+                <Icon>{link.icon}</Icon>
+                {link.label}
+              </a>
+            ))}
+          </div>
+        ))}
+        <button className="pj-pm-out" type="button" role="menuitem" onClick={logOut}>
+          <Icon><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9" /></Icon>
+          Log Out
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function SiteHeader() {
   const { auth, balSc, balGc } = useSession();
   const loggedIn = auth === 'in';
@@ -100,12 +201,7 @@ export default function SiteHeader() {
               </svg>
               <i />
             </button>
-            <a className="by-ava" href="/wallet" aria-label="Profile and wallet">
-              <b>J</b>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </a>
+            <ProfileMenu />
           </>
         ) : (
           <div className="pj-header-auth">

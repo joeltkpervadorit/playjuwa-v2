@@ -424,7 +424,19 @@ export default class HomePage extends React.Component {
   componentWillUnmount() { try { cancelAnimationFrame(this._colRaf); } catch (e) {} try { window.removeEventListener('scroll', this._pfxOn, { capture: true }); window.removeEventListener('resize', this._pfxOn); } catch (e) {} try { window.removeEventListener('resize', this._onVw); } catch (e) {} this.stopCyclone(); document.removeEventListener('keydown', this._onDocKey); clearInterval(this._tick); clearInterval(this._heroTimer); clearTimeout(this._spinTimer); }
   reducedMotion() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   doSpin() {
-    this.setState({ spinNotice: 'Daily rewards are unavailable until a rewards service is connected.' });
+    var self = this, st = this.state;
+    if (st.spinning) return;
+    if (!st.loggedIn) { this.setState({ loginAsk: 'spin', menuOpen: false, walletOpen: false }); return; }
+    if (st.lastSpin && Date.now() - st.lastSpin < this.COOLDOWN) return;
+    var idx = Math.floor(Math.random() * this.PRIZES.length), seg = 360 / this.PRIZES.length;
+    var rot = Math.ceil(st.rot / 360) * 360 + 360 * 5 + (360 - (seg / 2 + seg * idx));
+    this.setState({ spinning: true, rot: rot, prize: null });
+    clearTimeout(this._spinTimer);
+    this._spinTimer = setTimeout(function () {
+      var t = Date.now(), prize = self.PRIZES[idx];
+      try { window.localStorage.setItem('pj-daily-spin', JSON.stringify({ t: t, prize: prize })); } catch (e) {}
+      self.setState({ spinning: false, lastSpin: t, now: t, prize: prize });
+    }, (this.reducedMotion() ? 800 : this.SPIN_MS) + 150);
   }
   openAuth(mode) { this.setState({ auth: mode, authDone: false, authErr: {}, pwShown: false, loginAsk: '', menuOpen: false }); }
   validate(mode, f) {
@@ -1144,10 +1156,10 @@ export default class HomePage extends React.Component {
       ...NL,
       loggedIn: !!this.state.loggedIn, loggedOut: !this.state.loggedIn,
       balGc: this.props.balGc || '0', balSc: this.props.balSc || '0.00',
-      heroSpinReady: 'false',
-      heroSpinSub: 'Daily rewards are unavailable until a rewards service is connected.',
-      heroSpinCta: 'Unavailable',
-      heroSpinAria: 'Daily rewards are unavailable until a rewards service is connected.',
+      heroSpinReady: stS.loggedIn && !onCooldown ? 'true' : 'false',
+      heroSpinSub: onCooldown ? 'Next spin in ' + hms : 'Spin every 24 hours',
+      heroSpinCta: onCooldown ? hms : (stS.loggedIn ? 'Spin now' : 'Log in to spin'),
+      heroSpinAria: onCooldown ? 'Next daily spin in ' + hms : 'Go to the daily spin wheel',
       heroSpin: function (e) { if (e && e.preventDefault) e.preventDefault(); try { var el = document.getElementById('spin'); if (el) el.scrollIntoView({ behavior: self.reducedMotion() ? 'auto' : 'smooth', block: 'center' }); } catch (x) {} },
       yes: true,
       askSpin: askSpin,
@@ -1171,7 +1183,7 @@ export default class HomePage extends React.Component {
       isLogin: this.state.auth === 'login', isSignup: this.state.auth === 'signup',
       tabLogin: this.state.auth === 'login' ? 'true' : 'false', tabSignup: this.state.auth === 'signup' ? 'true' : 'false',
       authTitle: this.state.auth === 'login' ? 'Welcome back' : 'Create your account',
-      authSub: this.state.auth === 'login' ? (isTestLoginEnabled() ? 'Development test login: enter any username. Password is optional.' : 'Log in to play, spin the wheel and manage your wallet.') : 'Join PlayJuwa in under a minute.',
+      authSub: this.state.auth === 'login' ? (isTestLoginEnabled() ? 'Demo login: enter any username. Password is optional.' : 'Log in to play, spin the wheel and manage your wallet.') : 'Join PlayJuwa in under a minute.',
       doneTitle: this.state.auth === 'login' ? 'You’re logged in' : 'Account created',
       doneText: this.state.auth === 'login' ? 'Welcome back to PlayJuwa.' : 'Welcome to PlayJuwa! Your account is ready.',
       err: ['id', 'lpw', 'user', 'email', 'phone', 'ref', 'pw', 'pw2', 'terms'].reduce(function (o, k) { var m = self.state.authErr[k] || ''; o[k] = { on: m ? 'true' : 'false', msg: m }; return o; }, {}),
@@ -1195,17 +1207,17 @@ export default class HomePage extends React.Component {
       wheelStyle: 'transform: rotate(' + stS.rot + 'deg); transition: transform ' + (rm ? 800 : this.SPIN_MS) + 'ms ' + (rm ? 'ease-out' : 'cubic-bezier(0.17, 0.67, 0.12, 0.99)'),
       onSpinEnd: function () {},
       spin: function () { self.doSpin(); },
-      spinDisabled: true,
+      spinDisabled: stS.spinning || onCooldown,
       isSpinning: stS.spinning,
-      onCooldown: false,
-      hubText: stS.spinning ? 'GOOD LUCK!' : 'Unavailable',
-      hubLabel: 'Daily rewards are unavailable until a rewards service is connected.',
-      btnText: 'Unavailable',
-      statusPre: 'Daily rewards are unavailable until a rewards service is connected.',
-      statusVal: '',
-      hasResult: false,
-      resultLabel: '',
-      resetSpin: function () {},
+      onCooldown: onCooldown,
+      hubText: stS.spinning ? 'GOOD LUCK!' : (onCooldown ? hms : 'SPIN'),
+      hubLabel: onCooldown ? 'Next spin in ' + hms : 'Spin the wheel',
+      btnText: stS.spinning ? 'Spinning…' : (onCooldown ? 'Come back later' : (stS.loggedIn ? 'Spin Now' : 'Log in to Spin')),
+      statusPre: onCooldown ? 'Next spin in' : 'Spin every 24 hours.',
+      statusVal: onCooldown ? hms : '',
+      hasResult: !!stS.prize && !stS.spinning,
+      resultLabel: stS.prize || '',
+      resetSpin: function () { clearTimeout(self._spinTimer); try { window.localStorage.removeItem('pj-daily-spin'); } catch (e) {} self.setState({ spinning: false, lastSpin: 0, prize: null }); },
       topLinks: topLinks,
       groups: groups,
       menuOpen: menuOpen,
