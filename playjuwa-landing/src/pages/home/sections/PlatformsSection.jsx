@@ -6,7 +6,7 @@ export default function PlatformsSection({ v }) {
     <section className="lp-sec lp-tpx" id="platforms" aria-labelledby="plat-title">
       <div className="lp-sh">
       <div><span className="lp-eyebrow">Platforms</span><h2 className="lp-st" id="plat-title"><img src="/assets/fd763c56b874820f9064b9dfe1db38d2.svg" alt="" />Top Game <span className="pj-text-gold">Platforms</span></h2><p className="lp-tpx-sub">Play your favourite games from the most trusted platforms</p></div>
-      <a className="lp-viewall" href="#all-platforms">View All<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></a>
+      <a className="lp-viewall" href="/platforms">View All<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></a>
       </div>
       <div className="lp-pfx" data-pfx="">
       <div className="lp-pfx-bg" aria-hidden="true">

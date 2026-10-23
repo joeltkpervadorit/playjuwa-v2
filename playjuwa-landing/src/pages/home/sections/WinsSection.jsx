@@ -5,7 +5,7 @@ export default function WinsSection({ v }) {
     <section className="lp-sec" aria-labelledby="wins-title">
       <div className="lp-sh">
       <div><span className="lp-eyebrow">Winners</span><h2 className="lp-st" id="wins-title"><svg className="lp-st-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 8l4 4 4-6 4 6 4-4-2 10H6z" /></svg>Recent <span className="pj-text-gold">Big Wins</span></h2></div>
-      <a className="lp-viewall lp-dsk-only" href="#all-wins">View All<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></a>
+      <a className="lp-viewall lp-dsk-only" href="/casino">View All<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></a>
       </div>
       <div className="lp-ticker" tabIndex="0" aria-label="Recent big wins, scrolling. Hover or focus to pause.">
       <div className="lp-track">

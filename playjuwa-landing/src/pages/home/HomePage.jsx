@@ -1109,7 +1109,7 @@ export default class HomePage extends React.Component {
     ].map(function (l) { return Object.assign(l, { current: cur(l.key), pick: go(l.key) }); });
     var groupData = [
       { title: 'Play', cls: 'nv-group-play', items: [
-        { key: 'home', label: 'Home', icon: 'home', href: '#top' },
+        { key: 'home', label: 'Home', icon: 'home', href: '/' },
         { key: 'games', label: 'Games', icon: 'games', href: '#games' },
         { key: 'casino', label: 'Casino', icon: 'casino', href: '#casino' },
         { key: 'platforms', label: 'Platforms', icon: 'platforms', href: '#platforms' },
@@ -1117,7 +1117,7 @@ export default class HomePage extends React.Component {
       { title: 'Rewards', cls: 'nv-group-rewards', items: [
         { key: 'spin', label: 'Daily Spin', icon: 'spin', href: ROUTES.nSpin },
         { key: 'promotions', label: 'Promotions', icon: 'promo', href: '#promotions' },
-        { key: 'vip', label: 'VIP', icon: 'vip', href: '#vip' },
+        { key: 'vip', label: 'VIP', icon: 'vip', href: '/bonus' },
         { key: 'referral', label: 'Referral', icon: 'referral', href: '#referral' } ] },
       { title: 'Help', cls: 'nv-group-help', items: [
         { key: 'support', label: 'Support', icon: 'support', href: '#support' },
@@ -1340,16 +1340,16 @@ export default class HomePage extends React.Component {
             return Object.assign({ isNew: false, isMore: false, hasImg: true, cls: '', img: '', game: '', prov: '' }, it, { dup: dup ? 'true' : 'false', tab: dup ? '-1' : '0' });
           });
         };
-        var P = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew, href: '#platform' }; });
-        P.push({ name: 'View All', isMore: true, hasImg: false, cls: 'lp-plat-more', href: '#all-platforms' });
+        var P = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew, href: '/platforms' }; });
+        P.push({ name: 'View All', isMore: true, hasImg: false, cls: 'lp-plat-more', href: '/platforms' });
         var G = CATD.pool.slice(0, 12).map(function (g) { return { name: g[0], game: g[0], prov: g[1], img: blob(g[2]), href: NL.nCasino }; });
         /* desktop grids (>=1024px): unique items only, no marquee duplicates */
         /* 9 platforms with art + the other platforms PlayJuwa lists (Link2Play), then View All = 16 = two rows of 8 */
         var more = [['Orionstars', '/assets/f6f1dbc8105c622e9df305f405e6f8a6.webp'], ['CashMachine777', '/assets/92b95d7012e99b1a0d4af52685f8b07a.webp'], ['Panda Master', '/assets/9e581632fba4ea41f2cd0dc6d6433e87.webp'], ['River Sweeps', '/assets/b934096a94b1020a56fd155d300f9f68.webp'], ['Milkyway', '/assets/bc6c97d1d834de8ecc760b5359cce3f3.webp'], ['VegasX', '/assets/740a5c6748c6bf00e699f05f3f173656.webp']];
         var platDk = platforms.map(function (x) { return { name: x.name, img: x.img, isNew: !!x.isNew }; })
           .concat(more.map(function (m) { return { name: m[0], img: m[1], isNew: false }; }))
-          .map(function (x) { return Object.assign(x, { href: '#platform', game: '', prov: '', hasImg: !!x.img, noImg: !x.img, isMore: false, mono: x.name.charAt(0), cls: '' }); });
-        platDk.push({ name: 'View All', img: '', isNew: false, href: '#all-platforms', game: '', prov: '', hasImg: false, noImg: false, isMore: true, mono: '', cls: 'is-more' });
+          .map(function (x) { return Object.assign(x, { href: '/platforms', game: '', prov: '', hasImg: !!x.img, noImg: !x.img, isMore: false, mono: x.name.charAt(0), cls: '' }); });
+        platDk.push({ name: 'View All', img: '', isNew: false, href: '/platforms', game: '', prov: '', hasImg: false, noImg: false, isMore: true, mono: '', cls: 'is-more' });
         var gameDk = CATD.pool.slice(0, 16).map(function (g) { return { name: g[0], game: g[0], prov: g[1], img: blob(g[2]), href: NL.nCasino, isNew: false, hasImg: true, noImg: false, isMore: false, mono: '', cls: '' }; });
         return { platRowA: mkRow(P.slice(0, 5), 10), platRowB: mkRow(P.slice(5), 10), topRowA: mkRow(G.slice(0, 6), 12), topRowB: mkRow(G.slice(6), 12), platDk: platDk, gameDk: gameDk };
       })(),
@@ -1364,7 +1364,7 @@ export default class HomePage extends React.Component {
         { key: 'bonus', label: 'Daily Bonus', icon: 'gift', tone: 't-gold', href: '#spin', pick: askSpin, badge: 'Free' },
         { key: 'promotions', label: 'Promotions', icon: 'promo', tone: 't-orange', href: '#promotions' },
         { key: 'referral', label: 'Referral', icon: 'referral', tone: 't-green', href: '#referral' },
-        { key: 'vip', label: 'VIP', icon: 'vip', tone: 't-gold', href: '#vip' },
+        { key: 'vip', label: 'VIP', icon: 'vip', tone: 't-gold', href: '/bonus' },
         { key: 'buy', label: 'Buy SC', icon: 'buy', tone: 't-green', href: NL.nBuy, pick: askWallet },
         { key: 'withdraw', label: 'Withdraw SC', icon: 'withdraw', tone: 't-red', href: NL.nWithdraw, pick: askWallet }
       ].map(function (it) { return Object.assign({ badge: '' }, it, { cur: cur(it.key), pick: it.pick || go(it.key) }); }),
@@ -1374,7 +1374,7 @@ export default class HomePage extends React.Component {
         { key: 'install', label: 'How to Install', icon: 'install', tone: 't-gold', href: '#install' },
         { key: 'blog', label: 'Blog posts', icon: 'blog', tone: 't-violet', href: (function () { var w = 1440; try { w = window.innerWidth || 1440; } catch (e) {} return w < 641 ? '/blog' : '/blog'; })() }
       ].map(function (it) { return Object.assign({ badge: '' }, it, { cur: cur(it.key), pick: go(it.key) }); }),
-      side: ['home', 'games', 'casino', 'sports', 'fishing', 'promotions', 'vip', 'install'].reduce(function (o, k) { var hrefs = { home: '#top', games: '#games', casino: '#casino', sports: '#games', fishing: '#games', promotions: '#promotions', vip: '#vip', install: '#install' }; o[k] = { href: hrefs[k], cur: cur(k), pick: go(k) }; return o; }, {}),
+      side: ['home', 'games', 'casino', 'sports', 'fishing', 'promotions', 'vip', 'install'].reduce(function (o, k) { var hrefs = { home: '/', games: '#games', casino: '#casino', sports: '#games', fishing: '#games', promotions: '#promotions', vip: '/bonus', install: '#install' }; o[k] = { href: hrefs[k], cur: cur(k), pick: go(k) }; return o; }, {}),
       navCats: [['All Games', '29cd32975e6275e55556949bbd89f9d9'], ['Slots', 'd2c0ee62cfa06ed88061a3c4b57c138c'], ['Live Casino', '46ae9af9c6c39e4a491d60354b364cab'], ['Sports', '4d3297527ffea7287d9902bde25d384d'], ['Fishing', 'c888fdae96901a2b78b39a37a60b7b27']].map(function (n) { var c = n[0]; return { label: c, icon: blob(n[1]), current: self.state.cat === c ? 'true' : 'false', pick: function () { self.setState({ cat: c, active: 'games' }); } }; }),
       games: games.map(function (g, gi) {
         var fav = !!(self.state.favs && self.state.favs[g.title + gi]);

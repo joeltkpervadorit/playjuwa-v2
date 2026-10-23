@@ -34,7 +34,7 @@ export default function SiteFooter() {
       <div className="pf-top">
       <div className="pf-brand">
       <img className="pf-mob-scene" src="/assets/01aed1f3b7feb7dfd0d581563ce3ad91.jpg" alt="" aria-hidden="true" />
-      <a className="pf-logo" href="#top" aria-label="PlayJuwa home"><img src="/assets/9048a242fcde0c3b392353f435007399.png" alt="PlayJuwa" /></a>
+      <a className="pf-logo" href="/" aria-label="PlayJuwa home"><img src="/assets/9048a242fcde0c3b392353f435007399.png" alt="PlayJuwa" /></a>
       <div className="pf-brand-txt"><p className="pf-tag">Play Bigger. Win Brighter.</p>
       <p className="pf-desc">Your destination for casino games and sweepstakes fun.</p></div>
       <ul className="pf-socs" aria-label="PlayJuwa on social media">
@@ -47,7 +47,7 @@ export default function SiteFooter() {
       </div>
       <nav className="pf-col" aria-labelledby="pf-h-plat">
       <h3 id="pf-h-plat"><button className="pf-acc-btn" type="button" aria-expanded={v.accPlat} aria-controls="pf-l-plat" onClick={v.accTPlat}><span className="pf-hic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></svg></span>Platforms<svg className="pf-acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></button></h3>
-      <ul id="pf-l-plat" data-open={v.accPlat} className="pf-links"><li><a href="#all-platforms">All Platforms</a></li><li><a href={v.nCasino}>Our Games</a></li><li><a href={v.nCasino}>Casino</a></li><li><a href="#bonus">Bonus</a></li><li><a href="#platforms">Platforms</a></li><li><a href="/link2play">Link2Play</a></li></ul>
+      <ul id="pf-l-plat" data-open={v.accPlat} className="pf-links"><li><a href="/platforms">All Platforms</a></li><li><a href={v.nCasino}>Our Games</a></li><li><a href={v.nCasino}>Casino</a></li><li><a href="/bonus">Bonus</a></li><li><a href="#platforms">Platforms</a></li><li><a href="/link2play">Link2Play</a></li></ul>
       </nav>
       <nav className="pf-col" aria-labelledby="pf-h-sup">
       <h3 id="pf-h-sup"><button className="pf-acc-btn" type="button" aria-expanded={v.accSup} aria-controls="pf-l-sup" onClick={v.accTSup}><span className="pf-hic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><rect x="3" y="13" width="4" height="7" rx="1.5" /><rect x="17" y="13" width="4" height="7" rx="1.5" /></svg></span>Support<svg className="pf-acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></button></h3>

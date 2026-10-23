@@ -12,7 +12,7 @@ const menuItems = [
   { label: 'Daily Bonus', icon: 'gift', tone: 't-gold', href: ROUTES.nBonus, badge: 'Free' },
   { label: 'Promotions', icon: 'promo', tone: 't-orange', href: ROUTES.nBonus },
   { label: 'Referral', icon: 'referral', tone: 't-green', href: ROUTES.nHome + '#referral' },
-  { label: 'VIP', icon: 'vip', tone: 't-gold', href: ROUTES.nHome + '#vip' },
+  { label: 'VIP', icon: 'vip', tone: 't-gold', href: ROUTES.nBonus },
   { label: 'Buy SC', icon: 'buy', tone: 't-green', href: ROUTES.nBuy },
   { label: 'Withdraw SC', icon: 'withdraw', tone: 't-red', href: ROUTES.nWithdraw },
 ];
