@@ -11,7 +11,7 @@ export default function CsBannerSection({ v }) {
       <span className="cs-eyebrow">{s.eyebrow}</span>
       <h1><span>{s.t1}</span><span className="pj-text-gold">{s.t2}</span></h1>
       <p>{s.text}</p>
-      <a className="cs-btn" href={s.href} tabIndex={s.tab}>{s.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+      <a className="cs-btn" href={s.href} tabIndex={s.tab} onClick={s.pick ? (e) => { e.preventDefault(); s.pick(); } : undefined}>{s.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
       </div>
       </div>
       </React.Fragment>

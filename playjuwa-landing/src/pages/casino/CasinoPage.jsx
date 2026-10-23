@@ -672,7 +672,7 @@ export default class CasinoPage extends React.Component {
     ].map(function (s) { return Object.assign({ strip: false, stripCls: '', stripImg: '', stripEye: '', stripTitle: '', stripT1: '', stripT2: '', stripHi: '', stripText: '', stripCta: '', stripHref: '#', kind: '' }, s, { hid: 'cs-h-' + s.id, icon: B(D.icon[s.icon]), scrollL: scroll(-1), scrollR: scroll(1) }); });
     var SLIDES = [
       { cls: 'is-a', img: B('7c9e82f0bbbf0acc214a4e95ecabf79e'), eyebrow: 'Welcome offer', t1: 'Super Bonus', t2: '+100% on First Purchase', text: 'Play bigger and enjoy more at PlayJuwa.', cta: 'Buy SC Now', href: NL.nBuy },
-      { cls: 'is-b', img: B('73cb9e20c8d075e4f2e52d78b5633abc'), eyebrow: 'All your games', t1: 'One Account.', t2: '20+ Platforms', text: 'All your favorite games in one place.', cta: 'Play Now', href: '#games' },
+      { cls: 'is-b', img: B('73cb9e20c8d075e4f2e52d78b5633abc'), eyebrow: 'All your games', t1: 'One Account.', t2: '20+ Platforms', text: 'All your favorite games in one place.', cta: 'Play Now', href: '#games', pick: function () { self.setState({ cat: 'all' }); } },
       { cls: 'is-c', img: B('8f14686d83e94ff65cd7af7fe492e7f9'), eyebrow: 'Sweepstakes', t1: 'No Purchase', t2: 'Necessary', text: 'Play instantly — discover the free bonuses across our website.', cta: 'Start Playing', href: NL.nSignup }
     ];
     return {
@@ -686,10 +686,10 @@ export default class CasinoPage extends React.Component {
       prevSlide: function () { self.setState({ slide: (self.state.slide + 2) % 3 }); },
       nextSlide: function () { self.setState({ slide: (self.state.slide + 1) % 3 }); },
       promos: [
-        { cls: 'is-live', img: B('6ec97fb8ca715d0bcf15d6aeabb7ecdc'), title: 'Live Casino', sub: 'Real dealers. Real tables.', cta: 'Play Now', href: '#live' },
-        { cls: 'is-slots', img: B('9a5a2fab2b7d43d23e45027c2cdbd069'), title: 'Slots', sub: 'Spin. Win. Repeat.', cta: 'Explore', href: '#slots' },
-        { cls: 'is-fish', img: B('3e4778148413d7699c781939f08216e4'), title: 'Fishing Games', sub: 'Hunt big rewards.', cta: 'Play Now', href: '#fishing' },
-        { cls: 'is-table', img: B('6f4bd2e6c760be3af86b570c66280813'), title: 'Table Games', sub: 'Classic games. Real thrills.', cta: 'Play Now', href: '#table' }
+        { cls: 'is-live', img: B('6ec97fb8ca715d0bcf15d6aeabb7ecdc'), title: 'Live Casino', sub: 'Real dealers. Real tables.', cta: 'Play Now', href: '#live', pick: function () { self.setState({ cat: 'live' }); } },
+        { cls: 'is-slots', img: B('9a5a2fab2b7d43d23e45027c2cdbd069'), title: 'Slots', sub: 'Spin. Win. Repeat.', cta: 'Explore', href: '#slots', pick: function () { self.setState({ cat: 'slots' }); } },
+        { cls: 'is-fish', img: B('3e4778148413d7699c781939f08216e4'), title: 'Fishing Games', sub: 'Hunt big rewards.', cta: 'Play Now', href: '#fishing', pick: function () { self.setState({ cat: 'fish' }); } },
+        { cls: 'is-table', img: B('6f4bd2e6c760be3af86b570c66280813'), title: 'Table Games', sub: 'Classic games. Real thrills.', cta: 'Play Now', href: '#table', pick: function () { self.setState({ cat: 'table' }); } }
       ],
       sections: SEC,
       soundOn: st.sound ? 'true' : 'false', soundLabel: st.sound ? 'Mute sound' : 'Unmute sound', toggleSound: function () { self.setState({ sound: !self.state.sound }); }

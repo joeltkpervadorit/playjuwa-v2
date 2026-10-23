@@ -170,6 +170,69 @@ function ProfileMenu() {
   );
 }
 
+function NotificationMenu() {
+  const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(true);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onPointerDown = (event) => {
+      if (rootRef.current && !rootRef.current.contains(event.target)) setOpen(false);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className={`pj-pm pj-nm${open ? ' is-open' : ''}`} ref={rootRef}>
+      <button
+        className="by-ic"
+        type="button"
+        aria-label={unread ? 'Notifications, 1 unread' : 'Notifications'}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls="pj-notification-menu"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0-6 6v3.6L4.3 15.4A1 1 0 0 0 5.2 17h13.6a1 1 0 0 0 .9-1.6L18 12.6V9a6 6 0 0 0-6-6zm0 18a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 21z" />
+        </svg>
+        {unread ? <i /> : null}
+      </button>
+      <div className="pj-pm-panel pj-nm-panel" id="pj-notification-menu" role="region" aria-label="Notifications" aria-hidden={!open}>
+        <div className="pj-pm-head">
+          <div>
+            <span>Notifications</span>
+          </div>
+        </div>
+        <div className="pj-pm-group">
+          {unread ? (
+            <a className="pj-pm-link" href="/spinwheel" onClick={() => setUnread(false)}>
+              <Icon><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></Icon>
+              Daily spin: check your free spin
+            </a>
+          ) : (
+            <small className="pj-nm-empty">You're all caught up.</small>
+          )}
+        </div>
+        {unread ? (
+          <button className="pj-pm-out" type="button" onClick={() => setUnread(false)}>
+            Mark all as read
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export default function SiteHeader() {
   const { auth, balSc, balGc } = useSession();
   const loggedIn = auth === 'in';
@@ -195,12 +258,7 @@ export default function SiteHeader() {
                 <path d="M12 5v14M5 12h14" />
               </svg>
             </a>
-            <button className="by-ic" type="button" aria-label="Notifications, 1 unread">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 3a6 6 0 0 0-6 6v3.6L4.3 15.4A1 1 0 0 0 5.2 17h13.6a1 1 0 0 0 .9-1.6L18 12.6V9a6 6 0 0 0-6-6zm0 18a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 21z" />
-              </svg>
-              <i />
-            </button>
+            <NotificationMenu />
             <ProfileMenu />
           </>
         ) : (
